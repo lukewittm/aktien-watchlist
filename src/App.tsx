@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useState } from 'react'
 import Sparkline from './Sparkline'
 import StockDetail from './StockDetail'
+import { loadWatchlist, saveWatchlist, type WatchlistEntry } from './watchlist'
 import type { PricesFile, Region, Stock } from './types'
 
 type SortKey = 'name' | 'sector' | 'price' | 'marketCapEUR' | 'perf3m' | 'perf6m'
 type RegionFilter = Region | 'ALL'
+type View = 'top' | 'watch'
 
 const REGION_LABELS: Record<RegionFilter, string> = {
   ALL: 'Alle',
@@ -41,12 +43,14 @@ function perfClass(v: number | null): string {
 export default function App() {
   const [data, setData] = useState<PricesFile | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [view, setView] = useState<View>('top')
   const [region, setRegion] = useState<RegionFilter>('ALL')
   const [period, setPeriod] = useState<'perf3m' | 'perf6m'>('perf3m')
   const [sortKey, setSortKey] = useState<SortKey | null>(null)
   const [sortAsc, setSortAsc] = useState(false)
   const [minCapBn, setMinCapBn] = useState(2)
   const [selected, setSelected] = useState<Stock | null>(null)
+  const [watchlist, setWatchlist] = useState<WatchlistEntry[]>(loadWatchlist)
 
   useEffect(() => {
     fetch('/data/prices.json')
@@ -58,14 +62,31 @@ export default function App() {
       .catch((e) => setError(String(e)))
   }, [])
 
+  useEffect(() => saveWatchlist(watchlist), [watchlist])
+
+  const watchedTickers = useMemo(() => new Set(watchlist.map((e) => e.ticker)), [watchlist])
+
+  function toggleWatch(ticker: string) {
+    setWatchlist((prev) =>
+      prev.some((e) => e.ticker === ticker)
+        ? prev.filter((e) => e.ticker !== ticker)
+        : [...prev, { ticker, addedAt: new Date().toISOString(), note: '' }]
+    )
+  }
+
+  function setNote(ticker: string, note: string) {
+    setWatchlist((prev) => prev.map((e) => (e.ticker === ticker ? { ...e, note } : e)))
+  }
+
   const effectiveSortKey: SortKey = sortKey ?? period
 
   const rows = useMemo(() => {
     if (!data) return []
-    const filtered = data.stocks.filter(
-      (s) =>
-        (region === 'ALL' || s.region === region) &&
-        (s.marketCapEUR == null || s.marketCapEUR >= minCapBn * 1e9)
+    const filtered = data.stocks.filter((s) =>
+      view === 'watch'
+        ? watchedTickers.has(s.ticker)
+        : (region === 'ALL' || s.region === region) &&
+          (s.marketCapEUR == null || s.marketCapEUR >= minCapBn * 1e9)
     )
     const dir = sortAsc ? 1 : -1
     return [...filtered].sort((a, b) => {
@@ -76,7 +97,13 @@ export default function App() {
       const nb = (vb as number | null) ?? -Infinity
       return dir * (na - nb)
     })
-  }, [data, region, minCapBn, effectiveSortKey, sortAsc])
+  }, [data, view, watchedTickers, region, minCapBn, effectiveSortKey, sortAsc])
+
+  const missingWatched = useMemo(() => {
+    if (!data) return []
+    const known = new Set(data.stocks.map((s) => s.ticker))
+    return watchlist.filter((e) => !known.has(e.ticker))
+  }, [data, watchlist])
 
   function toggleSort(key: SortKey) {
     if (effectiveSortKey === key) {
@@ -105,10 +132,32 @@ export default function App() {
     <div className="min-h-screen bg-zinc-950 text-zinc-100">
       <div className="mx-auto max-w-6xl px-4 py-8">
         <header className="mb-6">
-          <h1 className="text-2xl font-bold tracking-tight">Aktien-Watchlist · Top-Performer</h1>
+          <div className="flex items-center justify-between gap-4 flex-wrap">
+            <h1 className="text-2xl font-bold tracking-tight">
+              {view === 'top' ? 'Aktien-Watchlist · Top-Performer' : 'Aktien-Watchlist · Meine Watchlist'}
+            </h1>
+            <div className="flex rounded-lg bg-zinc-900 p-1 ring-1 ring-zinc-800">
+              <button
+                onClick={() => setView('top')}
+                className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
+                  view === 'top' ? 'bg-zinc-700 text-white' : 'text-zinc-400 hover:text-zinc-200'
+                }`}
+              >
+                Top-Performer
+              </button>
+              <button
+                onClick={() => setView('watch')}
+                className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
+                  view === 'watch' ? 'bg-zinc-700 text-white' : 'text-zinc-400 hover:text-zinc-200'
+                }`}
+              >
+                ★ Watchlist ({watchlist.length})
+              </button>
+            </div>
+          </div>
           <p className="text-sm text-zinc-400 mt-1">
             {data
-              ? `${rows.length} von ${data.stockCount} Aktien · Stand ${new Date(data.fetchedAt).toLocaleString('de-DE', { dateStyle: 'medium', timeStyle: 'short' })}`
+              ? `${rows.length} ${view === 'watch' ? 'Aktien auf der Watchlist' : `von ${data.stockCount} Aktien`} · Stand ${new Date(data.fetchedAt).toLocaleString('de-DE', { dateStyle: 'medium', timeStyle: 'short' })}`
               : 'Lade Kursdaten …'}
             {data && data.failedTickers.length > 0 && (
               <span className="text-amber-400"> · {data.failedTickers.length} Ticker ohne Daten ({data.failedTickers.join(', ')})</span>
@@ -117,19 +166,21 @@ export default function App() {
         </header>
 
         <div className="flex flex-wrap items-center gap-3 mb-4">
-          <div className="flex rounded-lg bg-zinc-900 p-1 ring-1 ring-zinc-800">
-            {(Object.keys(REGION_LABELS) as RegionFilter[]).map((r) => (
-              <button
-                key={r}
-                onClick={() => setRegion(r)}
-                className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
-                  region === r ? 'bg-zinc-700 text-white' : 'text-zinc-400 hover:text-zinc-200'
-                }`}
-              >
-                {REGION_LABELS[r]}
-              </button>
-            ))}
-          </div>
+          {view === 'top' && (
+            <div className="flex rounded-lg bg-zinc-900 p-1 ring-1 ring-zinc-800">
+              {(Object.keys(REGION_LABELS) as RegionFilter[]).map((r) => (
+                <button
+                  key={r}
+                  onClick={() => setRegion(r)}
+                  className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
+                    region === r ? 'bg-zinc-700 text-white' : 'text-zinc-400 hover:text-zinc-200'
+                  }`}
+                >
+                  {REGION_LABELS[r]}
+                </button>
+              ))}
+            </div>
+          )}
 
           <div className="flex rounded-lg bg-zinc-900 p-1 ring-1 ring-zinc-800">
             {(['perf3m', 'perf6m'] as const).map((p) => (
@@ -148,44 +199,80 @@ export default function App() {
             ))}
           </div>
 
-          <label className="flex items-center gap-2 text-sm text-zinc-400">
-            Min. Marktkap
-            <input
-              type="number"
-              min={0}
-              value={minCapBn}
-              onChange={(e) => setMinCapBn(Number(e.target.value))}
-              className="w-20 rounded-md bg-zinc-900 ring-1 ring-zinc-800 px-2 py-1.5 text-zinc-100 text-right"
-            />
-            Mrd €
-          </label>
+          {view === 'top' && (
+            <label className="flex items-center gap-2 text-sm text-zinc-400">
+              Min. Marktkap
+              <input
+                type="number"
+                min={0}
+                value={minCapBn}
+                onChange={(e) => setMinCapBn(Number(e.target.value))}
+                className="w-20 rounded-md bg-zinc-900 ring-1 ring-zinc-800 px-2 py-1.5 text-zinc-100 text-right"
+              />
+              Mrd €
+            </label>
+          )}
         </div>
 
-        <div className="overflow-x-auto rounded-xl ring-1 ring-zinc-800">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="bg-zinc-900 text-zinc-400 text-left">
-                <th className="px-3 py-2.5 w-10 text-right">#</th>
-                <Th label="Aktie" k="name" sortKey={effectiveSortKey} asc={sortAsc} onSort={toggleSort} />
-                <th className="px-3 py-2.5">Region</th>
-                <Th label="Sektor" k="sector" sortKey={effectiveSortKey} asc={sortAsc} onSort={toggleSort} />
-                <Th label="Kurs" k="price" sortKey={effectiveSortKey} asc={sortAsc} onSort={toggleSort} right />
-                <Th label="Marktkap" k="marketCapEUR" sortKey={effectiveSortKey} asc={sortAsc} onSort={toggleSort} right />
-                <th className="px-3 py-2.5">{period === 'perf3m' ? 'Verlauf 3M' : 'Verlauf 6M'}</th>
-                <Th label="3M" k="perf3m" sortKey={effectiveSortKey} asc={sortAsc} onSort={toggleSort} right emphasize={period === 'perf3m'} />
-                <Th label="6M" k="perf6m" sortKey={effectiveSortKey} asc={sortAsc} onSort={toggleSort} right emphasize={period === 'perf6m'} />
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-zinc-800/70">
-              {rows.map((s, i) => (
-                <Row key={s.ticker} stock={s} rank={i + 1} months={period === 'perf3m' ? 3 : 6} onSelect={setSelected} />
-              ))}
-            </tbody>
-          </table>
-        </div>
+        {view === 'watch' && rows.length === 0 && missingWatched.length === 0 ? (
+          <div className="rounded-xl ring-1 ring-zinc-800 bg-zinc-900/40 p-10 text-center text-zinc-400">
+            <p className="text-lg">Noch keine Aktien auf der Watchlist.</p>
+            <p className="text-sm mt-2">
+              In der Top-Performer-Liste auf den Stern (☆) klicken, um Kaufkandidaten zu sammeln.
+            </p>
+          </div>
+        ) : (
+          <div className="overflow-x-auto rounded-xl ring-1 ring-zinc-800">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="bg-zinc-900 text-zinc-400 text-left">
+                  <th className="px-2 py-2.5 w-8"></th>
+                  <th className="px-3 py-2.5 w-10 text-right">#</th>
+                  <Th label="Aktie" k="name" sortKey={effectiveSortKey} asc={sortAsc} onSort={toggleSort} />
+                  <th className="px-3 py-2.5">Region</th>
+                  <Th label="Sektor" k="sector" sortKey={effectiveSortKey} asc={sortAsc} onSort={toggleSort} />
+                  <Th label="Kurs" k="price" sortKey={effectiveSortKey} asc={sortAsc} onSort={toggleSort} right />
+                  <Th label="Marktkap" k="marketCapEUR" sortKey={effectiveSortKey} asc={sortAsc} onSort={toggleSort} right />
+                  <th className="px-3 py-2.5">{period === 'perf3m' ? 'Verlauf 3M' : 'Verlauf 6M'}</th>
+                  <Th label="3M" k="perf3m" sortKey={effectiveSortKey} asc={sortAsc} onSort={toggleSort} right emphasize={period === 'perf3m'} />
+                  <Th label="6M" k="perf6m" sortKey={effectiveSortKey} asc={sortAsc} onSort={toggleSort} right emphasize={period === 'perf6m'} />
+                  {view === 'watch' && <th className="px-3 py-2.5">Notiz</th>}
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-zinc-800/70">
+                {rows.map((s, i) => (
+                  <Row
+                    key={s.ticker}
+                    stock={s}
+                    rank={i + 1}
+                    months={period === 'perf3m' ? 3 : 6}
+                    onSelect={setSelected}
+                    watched={watchedTickers.has(s.ticker)}
+                    onToggleWatch={toggleWatch}
+                    entry={view === 'watch' ? watchlist.find((e) => e.ticker === s.ticker) : undefined}
+                    onNote={setNote}
+                  />
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+
+        {view === 'watch' && missingWatched.length > 0 && (
+          <p className="text-sm text-amber-400 mt-3">
+            Ohne aktuelle Kursdaten (nicht mehr im Universum): {missingWatched.map((e) => e.ticker).join(', ')}
+          </p>
+        )}
       </div>
 
-      {selected && <StockDetail stock={selected} onClose={() => setSelected(null)} />}
+      {selected && (
+        <StockDetail
+          stock={selected}
+          onClose={() => setSelected(null)}
+          watched={watchedTickers.has(selected.ticker)}
+          onToggleWatch={() => toggleWatch(selected.ticker)}
+        />
+      )}
     </div>
   )
 }
@@ -226,18 +313,46 @@ function Row({
   rank,
   months,
   onSelect,
+  watched,
+  onToggleWatch,
+  entry,
+  onNote,
 }: {
   stock: Stock
   rank: number
   months: number
   onSelect: (s: Stock) => void
+  watched: boolean
+  onToggleWatch: (ticker: string) => void
+  entry?: WatchlistEntry
+  onNote: (ticker: string, note: string) => void
 }) {
   return (
     <tr className="hover:bg-zinc-900/60 cursor-pointer" onClick={() => onSelect(stock)}>
+      <td className="px-2 py-2">
+        <button
+          onClick={(e) => {
+            e.stopPropagation()
+            onToggleWatch(stock.ticker)
+          }}
+          className={`text-lg leading-none ${watched ? 'text-amber-400' : 'text-zinc-600 hover:text-zinc-300'}`}
+          aria-label={watched ? 'Von Watchlist entfernen' : 'Zur Watchlist hinzufügen'}
+          title={watched ? 'Von Watchlist entfernen' : 'Zur Watchlist hinzufügen'}
+        >
+          {watched ? '★' : '☆'}
+        </button>
+      </td>
       <td className="px-3 py-2 text-right text-zinc-500 tabular-nums">{rank}</td>
       <td className="px-3 py-2">
         <div className="font-medium text-zinc-100">{stock.name}</div>
-        <div className="text-xs text-zinc-500">{stock.ticker}</div>
+        <div className="text-xs text-zinc-500">
+          {stock.ticker}
+          {entry && (
+            <span className="ml-2 text-zinc-600">
+              seit {new Date(entry.addedAt).toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: '2-digit' })}
+            </span>
+          )}
+        </div>
       </td>
       <td className="px-3 py-2">
         <span className={`inline-block rounded px-1.5 py-0.5 text-xs font-medium ${REGION_BADGE[stock.region]}`}>
@@ -259,6 +374,17 @@ function Row({
       <td className={`px-3 py-2 text-right tabular-nums font-medium ${perfClass(stock.perf6m)}`}>
         {formatPerf(stock.perf6m)}
       </td>
+      {entry && (
+        <td className="px-3 py-2" onClick={(e) => e.stopPropagation()}>
+          <input
+            type="text"
+            value={entry.note}
+            placeholder="Notiz …"
+            onChange={(e) => onNote(stock.ticker, e.target.value)}
+            className="w-36 rounded-md bg-zinc-950/60 ring-1 ring-zinc-800 px-2 py-1 text-xs text-zinc-200 placeholder:text-zinc-600 focus:ring-zinc-600 focus:outline-none"
+          />
+        </td>
+      )}
     </tr>
   )
 }

@@ -24,7 +24,17 @@ function formatVolume(v: number | null): string {
   return String(v)
 }
 
-export default function StockDetail({ stock, onClose }: { stock: Stock; onClose: () => void }) {
+export default function StockDetail({
+  stock,
+  onClose,
+  watched,
+  onToggleWatch,
+}: {
+  stock: Stock
+  onClose: () => void
+  watched: boolean
+  onToggleWatch: () => void
+}) {
   const [period, setPeriod] = useState<ChartPeriod>('6M')
   const chartRef = useRef<HTMLDivElement>(null)
 
@@ -123,6 +133,16 @@ export default function StockDetail({ stock, onClose }: { stock: Stock; onClose:
                 </div>
               )}
             </div>
+            <button
+              onClick={onToggleWatch}
+              className={`rounded-lg px-3 py-2 text-sm font-medium ring-1 transition-colors ${
+                watched
+                  ? 'bg-amber-400/10 text-amber-300 ring-amber-400/30 hover:bg-amber-400/20'
+                  : 'text-zinc-300 ring-zinc-700 hover:bg-zinc-800'
+              }`}
+            >
+              {watched ? '★ Auf Watchlist' : '☆ Zur Watchlist'}
+            </button>
             <button
               onClick={onClose}
               className="rounded-lg p-2 text-zinc-400 hover:bg-zinc-800 hover:text-zinc-100"

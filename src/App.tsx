@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import Sparkline from './Sparkline'
 import type { PricesFile, Region, Stock } from './types'
 
 type SortKey = 'name' | 'sector' | 'price' | 'marketCapEUR' | 'perf3m' | 'perf6m'
@@ -168,13 +169,14 @@ export default function App() {
                 <Th label="Sektor" k="sector" sortKey={effectiveSortKey} asc={sortAsc} onSort={toggleSort} />
                 <Th label="Kurs" k="price" sortKey={effectiveSortKey} asc={sortAsc} onSort={toggleSort} right />
                 <Th label="Marktkap" k="marketCapEUR" sortKey={effectiveSortKey} asc={sortAsc} onSort={toggleSort} right />
+                <th className="px-3 py-2.5">{period === 'perf3m' ? 'Verlauf 3M' : 'Verlauf 6M'}</th>
                 <Th label="3M" k="perf3m" sortKey={effectiveSortKey} asc={sortAsc} onSort={toggleSort} right emphasize={period === 'perf3m'} />
                 <Th label="6M" k="perf6m" sortKey={effectiveSortKey} asc={sortAsc} onSort={toggleSort} right emphasize={period === 'perf6m'} />
               </tr>
             </thead>
             <tbody className="divide-y divide-zinc-800/70">
               {rows.map((s, i) => (
-                <Row key={s.ticker} stock={s} rank={i + 1} />
+                <Row key={s.ticker} stock={s} rank={i + 1} months={period === 'perf3m' ? 3 : 6} />
               ))}
             </tbody>
           </table>
@@ -215,7 +217,7 @@ function Th({
   )
 }
 
-function Row({ stock, rank }: { stock: Stock; rank: number }) {
+function Row({ stock, rank, months }: { stock: Stock; rank: number; months: number }) {
   return (
     <tr className="hover:bg-zinc-900/60">
       <td className="px-3 py-2 text-right text-zinc-500 tabular-nums">{rank}</td>
@@ -234,6 +236,9 @@ function Row({ stock, rank }: { stock: Stock; rank: number }) {
         <span className="text-zinc-500 text-xs ml-1">{stock.currency}</span>
       </td>
       <td className="px-3 py-2 text-right tabular-nums text-zinc-300">{formatMarketCap(stock.marketCapEUR)}</td>
+      <td className="px-3 py-2">
+        <Sparkline history={stock.history} months={months} />
+      </td>
       <td className={`px-3 py-2 text-right tabular-nums font-medium ${perfClass(stock.perf3m)}`}>
         {formatPerf(stock.perf3m)}
       </td>

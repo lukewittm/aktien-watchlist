@@ -11,7 +11,8 @@ const universe = JSON.parse(await readFile(path.join(root, 'data/universe.json')
 
 const yahooFinance = new YahooFinance({ suppressNotices: ['yahooSurvey', 'ripHistorical'] })
 
-const MONTHS_BACK = 7
+// 13 Monate, damit die 1J-Chart-Ansicht volle Abdeckung hat
+const MONTHS_BACK = 13
 const CONCURRENCY = 4
 const RETRIES = 3
 
@@ -135,25 +136,32 @@ console.log('Hole Kurshistorien ...')
 let done = 0
 const stocks = (
   await mapLimit(universe, CONCURRENCY, async (stock) => {
-    const history = await fetchHistory(stock.ticker)
+    let history = await fetchHistory(stock.ticker)
     done++
     if (done % 25 === 0) console.log(`  ${done}/${universe.length}`)
     if (!history) return { ...stock, failed: true }
     const quote = quotes[stock.ticker]
-    let price = history[history.length - 1][1]
     let currency = quote?.currency ?? null
-    if (currency === 'GBp') {
-      // Pence → Pfund, damit Preisanzeige stimmt (Performance ist davon unabhängig)
-      price = price / 100
+    const inPence = currency === 'GBp'
+    if (inPence) {
+      // LSE liefert Kurse in Pence → komplette Historie nach Pfund normalisieren
       currency = 'GBP'
+      history = history.map(([d, c]) => [d, Math.round(c) / 100])
     }
+    const penceAdj = (v) => (v == null ? null : inPence ? v / 100 : v)
     return {
       ...stock,
       currency,
-      price: Math.round(price * 100) / 100,
+      price: history[history.length - 1][1],
       marketCapEUR: marketCapEUR(quote, fxRates),
       perf3m: performance(history, 3),
       perf6m: performance(history, 6),
+      high52w: penceAdj(quote?.fiftyTwoWeekHigh ?? null),
+      low52w: penceAdj(quote?.fiftyTwoWeekLow ?? null),
+      peTrailing: quote?.trailingPE ?? null,
+      peForward: quote?.forwardPE ?? null,
+      divYieldPct: quote?.trailingAnnualDividendYield != null ? quote.trailingAnnualDividendYield * 100 : null,
+      avgVolume3m: quote?.averageDailyVolume3Month ?? null,
       history,
     }
   })

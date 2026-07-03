@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import Sparkline from './Sparkline'
+import StockDetail from './StockDetail'
 import type { PricesFile, Region, Stock } from './types'
 
 type SortKey = 'name' | 'sector' | 'price' | 'marketCapEUR' | 'perf3m' | 'perf6m'
@@ -45,6 +46,7 @@ export default function App() {
   const [sortKey, setSortKey] = useState<SortKey | null>(null)
   const [sortAsc, setSortAsc] = useState(false)
   const [minCapBn, setMinCapBn] = useState(2)
+  const [selected, setSelected] = useState<Stock | null>(null)
 
   useEffect(() => {
     fetch('/data/prices.json')
@@ -176,12 +178,14 @@ export default function App() {
             </thead>
             <tbody className="divide-y divide-zinc-800/70">
               {rows.map((s, i) => (
-                <Row key={s.ticker} stock={s} rank={i + 1} months={period === 'perf3m' ? 3 : 6} />
+                <Row key={s.ticker} stock={s} rank={i + 1} months={period === 'perf3m' ? 3 : 6} onSelect={setSelected} />
               ))}
             </tbody>
           </table>
         </div>
       </div>
+
+      {selected && <StockDetail stock={selected} onClose={() => setSelected(null)} />}
     </div>
   )
 }
@@ -217,9 +221,19 @@ function Th({
   )
 }
 
-function Row({ stock, rank, months }: { stock: Stock; rank: number; months: number }) {
+function Row({
+  stock,
+  rank,
+  months,
+  onSelect,
+}: {
+  stock: Stock
+  rank: number
+  months: number
+  onSelect: (s: Stock) => void
+}) {
   return (
-    <tr className="hover:bg-zinc-900/60">
+    <tr className="hover:bg-zinc-900/60 cursor-pointer" onClick={() => onSelect(stock)}>
       <td className="px-3 py-2 text-right text-zinc-500 tabular-nums">{rank}</td>
       <td className="px-3 py-2">
         <div className="font-medium text-zinc-100">{stock.name}</div>

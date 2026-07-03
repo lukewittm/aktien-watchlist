@@ -10,7 +10,13 @@ export interface Stock {
   marketCapEUR: number | null
   perf3m: number | null
   perf6m: number | null
-  /** [ISO-Datum, Schlusskurs] pro Handelstag, ca. 7 Monate */
+  high52w: number | null
+  low52w: number | null
+  peTrailing: number | null
+  peForward: number | null
+  divYieldPct: number | null
+  avgVolume3m: number | null
+  /** [ISO-Datum, Schlusskurs] pro Handelstag, ca. 13 Monate */
   history: [string, number][]
 }
 

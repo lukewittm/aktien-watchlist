@@ -23,7 +23,7 @@ npm run build   # Produktions-Build nach dist/
 ## Phasen-Status (aus dem Produktbrief)
 
 - [x] **Phase 0/1** — Projekt-Setup, Universum, Yahoo-Anbindung, Performance-Berechnung, Top-Performer-Tabelle
-- [ ] **Phase 2** — Watchlist + Charts (Kurshistorie liegt bereits in `prices.json`)
+- [x] **Phase 2** — Watchlist (Stern-Toggle, Notizen, localStorage statt D1 bis zum Deployment) + Detail-Ansicht mit Chart (lightweight-charts, 1M/3M/6M/1J) und Kennzahlen; Sparklines in der Tabelle
 - [ ] **Phase 3** — Benchmark-Vergleich (MSCI World / MSCI EM / S&P 500)
 - [ ] **Phase 4** — Konsistenz-Score (R², positive Wochen, Max Drawdown)
 - [ ] **Phase 5** — Robustheit (Stooq-Backup, Scheduler statt manuellem Fetch)

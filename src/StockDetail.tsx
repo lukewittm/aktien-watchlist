@@ -225,11 +225,6 @@ export default function StockDetail({
               {stock.ticker} · {stock.sector} ·{' '}
               {{ EU: 'Europa', US: 'USA', JP: 'Japan', EM: 'Emerging Markets' }[stock.region]}
             </p>
-            {stock.deTicker && (
-              <p className="text-xs text-zinc-400 mt-0.5">
-                🇩🇪 In Deutschland handelbar als <span className="font-medium text-zinc-200">{stock.deTicker}</span>
-              </p>
-            )}
             <p className="text-xs mt-0.5 flex items-center gap-2">
               {isin ? (
                 <>

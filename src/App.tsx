@@ -553,9 +553,6 @@ function Row({
         <div className="font-medium text-zinc-100">{stock.name}</div>
         <div className="text-xs text-zinc-500">
           {stock.ticker}
-          {stock.deTicker && (
-            <span className="ml-2 text-zinc-400" title="Deutscher Handelsplatz (Kauf)">🇩🇪 {stock.deTicker}</span>
-          )}
           {entry && (
             <span className="ml-2 text-zinc-600">
               seit {new Date(entry.addedAt).toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: '2-digit' })}

@@ -1,197 +1,6108 @@
 {
-  "comment": "Kuratiertes Screening-Universum. Regionen: EU (Europa), US, JP (Japan), EM (Emerging Markets). Sektor statisch gepflegt, um API-Calls zu sparen. Quartalsweise von Hand aktualisieren.",
-  "stocks": [
-    { "ticker": "SAP.DE", "name": "SAP", "region": "EU", "sector": "Technologie" },
-    { "ticker": "SIE.DE", "name": "Siemens", "region": "EU", "sector": "Industrie" },
-    { "ticker": "ALV.DE", "name": "Allianz", "region": "EU", "sector": "Finanzen" },
-    { "ticker": "DTE.DE", "name": "Deutsche Telekom", "region": "EU", "sector": "Telekom" },
-    { "ticker": "MUV2.DE", "name": "Munich Re", "region": "EU", "sector": "Finanzen" },
-    { "ticker": "RHM.DE", "name": "Rheinmetall", "region": "EU", "sector": "Industrie" },
-    { "ticker": "IFX.DE", "name": "Infineon", "region": "EU", "sector": "Technologie" },
-    { "ticker": "ADS.DE", "name": "Adidas", "region": "EU", "sector": "Konsum" },
-    { "ticker": "BAS.DE", "name": "BASF", "region": "EU", "sector": "Chemie" },
-    { "ticker": "BAYN.DE", "name": "Bayer", "region": "EU", "sector": "Gesundheit" },
-    { "ticker": "BMW.DE", "name": "BMW", "region": "EU", "sector": "Auto" },
-    { "ticker": "MBG.DE", "name": "Mercedes-Benz", "region": "EU", "sector": "Auto" },
-    { "ticker": "VOW3.DE", "name": "Volkswagen Vz.", "region": "EU", "sector": "Auto" },
-    { "ticker": "DBK.DE", "name": "Deutsche Bank", "region": "EU", "sector": "Finanzen" },
-    { "ticker": "DB1.DE", "name": "Deutsche Börse", "region": "EU", "sector": "Finanzen" },
-    { "ticker": "RWE.DE", "name": "RWE", "region": "EU", "sector": "Versorger" },
-    { "ticker": "EOAN.DE", "name": "E.ON", "region": "EU", "sector": "Versorger" },
-    { "ticker": "DHL.DE", "name": "DHL Group", "region": "EU", "sector": "Logistik" },
-    { "ticker": "HEI.DE", "name": "Heidelberg Materials", "region": "EU", "sector": "Industrie" },
-    { "ticker": "ASML.AS", "name": "ASML", "region": "EU", "sector": "Technologie" },
-    { "ticker": "ADYEN.AS", "name": "Adyen", "region": "EU", "sector": "Technologie" },
-    { "ticker": "INGA.AS", "name": "ING Groep", "region": "EU", "sector": "Finanzen" },
-    { "ticker": "PHIA.AS", "name": "Philips", "region": "EU", "sector": "Gesundheit" },
-    { "ticker": "HEIA.AS", "name": "Heineken", "region": "EU", "sector": "Konsum" },
-    { "ticker": "AIR.PA", "name": "Airbus", "region": "EU", "sector": "Industrie" },
-    { "ticker": "MC.PA", "name": "LVMH", "region": "EU", "sector": "Konsum" },
-    { "ticker": "OR.PA", "name": "L'Oréal", "region": "EU", "sector": "Konsum" },
-    { "ticker": "RMS.PA", "name": "Hermès", "region": "EU", "sector": "Konsum" },
-    { "ticker": "TTE.PA", "name": "TotalEnergies", "region": "EU", "sector": "Energie" },
-    { "ticker": "SAN.PA", "name": "Sanofi", "region": "EU", "sector": "Gesundheit" },
-    { "ticker": "AI.PA", "name": "Air Liquide", "region": "EU", "sector": "Chemie" },
-    { "ticker": "SU.PA", "name": "Schneider Electric", "region": "EU", "sector": "Industrie" },
-    { "ticker": "SAF.PA", "name": "Safran", "region": "EU", "sector": "Industrie" },
-    { "ticker": "BNP.PA", "name": "BNP Paribas", "region": "EU", "sector": "Finanzen" },
-    { "ticker": "CS.PA", "name": "AXA", "region": "EU", "sector": "Finanzen" },
-    { "ticker": "DG.PA", "name": "Vinci", "region": "EU", "sector": "Industrie" },
-    { "ticker": "CAP.PA", "name": "Capgemini", "region": "EU", "sector": "Technologie" },
-    { "ticker": "EL.PA", "name": "EssilorLuxottica", "region": "EU", "sector": "Konsum" },
-    { "ticker": "NESN.SW", "name": "Nestlé", "region": "EU", "sector": "Konsum" },
-    { "ticker": "RO.SW", "name": "Roche (Inhaber)", "region": "EU", "sector": "Gesundheit" },
-    { "ticker": "NOVN.SW", "name": "Novartis", "region": "EU", "sector": "Gesundheit" },
-    { "ticker": "UBSG.SW", "name": "UBS", "region": "EU", "sector": "Finanzen" },
-    { "ticker": "ZURN.SW", "name": "Zurich Insurance", "region": "EU", "sector": "Finanzen" },
-    { "ticker": "ABBN.SW", "name": "ABB", "region": "EU", "sector": "Industrie" },
-    { "ticker": "CFR.SW", "name": "Richemont", "region": "EU", "sector": "Konsum" },
-    { "ticker": "SIKA.SW", "name": "Sika", "region": "EU", "sector": "Chemie" },
-    { "ticker": "NOVO-B.CO", "name": "Novo Nordisk", "region": "EU", "sector": "Gesundheit" },
-    { "ticker": "DSV.CO", "name": "DSV", "region": "EU", "sector": "Logistik" },
-    { "ticker": "MAERSK-B.CO", "name": "Maersk", "region": "EU", "sector": "Logistik" },
-    { "ticker": "AZN.L", "name": "AstraZeneca", "region": "EU", "sector": "Gesundheit" },
-    { "ticker": "SHEL.L", "name": "Shell", "region": "EU", "sector": "Energie" },
-    { "ticker": "HSBA.L", "name": "HSBC", "region": "EU", "sector": "Finanzen" },
-    { "ticker": "ULVR.L", "name": "Unilever", "region": "EU", "sector": "Konsum" },
-    { "ticker": "BP.L", "name": "BP", "region": "EU", "sector": "Energie" },
-    { "ticker": "GSK.L", "name": "GSK", "region": "EU", "sector": "Gesundheit" },
-    { "ticker": "RIO.L", "name": "Rio Tinto", "region": "EU", "sector": "Rohstoffe" },
-    { "ticker": "REL.L", "name": "RELX", "region": "EU", "sector": "Medien" },
-    { "ticker": "LSEG.L", "name": "London Stock Exchange", "region": "EU", "sector": "Finanzen" },
-    { "ticker": "RR.L", "name": "Rolls-Royce", "region": "EU", "sector": "Industrie" },
-    { "ticker": "BA.L", "name": "BAE Systems", "region": "EU", "sector": "Industrie" },
-    { "ticker": "ATCO-A.ST", "name": "Atlas Copco", "region": "EU", "sector": "Industrie" },
-    { "ticker": "VOLV-B.ST", "name": "Volvo", "region": "EU", "sector": "Industrie" },
-    { "ticker": "INVE-B.ST", "name": "Investor AB", "region": "EU", "sector": "Finanzen" },
-    { "ticker": "NOKIA.HE", "name": "Nokia", "region": "EU", "sector": "Technologie" },
-    { "ticker": "KNEBV.HE", "name": "Kone", "region": "EU", "sector": "Industrie" },
-    { "ticker": "ENEL.MI", "name": "Enel", "region": "EU", "sector": "Versorger" },
-    { "ticker": "ENI.MI", "name": "Eni", "region": "EU", "sector": "Energie" },
-    { "ticker": "ISP.MI", "name": "Intesa Sanpaolo", "region": "EU", "sector": "Finanzen" },
-    { "ticker": "UCG.MI", "name": "UniCredit", "region": "EU", "sector": "Finanzen" },
-    { "ticker": "RACE.MI", "name": "Ferrari", "region": "EU", "sector": "Auto" },
-    { "ticker": "G.MI", "name": "Generali", "region": "EU", "sector": "Finanzen" },
-    { "ticker": "SAN.MC", "name": "Banco Santander", "region": "EU", "sector": "Finanzen" },
-    { "ticker": "BBVA.MC", "name": "BBVA", "region": "EU", "sector": "Finanzen" },
-    { "ticker": "IBE.MC", "name": "Iberdrola", "region": "EU", "sector": "Versorger" },
-    { "ticker": "ITX.MC", "name": "Inditex", "region": "EU", "sector": "Konsum" },
-    { "ticker": "EBS.VI", "name": "Erste Group", "region": "EU", "sector": "Finanzen" },
-    { "ticker": "EQNR.OL", "name": "Equinor", "region": "EU", "sector": "Energie" },
-    { "ticker": "DNB.OL", "name": "DNB Bank", "region": "EU", "sector": "Finanzen" },
-
-    { "ticker": "AAPL", "name": "Apple", "region": "US", "sector": "Technologie" },
-    { "ticker": "MSFT", "name": "Microsoft", "region": "US", "sector": "Technologie" },
-    { "ticker": "NVDA", "name": "NVIDIA", "region": "US", "sector": "Technologie" },
-    { "ticker": "GOOGL", "name": "Alphabet", "region": "US", "sector": "Technologie" },
-    { "ticker": "AMZN", "name": "Amazon", "region": "US", "sector": "Konsum" },
-    { "ticker": "META", "name": "Meta Platforms", "region": "US", "sector": "Technologie" },
-    { "ticker": "TSLA", "name": "Tesla", "region": "US", "sector": "Auto" },
-    { "ticker": "AVGO", "name": "Broadcom", "region": "US", "sector": "Technologie" },
-    { "ticker": "BRK-B", "name": "Berkshire Hathaway", "region": "US", "sector": "Finanzen" },
-    { "ticker": "JPM", "name": "JPMorgan Chase", "region": "US", "sector": "Finanzen" },
-    { "ticker": "V", "name": "Visa", "region": "US", "sector": "Finanzen" },
-    { "ticker": "MA", "name": "Mastercard", "region": "US", "sector": "Finanzen" },
-    { "ticker": "UNH", "name": "UnitedHealth", "region": "US", "sector": "Gesundheit" },
-    { "ticker": "XOM", "name": "ExxonMobil", "region": "US", "sector": "Energie" },
-    { "ticker": "LLY", "name": "Eli Lilly", "region": "US", "sector": "Gesundheit" },
-    { "ticker": "JNJ", "name": "Johnson & Johnson", "region": "US", "sector": "Gesundheit" },
-    { "ticker": "PG", "name": "Procter & Gamble", "region": "US", "sector": "Konsum" },
-    { "ticker": "HD", "name": "Home Depot", "region": "US", "sector": "Konsum" },
-    { "ticker": "COST", "name": "Costco", "region": "US", "sector": "Konsum" },
-    { "ticker": "ABBV", "name": "AbbVie", "region": "US", "sector": "Gesundheit" },
-    { "ticker": "MRK", "name": "Merck & Co", "region": "US", "sector": "Gesundheit" },
-    { "ticker": "CVX", "name": "Chevron", "region": "US", "sector": "Energie" },
-    { "ticker": "KO", "name": "Coca-Cola", "region": "US", "sector": "Konsum" },
-    { "ticker": "WMT", "name": "Walmart", "region": "US", "sector": "Konsum" },
-    { "ticker": "BAC", "name": "Bank of America", "region": "US", "sector": "Finanzen" },
-    { "ticker": "CRM", "name": "Salesforce", "region": "US", "sector": "Technologie" },
-    { "ticker": "AMD", "name": "AMD", "region": "US", "sector": "Technologie" },
-    { "ticker": "NFLX", "name": "Netflix", "region": "US", "sector": "Medien" },
-    { "ticker": "ADBE", "name": "Adobe", "region": "US", "sector": "Technologie" },
-    { "ticker": "ORCL", "name": "Oracle", "region": "US", "sector": "Technologie" },
-    { "ticker": "CSCO", "name": "Cisco", "region": "US", "sector": "Technologie" },
-    { "ticker": "QCOM", "name": "Qualcomm", "region": "US", "sector": "Technologie" },
-    { "ticker": "TXN", "name": "Texas Instruments", "region": "US", "sector": "Technologie" },
-    { "ticker": "IBM", "name": "IBM", "region": "US", "sector": "Technologie" },
-    { "ticker": "NOW", "name": "ServiceNow", "region": "US", "sector": "Technologie" },
-    { "ticker": "INTU", "name": "Intuit", "region": "US", "sector": "Technologie" },
-    { "ticker": "UBER", "name": "Uber", "region": "US", "sector": "Technologie" },
-    { "ticker": "BKNG", "name": "Booking Holdings", "region": "US", "sector": "Konsum" },
-    { "ticker": "AMAT", "name": "Applied Materials", "region": "US", "sector": "Technologie" },
-    { "ticker": "MU", "name": "Micron", "region": "US", "sector": "Technologie" },
-    { "ticker": "LRCX", "name": "Lam Research", "region": "US", "sector": "Technologie" },
-    { "ticker": "KLAC", "name": "KLA", "region": "US", "sector": "Technologie" },
-    { "ticker": "PLTR", "name": "Palantir", "region": "US", "sector": "Technologie" },
-    { "ticker": "ANET", "name": "Arista Networks", "region": "US", "sector": "Technologie" },
-    { "ticker": "PANW", "name": "Palo Alto Networks", "region": "US", "sector": "Technologie" },
-    { "ticker": "CRWD", "name": "CrowdStrike", "region": "US", "sector": "Technologie" },
-    { "ticker": "ABNB", "name": "Airbnb", "region": "US", "sector": "Konsum" },
-    { "ticker": "GE", "name": "GE Aerospace", "region": "US", "sector": "Industrie" },
-    { "ticker": "CAT", "name": "Caterpillar", "region": "US", "sector": "Industrie" },
-    { "ticker": "DE", "name": "Deere & Co", "region": "US", "sector": "Industrie" },
-    { "ticker": "LMT", "name": "Lockheed Martin", "region": "US", "sector": "Industrie" },
-    { "ticker": "RTX", "name": "RTX", "region": "US", "sector": "Industrie" },
-    { "ticker": "HON", "name": "Honeywell", "region": "US", "sector": "Industrie" },
-    { "ticker": "UNP", "name": "Union Pacific", "region": "US", "sector": "Logistik" },
-    { "ticker": "GS", "name": "Goldman Sachs", "region": "US", "sector": "Finanzen" },
-    { "ticker": "MS", "name": "Morgan Stanley", "region": "US", "sector": "Finanzen" },
-    { "ticker": "BLK", "name": "BlackRock", "region": "US", "sector": "Finanzen" },
-    { "ticker": "SCHW", "name": "Charles Schwab", "region": "US", "sector": "Finanzen" },
-    { "ticker": "AXP", "name": "American Express", "region": "US", "sector": "Finanzen" },
-    { "ticker": "SPGI", "name": "S&P Global", "region": "US", "sector": "Finanzen" },
-    { "ticker": "TMO", "name": "Thermo Fisher", "region": "US", "sector": "Gesundheit" },
-    { "ticker": "ABT", "name": "Abbott", "region": "US", "sector": "Gesundheit" },
-    { "ticker": "DHR", "name": "Danaher", "region": "US", "sector": "Gesundheit" },
-    { "ticker": "ISRG", "name": "Intuitive Surgical", "region": "US", "sector": "Gesundheit" },
-    { "ticker": "VRTX", "name": "Vertex Pharma", "region": "US", "sector": "Gesundheit" },
-    { "ticker": "REGN", "name": "Regeneron", "region": "US", "sector": "Gesundheit" },
-    { "ticker": "GILD", "name": "Gilead", "region": "US", "sector": "Gesundheit" },
-    { "ticker": "AMGN", "name": "Amgen", "region": "US", "sector": "Gesundheit" },
-    { "ticker": "LIN", "name": "Linde", "region": "US", "sector": "Chemie" },
-
-    { "ticker": "7203.T", "name": "Toyota", "region": "JP", "sector": "Auto" },
-    { "ticker": "6758.T", "name": "Sony", "region": "JP", "sector": "Technologie" },
-    { "ticker": "8306.T", "name": "Mitsubishi UFJ", "region": "JP", "sector": "Finanzen" },
-    { "ticker": "6861.T", "name": "Keyence", "region": "JP", "sector": "Technologie" },
-    { "ticker": "9983.T", "name": "Fast Retailing", "region": "JP", "sector": "Konsum" },
-    { "ticker": "8035.T", "name": "Tokyo Electron", "region": "JP", "sector": "Technologie" },
-    { "ticker": "6501.T", "name": "Hitachi", "region": "JP", "sector": "Industrie" },
-    { "ticker": "9984.T", "name": "SoftBank Group", "region": "JP", "sector": "Technologie" },
-    { "ticker": "7974.T", "name": "Nintendo", "region": "JP", "sector": "Medien" },
-    { "ticker": "4063.T", "name": "Shin-Etsu Chemical", "region": "JP", "sector": "Chemie" },
-    { "ticker": "6098.T", "name": "Recruit Holdings", "region": "JP", "sector": "Technologie" },
-    { "ticker": "8058.T", "name": "Mitsubishi Corp", "region": "JP", "sector": "Handel" },
-    { "ticker": "8001.T", "name": "Itochu", "region": "JP", "sector": "Handel" },
-    { "ticker": "7011.T", "name": "Mitsubishi Heavy", "region": "JP", "sector": "Industrie" },
-    { "ticker": "6367.T", "name": "Daikin", "region": "JP", "sector": "Industrie" },
-    { "ticker": "4519.T", "name": "Chugai Pharma", "region": "JP", "sector": "Gesundheit" },
-    { "ticker": "6981.T", "name": "Murata", "region": "JP", "sector": "Technologie" },
-    { "ticker": "9433.T", "name": "KDDI", "region": "JP", "sector": "Telekom" },
-
-    { "ticker": "005930.KS", "name": "Samsung Electronics", "region": "EM", "sector": "Technologie" },
-    { "ticker": "000660.KS", "name": "SK Hynix", "region": "EM", "sector": "Technologie" },
-    { "ticker": "005380.KS", "name": "Hyundai Motor", "region": "EM", "sector": "Auto" },
-    { "ticker": "2330.TW", "name": "TSMC", "region": "EM", "sector": "Technologie" },
-    { "ticker": "2317.TW", "name": "Hon Hai (Foxconn)", "region": "EM", "sector": "Technologie" },
-    { "ticker": "2454.TW", "name": "MediaTek", "region": "EM", "sector": "Technologie" },
-    { "ticker": "0700.HK", "name": "Tencent", "region": "EM", "sector": "Technologie" },
-    { "ticker": "9988.HK", "name": "Alibaba", "region": "EM", "sector": "Konsum" },
-    { "ticker": "3690.HK", "name": "Meituan", "region": "EM", "sector": "Konsum" },
-    { "ticker": "1810.HK", "name": "Xiaomi", "region": "EM", "sector": "Technologie" },
-    { "ticker": "9618.HK", "name": "JD.com", "region": "EM", "sector": "Konsum" },
-    { "ticker": "1211.HK", "name": "BYD", "region": "EM", "sector": "Auto" },
-    { "ticker": "2318.HK", "name": "Ping An", "region": "EM", "sector": "Finanzen" },
-    { "ticker": "RELIANCE.NS", "name": "Reliance Industries", "region": "EM", "sector": "Energie" },
-    { "ticker": "TCS.NS", "name": "Tata Consultancy", "region": "EM", "sector": "Technologie" },
-    { "ticker": "HDFCBANK.NS", "name": "HDFC Bank", "region": "EM", "sector": "Finanzen" },
-    { "ticker": "INFY.NS", "name": "Infosys", "region": "EM", "sector": "Technologie" },
-    { "ticker": "ICICIBANK.NS", "name": "ICICI Bank", "region": "EM", "sector": "Finanzen" },
-    { "ticker": "BHARTIARTL.NS", "name": "Bharti Airtel", "region": "EM", "sector": "Telekom" },
-    { "ticker": "LT.NS", "name": "Larsen & Toubro", "region": "EM", "sector": "Industrie" },
-    { "ticker": "VALE3.SA", "name": "Vale", "region": "EM", "sector": "Rohstoffe" },
-    { "ticker": "PETR4.SA", "name": "Petrobras", "region": "EM", "sector": "Energie" },
-    { "ticker": "ITUB4.SA", "name": "Itaú Unibanco", "region": "EM", "sector": "Finanzen" },
-    { "ticker": "WEGE3.SA", "name": "WEG", "region": "EM", "sector": "Industrie" }
-  ]
+ "comment": "Regelbasiert aus S&P 500 (datahub) + europäischen Indizes (pytickersymbols) + kuratierten JP/EM/Must-haves. Jeder Ticker gegen Yahoo validiert. Neu erzeugen: npm run build:universe",
+ "builtAt": "2026-07-05T09:30:21.306Z",
+ "stocks": [
+  {
+   "ticker": "9988.HK",
+   "name": "Alibaba",
+   "region": "EM",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "3711.TW",
+   "name": "ASE Technology",
+   "region": "EM",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "BBAS3.SA",
+   "name": "Banco do Brasil",
+   "region": "EM",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "BHARTIARTL.NS",
+   "name": "Bharti Airtel",
+   "region": "EM",
+   "sector": "Kommunikation"
+  },
+  {
+   "ticker": "1211.HK",
+   "name": "BYD",
+   "region": "EM",
+   "sector": "Auto"
+  },
+  {
+   "ticker": "0941.HK",
+   "name": "China Mobile",
+   "region": "EM",
+   "sector": "Kommunikation"
+  },
+  {
+   "ticker": "2412.TW",
+   "name": "Chunghwa Telecom",
+   "region": "EM",
+   "sector": "Kommunikation"
+  },
+  {
+   "ticker": "2308.TW",
+   "name": "Delta Electronics",
+   "region": "EM",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "HDFCBANK.NS",
+   "name": "HDFC Bank",
+   "region": "EM",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "2317.TW",
+   "name": "Hon Hai (Foxconn)",
+   "region": "EM",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "005380.KS",
+   "name": "Hyundai Motor",
+   "region": "EM",
+   "sector": "Auto"
+  },
+  {
+   "ticker": "ICICIBANK.NS",
+   "name": "ICICI Bank",
+   "region": "EM",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "INFY.NS",
+   "name": "Infosys",
+   "region": "EM",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "ITUB4.SA",
+   "name": "Itaú Unibanco",
+   "region": "EM",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "9618.HK",
+   "name": "JD.com",
+   "region": "EM",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "LT.NS",
+   "name": "Larsen & Toubro",
+   "region": "EM",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "051910.KS",
+   "name": "LG Chem",
+   "region": "EM",
+   "sector": "Chemie"
+  },
+  {
+   "ticker": "2454.TW",
+   "name": "MediaTek",
+   "region": "EM",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "3690.HK",
+   "name": "Meituan",
+   "region": "EM",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "035420.KS",
+   "name": "NAVER",
+   "region": "EM",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "PETR4.SA",
+   "name": "Petrobras",
+   "region": "EM",
+   "sector": "Energie"
+  },
+  {
+   "ticker": "2318.HK",
+   "name": "Ping An",
+   "region": "EM",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "RELIANCE.NS",
+   "name": "Reliance Industries",
+   "region": "EM",
+   "sector": "Energie"
+  },
+  {
+   "ticker": "005930.KS",
+   "name": "Samsung Electronics",
+   "region": "EM",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "000660.KS",
+   "name": "SK Hynix",
+   "region": "EM",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "TCS.NS",
+   "name": "Tata Consultancy",
+   "region": "EM",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "0700.HK",
+   "name": "Tencent",
+   "region": "EM",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "2330.TW",
+   "name": "TSMC",
+   "region": "EM",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "VALE3.SA",
+   "name": "Vale",
+   "region": "EM",
+   "sector": "Rohstoffe"
+  },
+  {
+   "ticker": "WEGE3.SA",
+   "name": "WEG",
+   "region": "EM",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "1810.HK",
+   "name": "Xiaomi",
+   "region": "EM",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "1U1.DE",
+   "name": "1&1",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "III.L",
+   "name": "3i",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "ABI.BR",
+   "name": "AB InBev",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "ABBN.SW",
+   "name": "ABB",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "ANA.MC",
+   "name": "Acciona",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "ACX.MC",
+   "name": "Acerinox",
+   "region": "EU",
+   "sector": "Rohstoffe"
+  },
+  {
+   "ticker": "B3K.F",
+   "name": "Ackermans & van Haaren",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "ACS.MC",
+   "name": "ACS Group",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "ADN1.DE",
+   "name": "Adesso SE",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "ADS.DE",
+   "name": "Adidas",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "ADM.L",
+   "name": "Admiral Group",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "ADYEN.AS",
+   "name": "Adyen",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "AED.BR",
+   "name": "Aedifica",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "AENA.MC",
+   "name": "AENA",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "AGS.BR",
+   "name": "Ageas",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "AD.AS",
+   "name": "Ahold Delhaize",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "AI.PA",
+   "name": "Air Liquide",
+   "region": "EU",
+   "sector": "Chemie"
+  },
+  {
+   "ticker": "AIR.MC",
+   "name": "Airbus",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "AAF.L",
+   "name": "Airtel Africa plc",
+   "region": "EU",
+   "sector": "Kommunikation"
+  },
+  {
+   "ticker": "AIXA.DE",
+   "name": "Aixtron",
+   "region": "EU",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "AKZA.AS",
+   "name": "AkzoNobel",
+   "region": "EU",
+   "sector": "Chemie"
+  },
+  {
+   "ticker": "ALD.DE",
+   "name": "ALD Automotive",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "ALFA.ST",
+   "name": "Alfa Laval",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "ALV.DE",
+   "name": "Allianz",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "ALTA.PA",
+   "name": "Altarea SCA",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "ATE.PA",
+   "name": "ALTEN",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "AAD.DE",
+   "name": "Amadeus FiRe AG",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "AMS.MC",
+   "name": "Amadeus IT Group",
+   "region": "EU",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "AMUN.PA",
+   "name": "Amundi",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "AAL.L",
+   "name": "Anglo American plc",
+   "region": "EU",
+   "sector": "Rohstoffe"
+  },
+  {
+   "ticker": "ANTIN.PA",
+   "name": "Antin Infrastructure Partners",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "ANTO.L",
+   "name": "Antofagasta plc",
+   "region": "EU",
+   "sector": "Rohstoffe"
+  },
+  {
+   "ticker": "1AE.F",
+   "name": "arGEN-X",
+   "region": "EU",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "AHT.F",
+   "name": "Ashtead Group",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "ASM.AS",
+   "name": "ASM International",
+   "region": "EU",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "ASML.AS",
+   "name": "ASML Holding",
+   "region": "EU",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "ALZC.F",
+   "name": "Assa Abloy",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "ABF.L",
+   "name": "Associated British Foods",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "AZN.L",
+   "name": "AstraZeneca",
+   "region": "EU",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "ATS.VI",
+   "name": "AT&S",
+   "region": "EU",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "ACO4.F",
+   "name": "Atlas Copco",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "ATO.PA",
+   "name": "Atos SE",
+   "region": "EU",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "AOF.DE",
+   "name": "Atoss",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "NDA.DE",
+   "name": "Aurubis",
+   "region": "EU",
+   "sector": "Rohstoffe"
+  },
+  {
+   "ticker": "AG1.DE",
+   "name": "AUTO1 Group SE",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "ALIV-SDB.ST",
+   "name": "Autoliv Inc.",
+   "region": "EU",
+   "sector": "Auto"
+  },
+  {
+   "ticker": "AUTO.L",
+   "name": "Autotrader Group",
+   "region": "EU",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "AV.L",
+   "name": "Aviva PLC",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "CS.PA",
+   "name": "Axa",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "BME.L",
+   "name": "B&M S.A.",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "BA.L",
+   "name": "BAE Systems",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "SAB.MC",
+   "name": "Banco Sabadell",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "SAN.MC",
+   "name": "Banco Santander",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "BKT.MC",
+   "name": "Bankinter",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "BARC.L",
+   "name": "Barclays",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "BTRW.L",
+   "name": "Barratt Redrow",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "BAS.DE",
+   "name": "BASF",
+   "region": "EU",
+   "sector": "Chemie"
+  },
+  {
+   "ticker": "BSL.DE",
+   "name": "Basler AG",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "BAYN.DE",
+   "name": "Bayer",
+   "region": "EU",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "BYW6.DE",
+   "name": "BayWa AG vNa",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "BC8.DE",
+   "name": "Bechtle",
+   "region": "EU",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "BEI.DE",
+   "name": "Beiersdorf",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "BKG.L",
+   "name": "Berkeley Group Holdings",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "BESI.AS",
+   "name": "Besi",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "BB.PA",
+   "name": "BIC Group",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "GBF.DE",
+   "name": "Bilfinger",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "BMW.DE",
+   "name": "BMW",
+   "region": "EU",
+   "sector": "Auto"
+  },
+  {
+   "ticker": "BNP.PA",
+   "name": "BNP Paribas",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "BOL.ST",
+   "name": "Boliden AB",
+   "region": "EU",
+   "sector": "Rohstoffe"
+  },
+  {
+   "ticker": "BOL.PA",
+   "name": "Bolloré",
+   "region": "EU",
+   "sector": "Logistik"
+  },
+  {
+   "ticker": "EN.PA",
+   "name": "Bouygues",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "BP.L",
+   "name": "BP",
+   "region": "EU",
+   "sector": "Energie"
+  },
+  {
+   "ticker": "BNR.DE",
+   "name": "Brenntag",
+   "region": "EU",
+   "sector": "Chemie"
+  },
+  {
+   "ticker": "BATS.L",
+   "name": "British American Tobacco",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "BLND.L",
+   "name": "British Land",
+   "region": "EU",
+   "sector": "Immobilien"
+  },
+  {
+   "ticker": "BT-A.L",
+   "name": "BT Group PLC",
+   "region": "EU",
+   "sector": "Kommunikation"
+  },
+  {
+   "ticker": "BNZL.L",
+   "name": "Bunzl",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "BRBY.L",
+   "name": "Burberry",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "CABK.MC",
+   "name": "CaixaBank",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "COK.DE",
+   "name": "Cancom",
+   "region": "EU",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "CAP.PA",
+   "name": "Capgemini",
+   "region": "EU",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "C1C.F",
+   "name": "Cargotec",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "AFX.DE",
+   "name": "Carl Zeiss Meditec",
+   "region": "EU",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "CARL-B.CO",
+   "name": "Carlsberg",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "CARM.PA",
+   "name": "Carmila",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "CA.PA",
+   "name": "Carrefour",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "CO.PA",
+   "name": "Casino Guichard-Perrachon S.A.",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "CEC.DE",
+   "name": "Ceconomy AG",
+   "region": "EU",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "CLNX.MC",
+   "name": "Cellnex Telecom",
+   "region": "EU",
+   "sector": "Kommunikation"
+  },
+  {
+   "ticker": "CNA.L",
+   "name": "Centrica",
+   "region": "EU",
+   "sector": "Versorger"
+  },
+  {
+   "ticker": "CWC.DE",
+   "name": "Cewe",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "CLARI.PA",
+   "name": "Clariane",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "EEE.AT",
+   "name": "Coca-Cola HBC",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "COFA.PA",
+   "name": "Coface",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "COFB.BR",
+   "name": "Cofinimmo",
+   "region": "EU",
+   "sector": "Immobilien"
+  },
+  {
+   "ticker": "COLR.BR",
+   "name": "Colruyt Group",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "CBK.DE",
+   "name": "Commerzbank",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "CPG.L",
+   "name": "Compass Group",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "CON.DE",
+   "name": "Continental AG",
+   "region": "EU",
+   "sector": "Auto"
+  },
+  {
+   "ticker": "CTEC.L",
+   "name": "Convatec Group plc",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "1COV.DE",
+   "name": "Covestro AG",
+   "region": "EU",
+   "sector": "Chemie"
+  },
+  {
+   "ticker": "COV.PA",
+   "name": "Covivio",
+   "region": "EU",
+   "sector": "Immobilien"
+  },
+  {
+   "ticker": "ACA.PA",
+   "name": "Crédit Agricole",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "CRG.F",
+   "name": "CRH plc",
+   "region": "EU",
+   "sector": "Rohstoffe"
+  },
+  {
+   "ticker": "CRDA.L",
+   "name": "Croda International",
+   "region": "EU",
+   "sector": "Chemie"
+  },
+  {
+   "ticker": "CE2.HM",
+   "name": "CropEnergies AG",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "EVD.DE",
+   "name": "CTS Eventim",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "DIE.BR",
+   "name": "D'Ieteren",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "DTG.DE",
+   "name": "Daimler Truck",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "BN.PA",
+   "name": "Danone",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "AM.PA",
+   "name": "Dassault Aviation",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "DSY.PA",
+   "name": "Dassault Systèmes",
+   "region": "EU",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "DCC.L",
+   "name": "DCC plc",
+   "region": "EU",
+   "sector": "Energie"
+  },
+  {
+   "ticker": "DHER.DE",
+   "name": "Delivery Hero",
+   "region": "EU",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "DBG.PA",
+   "name": "Derichebourg",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "DMP.DE",
+   "name": "Dermapharm",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "DBK.DE",
+   "name": "Deutsche Bank",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "DB1.DE",
+   "name": "Deutsche Börse",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "PBB.DE",
+   "name": "Deutsche Pfandbriefbank",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "DHL.DE",
+   "name": "Deutsche Post AG",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "DTE.DE",
+   "name": "Deutsche Telekom",
+   "region": "EU",
+   "sector": "Kommunikation"
+  },
+  {
+   "ticker": "DWNI.DE",
+   "name": "Deutsche Wohnen SE",
+   "region": "EU",
+   "sector": "Immobilien"
+  },
+  {
+   "ticker": "DEZ.DE",
+   "name": "Deutz AG",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "DGE.L",
+   "name": "Diageo",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "DIC.VI",
+   "name": "DIC ASSET AG",
+   "region": "EU",
+   "sector": "Immobilien"
+  },
+  {
+   "ticker": "DNB.OL",
+   "name": "DNB Bank",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "DRW3.DE",
+   "name": "Drägerwerk",
+   "region": "EU",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "DSV.CO",
+   "name": "DSV",
+   "region": "EU",
+   "sector": "Logistik"
+  },
+  {
+   "ticker": "DUE.DE",
+   "name": "Dürr AG",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "DWS.DE",
+   "name": "DWS Group GmbH & Co. KGaA",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "EOAN.DE",
+   "name": "E.ON",
+   "region": "EU",
+   "sector": "Energie"
+  },
+  {
+   "ticker": "EUZ.DE",
+   "name": "Eckert & Ziegler",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "ELIA.VI",
+   "name": "Elia",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "ELIOR.PA",
+   "name": "Elior Group",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "ELISA.HE",
+   "name": "Elisa",
+   "region": "EU",
+   "sector": "Kommunikation"
+  },
+  {
+   "ticker": "ENG.MC",
+   "name": "Enagás",
+   "region": "EU",
+   "sector": "Energie"
+  },
+  {
+   "ticker": "CAP.DE",
+   "name": "Encavis",
+   "region": "EU",
+   "sector": "Versorger"
+  },
+  {
+   "ticker": "EDV.L",
+   "name": "Endeavour Mining",
+   "region": "EU",
+   "sector": "Rohstoffe"
+  },
+  {
+   "ticker": "ELE.MC",
+   "name": "Endesa",
+   "region": "EU",
+   "sector": "Versorger"
+  },
+  {
+   "ticker": "ENEL.MI",
+   "name": "Enel",
+   "region": "EU",
+   "sector": "Versorger"
+  },
+  {
+   "ticker": "EKT.DE",
+   "name": "Energiekontor",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "ENGI.PA",
+   "name": "Engie",
+   "region": "EU",
+   "sector": "Versorger"
+  },
+  {
+   "ticker": "ENI.MI",
+   "name": "Eni",
+   "region": "EU",
+   "sector": "Energie"
+  },
+  {
+   "ticker": "EQNR.OL",
+   "name": "Equinor",
+   "region": "EU",
+   "sector": "Energie"
+  },
+  {
+   "ticker": "ERA.PA",
+   "name": "Eramet",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "ERIC-B.ST",
+   "name": "Ericsson",
+   "region": "EU",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "EBS.VI",
+   "name": "Erste Group",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "EL.PA",
+   "name": "EssilorLuxottica",
+   "region": "EU",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "ESSITY-B.ST",
+   "name": "Essity AB",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "RF.PA",
+   "name": "Eurazeo",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "940.F",
+   "name": "Euroapi",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "ETL.PA",
+   "name": "Eutelsat Communications",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "EVO.ST",
+   "name": "Evolution",
+   "region": "EU",
+   "sector": "Medien"
+  },
+  {
+   "ticker": "EVK.DE",
+   "name": "Evonik",
+   "region": "EU",
+   "sector": "Chemie"
+  },
+  {
+   "ticker": "EVT.DE",
+   "name": "Evotec",
+   "region": "EU",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "EXPN.L",
+   "name": "Experian",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "FCIT.L",
+   "name": "F&C Investment Trust plc",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "RACE.MI",
+   "name": "Ferrari",
+   "region": "EU",
+   "sector": "Auto"
+  },
+  {
+   "ticker": "FER.MC",
+   "name": "Ferrovial",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "FIE.DE",
+   "name": "Fielmann AG",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "FTK.DE",
+   "name": "Flatexdegiro AG",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "FDR.MC",
+   "name": "Fluidra",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "FLTR.L",
+   "name": "Flutter Entertainment PLC",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "FNAC.PA",
+   "name": "Fnac Darty SA",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "FORTUM.HE",
+   "name": "Fortum",
+   "region": "EU",
+   "sector": "Versorger"
+  },
+  {
+   "ticker": "FRA.DE",
+   "name": "Fraport",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "FRAS.L",
+   "name": "Frasers Group plc",
+   "region": "EU",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "FNTN.DE",
+   "name": "Freenet AG",
+   "region": "EU",
+   "sector": "Kommunikation"
+  },
+  {
+   "ticker": "FME.DE",
+   "name": "Fresenius Medical Care",
+   "region": "EU",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "FRE.DE",
+   "name": "Fresenius SE",
+   "region": "EU",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "FPE3.DE",
+   "name": "Fuchs Petrolub",
+   "region": "EU",
+   "sector": "Chemie"
+  },
+  {
+   "ticker": "GXE.F",
+   "name": "Galapagos NV",
+   "region": "EU",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "GTT.PA",
+   "name": "Gaztransport & Technigaz",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "G1A.DE",
+   "name": "GEA Group",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "GEBN.SW",
+   "name": "Geberit AG",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "G.MI",
+   "name": "Generali",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "GMAB.CO",
+   "name": "Genmab",
+   "region": "EU",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "GXI.DE",
+   "name": "Gerresheimer",
+   "region": "EU",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "GETI-B.ST",
+   "name": "Getinge AB",
+   "region": "EU",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "GFT.DE",
+   "name": "GFT Technologies",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "GIVN.SW",
+   "name": "Givaudan",
+   "region": "EU",
+   "sector": "Chemie"
+  },
+  {
+   "ticker": "GLEN.L",
+   "name": "Glencore",
+   "region": "EU",
+   "sector": "Energie"
+  },
+  {
+   "ticker": "GLJ.DE",
+   "name": "Grenke",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "GRF.MC",
+   "name": "Grifols",
+   "region": "EU",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "GBLB.BR",
+   "name": "Groupe Bruxelles Lambert",
+   "region": "EU",
+   "sector": "Chemie"
+  },
+  {
+   "ticker": "GSK.L",
+   "name": "GSK plc",
+   "region": "EU",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "HMSA.F",
+   "name": "H&M",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "HM-B.ST",
+   "name": "H&M Hennes & Mauritz",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "HLN.L",
+   "name": "Haleon",
+   "region": "EU",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "HLMA.L",
+   "name": "Halma plc",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "HABA.DE",
+   "name": "Hamborner",
+   "region": "EU",
+   "sector": "Immobilien"
+  },
+  {
+   "ticker": "SHB-A.ST",
+   "name": "Handelsbanken",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "HNR1.DE",
+   "name": "Hannover Re",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "HBR.L",
+   "name": "Harbour Energy plc",
+   "region": "EU",
+   "sector": "Energie"
+  },
+  {
+   "ticker": "HEI.DE",
+   "name": "HeidelbergCement",
+   "region": "EU",
+   "sector": "Rohstoffe"
+  },
+  {
+   "ticker": "HDD.DE",
+   "name": "Heidelberger Druckmaschinen",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "HEIA.AS",
+   "name": "Heineken International",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "HLE.DE",
+   "name": "Hella",
+   "region": "EU",
+   "sector": "Auto"
+  },
+  {
+   "ticker": "HFG.DE",
+   "name": "HelloFresh",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "HEN3.DE",
+   "name": "Henkel",
+   "region": "EU",
+   "sector": "Chemie"
+  },
+  {
+   "ticker": "HAG.DE",
+   "name": "Hensoldt",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "RMS.PA",
+   "name": "Hermès",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "HEXA-B.ST",
+   "name": "Hexagon AB",
+   "region": "EU",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "HOT.DE",
+   "name": "Hochtief",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "HOLN.SW",
+   "name": "Holcim Group",
+   "region": "EU",
+   "sector": "Rohstoffe"
+  },
+  {
+   "ticker": "HBH.DE",
+   "name": "HORNBACH HOLDING AG&CO.KGAA",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "HWDN.L",
+   "name": "Howden Joinery Group plc",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "HSBA.L",
+   "name": "HSBC",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "BOSS.DE",
+   "name": "Hugo Boss",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "HUH1V.HE",
+   "name": "Huhtamäki",
+   "region": "EU",
+   "sector": "Rohstoffe"
+  },
+  {
+   "ticker": "HYQ.DE",
+   "name": "Hypoport",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "IBE.MC",
+   "name": "Iberdrola",
+   "region": "EU",
+   "sector": "Versorger"
+  },
+  {
+   "ticker": "ICAD.PA",
+   "name": "Icade",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "ICG.L",
+   "name": "ICG plc",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "IHG.L",
+   "name": "IHG Hotels & Resorts",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "IMCD.AS",
+   "name": "IMCD",
+   "region": "EU",
+   "sector": "Chemie"
+  },
+  {
+   "ticker": "NK.PA",
+   "name": "Imerys",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "IMB.L",
+   "name": "Imperial Brands",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "ITX.MC",
+   "name": "Inditex",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "IDR.MC",
+   "name": "Indra Sistemas",
+   "region": "EU",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "INH.DE",
+   "name": "Indus Holding",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "IFX.DE",
+   "name": "Infineon Technologies",
+   "region": "EU",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "INF.L",
+   "name": "Informa",
+   "region": "EU",
+   "sector": "Medien"
+  },
+  {
+   "ticker": "INGA.AS",
+   "name": "ING Group",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "COL.MC",
+   "name": "Inmobiliaria Colonial",
+   "region": "EU",
+   "sector": "Immobilien"
+  },
+  {
+   "ticker": "INS.DE",
+   "name": "Instone Real Estate Group AG",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "ITP.PA",
+   "name": "Interparfums",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "ITRK.L",
+   "name": "Intertek",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "ISP.MI",
+   "name": "Intesa Sanpaolo",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "INVE-B.ST",
+   "name": "Investor AB",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "IPN.PA",
+   "name": "Ipsen Group",
+   "region": "EU",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "IPS.PA",
+   "name": "Ipsos",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "DEC.PA",
+   "name": "JCDecaux",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "JD.L",
+   "name": "JD Sports Fashion plc",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "JEN.DE",
+   "name": "Jenoptik",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "JST.DE",
+   "name": "Jost Werke",
+   "region": "EU",
+   "sector": "Auto"
+  },
+  {
+   "ticker": "JUN3.DE",
+   "name": "Jungheinrich",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "SDF.DE",
+   "name": "K+S",
+   "region": "EU",
+   "sector": "Chemie"
+  },
+  {
+   "ticker": "KBC.BR",
+   "name": "KBC Bank",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "KEMIRA.HE",
+   "name": "Kemira Oyj",
+   "region": "EU",
+   "sector": "Chemie"
+  },
+  {
+   "ticker": "KER.PA",
+   "name": "Kering",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "KEK1.F",
+   "name": "Kesko",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "KGF.L",
+   "name": "Kingfisher plc",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "KINV-B.ST",
+   "name": "Kinnevik AB",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "KGX.DE",
+   "name": "KION Group",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "KCO.DE",
+   "name": "Klöckner & Co",
+   "region": "EU",
+   "sector": "Rohstoffe"
+  },
+  {
+   "ticker": "KBX.DE",
+   "name": "Knorr-Bremse",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "V4OC.F",
+   "name": "Kojamo",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "KNEBV.HE",
+   "name": "KONE Oyj",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "KCR.HE",
+   "name": "Konecranes",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "KPN.AS",
+   "name": "KPN",
+   "region": "EU",
+   "sector": "Kommunikation"
+  },
+  {
+   "ticker": "KRN.DE",
+   "name": "Krones",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "KWS.DE",
+   "name": "KWS Saat",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "OR.PA",
+   "name": "L'Oréal",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "LAND.L",
+   "name": "Landsec",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "LXS.DE",
+   "name": "Lanxess",
+   "region": "EU",
+   "sector": "Chemie"
+  },
+  {
+   "ticker": "LEG.DE",
+   "name": "LEG Immobilien",
+   "region": "EU",
+   "sector": "Immobilien"
+  },
+  {
+   "ticker": "LGEN.L",
+   "name": "Legal & General",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "LR.PA",
+   "name": "Legrand",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "LIN.VI",
+   "name": "Linde plc",
+   "region": "EU",
+   "sector": "Chemie"
+  },
+  {
+   "ticker": "LLOY.L",
+   "name": "Lloyds Banking Group",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "LOGN.SW",
+   "name": "Logitech",
+   "region": "EU",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "LSEG.L",
+   "name": "London Stock Exchange Group PLC",
+   "region": "EU",
+   "sector": "Immobilien"
+  },
+  {
+   "ticker": "LONN.SW",
+   "name": "Lonza Group",
+   "region": "EU",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "LHA.DE",
+   "name": "Lufthansa",
+   "region": "EU",
+   "sector": "Logistik"
+  },
+  {
+   "ticker": "MC.PA",
+   "name": "LVMH",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "MNG.L",
+   "name": "M&G",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "MAERSK-B.CO",
+   "name": "Maersk",
+   "region": "EU",
+   "sector": "Logistik"
+  },
+  {
+   "ticker": "MAP.MC",
+   "name": "Mapfre",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "MELE.BR",
+   "name": "Melexis",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "MEL.MC",
+   "name": "Meliá Hotels International",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "MRO.L",
+   "name": "Melrose Industries",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "MBG.DE",
+   "name": "Mercedes-Benz Group",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "MERY.PA",
+   "name": "Mercialys",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "MRK.DE",
+   "name": "Merck Group",
+   "region": "EU",
+   "sector": "Chemie"
+  },
+  {
+   "ticker": "MRL.MC",
+   "name": "Merlin Properties",
+   "region": "EU",
+   "sector": "Immobilien"
+  },
+  {
+   "ticker": "MEO2.VI",
+   "name": "Metro AG",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "MMT.F",
+   "name": "Metropole Télévision SA",
+   "region": "EU",
+   "sector": "Medien"
+  },
+  {
+   "ticker": "METSB.HE",
+   "name": "Metsä Board Oyj",
+   "region": "EU",
+   "sector": "Rohstoffe"
+  },
+  {
+   "ticker": "M6Q.F",
+   "name": "Metso (2020–present)",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "MONC.MI",
+   "name": "Moncler",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "MNDI.L",
+   "name": "Mondi",
+   "region": "EU",
+   "sector": "Rohstoffe"
+  },
+  {
+   "ticker": "MTX.DE",
+   "name": "MTU Aero Engines",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "MUV2.DE",
+   "name": "Munich Re",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "NA9.DE",
+   "name": "Nagarro",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "NG.L",
+   "name": "National Grid plc",
+   "region": "EU",
+   "sector": "Versorger"
+  },
+  {
+   "ticker": "NTGY.MC",
+   "name": "Naturgy",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "NEM.DE",
+   "name": "Nemetschek",
+   "region": "EU",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "N1N.F",
+   "name": "Neoen",
+   "region": "EU",
+   "sector": "Energie"
+  },
+  {
+   "ticker": "NESTE.HE",
+   "name": "Neste",
+   "region": "EU",
+   "sector": "Energie"
+  },
+  {
+   "ticker": "NESN.SW",
+   "name": "Nestlé SA",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "NEX.PA",
+   "name": "Nexans S.A.",
+   "region": "EU",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "NXI.PA",
+   "name": "Nexity",
+   "region": "EU",
+   "sector": "Immobilien"
+  },
+  {
+   "ticker": "NXT.L",
+   "name": "NEXT PLC",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "NN.AS",
+   "name": "NN Group",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "NOKIA.HE",
+   "name": "Nokia",
+   "region": "EU",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "TYRES.HE",
+   "name": "Nokian Tyres",
+   "region": "EU",
+   "sector": "Auto"
+  },
+  {
+   "ticker": "NDA-FI.HE",
+   "name": "Nordea",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "NDX1.DE",
+   "name": "Nordex",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "NOEJ.DE",
+   "name": "Norma Group",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "NHY.OL",
+   "name": "Norsk Hydro",
+   "region": "EU",
+   "sector": "Rohstoffe"
+  },
+  {
+   "ticker": "NOVN.SW",
+   "name": "Novartis",
+   "region": "EU",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "NOVO-B.CO",
+   "name": "Novo Nordisk",
+   "region": "EU",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "OCDO.L",
+   "name": "Ocado Group PLC",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "OMV.VI",
+   "name": "OMV",
+   "region": "EU",
+   "sector": "Energie"
+  },
+  {
+   "ticker": "OPM.PA",
+   "name": "OPmobility",
+   "region": "EU",
+   "sector": "Auto"
+  },
+  {
+   "ticker": "ORA.PA",
+   "name": "Orange SA",
+   "region": "EU",
+   "sector": "Kommunikation"
+  },
+  {
+   "ticker": "ORNBV.HE",
+   "name": "Orion Oyj",
+   "region": "EU",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "ORSTED.CO",
+   "name": "Ørsted",
+   "region": "EU",
+   "sector": "Versorger"
+  },
+  {
+   "ticker": "OUT1V.HE",
+   "name": "Outokumpu",
+   "region": "EU",
+   "sector": "Rohstoffe"
+  },
+  {
+   "ticker": "OVH.PA",
+   "name": "OVH SAS",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "PGHN.SW",
+   "name": "Partners Group",
+   "region": "EU",
+   "sector": "Immobilien"
+  },
+  {
+   "ticker": "PAT.DE",
+   "name": "Patrizia AG",
+   "region": "EU",
+   "sector": "Immobilien"
+  },
+  {
+   "ticker": "PSON.L",
+   "name": "Pearson plc",
+   "region": "EU",
+   "sector": "Medien"
+  },
+  {
+   "ticker": "RI.PA",
+   "name": "Pernod Ricard",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "PSN.L",
+   "name": "Persimmon plc",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "PFV.DE",
+   "name": "PFEIFFER VACUUM TECHNOLOGY AG",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "PHM.MC",
+   "name": "Pharma Mar S.A.",
+   "region": "EU",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "PHIA.AS",
+   "name": "Philips",
+   "region": "EU",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "PNE3.DE",
+   "name": "PNE AG",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "PAH3.DE",
+   "name": "Porsche SE",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "PSM.DE",
+   "name": "ProSiebenSat.1 Media",
+   "region": "EU",
+   "sector": "Medien"
+  },
+  {
+   "ticker": "PRX.AS",
+   "name": "Prosus",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "PROX.BR",
+   "name": "Proximus PLC",
+   "region": "EU",
+   "sector": "Kommunikation"
+  },
+  {
+   "ticker": "PRU.L",
+   "name": "Prudential plc",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "PRY.MI",
+   "name": "Prysmian",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "PUB.PA",
+   "name": "Publicis",
+   "region": "EU",
+   "sector": "Medien"
+  },
+  {
+   "ticker": "PUM.DE",
+   "name": "Puma (brand)",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "TPE.DE",
+   "name": "PVA TePla",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "1QGEN.MI",
+   "name": "Qiagen",
+   "region": "EU",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "QDT.PA",
+   "name": "Quadient",
+   "region": "EU",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "RAND.AS",
+   "name": "Randstad NV",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "RAA.DE",
+   "name": "Rational AG",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "RKT.L",
+   "name": "Reckitt",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "RDC.DE",
+   "name": "Redcare Pharmacy",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "RE21.F",
+   "name": "Redeia Corporación",
+   "region": "EU",
+   "sector": "Versorger"
+  },
+  {
+   "ticker": "REL.L",
+   "name": "RELX",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "RNO.PA",
+   "name": "Renault",
+   "region": "EU",
+   "sector": "Auto"
+  },
+  {
+   "ticker": "RTO.L",
+   "name": "Rentokil Initial",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "REP.MC",
+   "name": "Repsol",
+   "region": "EU",
+   "sector": "Energie"
+  },
+  {
+   "ticker": "RHM.DE",
+   "name": "Rheinmetall",
+   "region": "EU",
+   "sector": "Auto"
+  },
+  {
+   "ticker": "CFR.SW",
+   "name": "Richemont",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "RMV.L",
+   "name": "Rightmove",
+   "region": "EU",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "RO.SW",
+   "name": "Roche (Inhaber)",
+   "region": "EU",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "RR.L",
+   "name": "Rolls-Royce Holdings PLC",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "RS1.L",
+   "name": "RS Group plc",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "BYNN.F",
+   "name": "Rubis SCA",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "RWE.DE",
+   "name": "RWE",
+   "region": "EU",
+   "sector": "Energie"
+  },
+  {
+   "ticker": "SAF.PA",
+   "name": "Safran",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "SGE.L",
+   "name": "Sage Group",
+   "region": "EU",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "SBRY.L",
+   "name": "Sainsbury's",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "SGO.PA",
+   "name": "Saint-Gobain",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "SZG.DE",
+   "name": "Salzgitter AG",
+   "region": "EU",
+   "sector": "Rohstoffe"
+  },
+  {
+   "ticker": "SAMPO.HE",
+   "name": "Sampo Group",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "SAND.ST",
+   "name": "Sandvik",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "SAN.PA",
+   "name": "Sanofi",
+   "region": "EU",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "SAP.DE",
+   "name": "SAP",
+   "region": "EU",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "SRT3.DE",
+   "name": "Sartorius",
+   "region": "EU",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "SCA.F",
+   "name": "SCA",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "SHA0.DE",
+   "name": "Schaeffler AG",
+   "region": "EU",
+   "sector": "Auto"
+  },
+  {
+   "ticker": "SU.PA",
+   "name": "Schneider Electric",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "SDR.L",
+   "name": "Schroders",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "SCR.PA",
+   "name": "SCOR SE",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "SMT.L",
+   "name": "Scottish Mortgage Investment Trust",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "G24.DE",
+   "name": "Scout24",
+   "region": "EU",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "SEB-A.ST",
+   "name": "SEB",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "YSN.DE",
+   "name": "Secunet Security Networks",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "SECU-B.ST",
+   "name": "Securitas AB",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "SGRO.L",
+   "name": "Segro",
+   "region": "EU",
+   "sector": "Immobilien"
+  },
+  {
+   "ticker": "SMIN.L",
+   "name": "SES S.A.",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "SVT.L",
+   "name": "Severn Trent",
+   "region": "EU",
+   "sector": "Versorger"
+  },
+  {
+   "ticker": "SGL.DE",
+   "name": "SGL CARBON SE",
+   "region": "EU",
+   "sector": "Rohstoffe"
+  },
+  {
+   "ticker": "SHEL.L",
+   "name": "Shell plc",
+   "region": "EU",
+   "sector": "Energie"
+  },
+  {
+   "ticker": "SIE.DE",
+   "name": "Siemens",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "ENR.DE",
+   "name": "Siemens Energy",
+   "region": "EU",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "SHL.DE",
+   "name": "Siemens Healthineers",
+   "region": "EU",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "LIGHT.AS",
+   "name": "Signify N.V.",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "SIKA.SW",
+   "name": "Sika AG",
+   "region": "EU",
+   "sector": "Chemie"
+  },
+  {
+   "ticker": "WAF.DE",
+   "name": "Siltronic",
+   "region": "EU",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "SIX2.DE",
+   "name": "Sixt",
+   "region": "EU",
+   "sector": "Logistik"
+  },
+  {
+   "ticker": "SEB-C.ST",
+   "name": "Skandinaviska Enskilda Banken AB",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "SKA-B.ST",
+   "name": "Skanska",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "SKF-A.ST",
+   "name": "SKF",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "S92.DE",
+   "name": "SMA Solar Technology",
+   "region": "EU",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "SN.L",
+   "name": "Smith & Nephew",
+   "region": "EU",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "GLE.PA",
+   "name": "Société Générale",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "SOF.VI",
+   "name": "Sofina",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "INW.DE",
+   "name": "Software AG",
+   "region": "EU",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "SOI.PA",
+   "name": "Soitec",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "SOLB.BR",
+   "name": "Solvay S.A.",
+   "region": "EU",
+   "sector": "Chemie"
+  },
+  {
+   "ticker": "SOON.SW",
+   "name": "Sonova",
+   "region": "EU",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "SOP.PA",
+   "name": "Sopra Steria",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "SPIE.PA",
+   "name": "SPIE SA",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "SPX.L",
+   "name": "Spirax Group",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "SSE.L",
+   "name": "SSE plc",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "STJ.L",
+   "name": "St. James's Place plc",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "SGM.F",
+   "name": "STABILUS SE",
+   "region": "EU",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "STAN.L",
+   "name": "Standard Chartered",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "SDLF.L",
+   "name": "Standard Life plc",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "STLAM.MI",
+   "name": "Stellantis",
+   "region": "EU",
+   "sector": "Auto"
+  },
+  {
+   "ticker": "STO3.DE",
+   "name": "Sto",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "STERV.HE",
+   "name": "Stora Enso",
+   "region": "EU",
+   "sector": "Rohstoffe"
+  },
+  {
+   "ticker": "SBS.DE",
+   "name": "Stratec Biomedical Systems",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "SZU.DE",
+   "name": "Südzucker",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "SWED-A.ST",
+   "name": "Swedbank",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "SLHN.SW",
+   "name": "Swiss Life",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "SREN.SW",
+   "name": "Swiss Reinsurance Company Ltd",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "SCMN.SW",
+   "name": "Swisscom",
+   "region": "EU",
+   "sector": "Kommunikation"
+  },
+  {
+   "ticker": "SY1.DE",
+   "name": "Symrise",
+   "region": "EU",
+   "sector": "Chemie"
+  },
+  {
+   "ticker": "TEG.DE",
+   "name": "TAG Tegernsee Immobilien und Beteiligung",
+   "region": "EU",
+   "sector": "Immobilien"
+  },
+  {
+   "ticker": "TLX.DE",
+   "name": "Talanx",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "TW.L",
+   "name": "Taylor Wimpey PLC",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "TMV.DE",
+   "name": "TeamViewer",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "TE.PA",
+   "name": "Technip Energies",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "TEL2-A.ST",
+   "name": "Tele2 AB",
+   "region": "EU",
+   "sector": "Kommunikation"
+  },
+  {
+   "ticker": "TEF.MC",
+   "name": "Telefónica",
+   "region": "EU",
+   "sector": "Kommunikation"
+  },
+  {
+   "ticker": "TEL.OL",
+   "name": "Telenor",
+   "region": "EU",
+   "sector": "Kommunikation"
+  },
+  {
+   "ticker": "TEP.PA",
+   "name": "Teleperformance",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "TELIA.ST",
+   "name": "Telia Company",
+   "region": "EU",
+   "sector": "Kommunikation"
+  },
+  {
+   "ticker": "TSCO.L",
+   "name": "Tesco",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "FSE.F",
+   "name": "TF1 Group",
+   "region": "EU",
+   "sector": "Medien"
+  },
+  {
+   "ticker": "HO.PA",
+   "name": "Thales Group",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "NWG.L",
+   "name": "The Royal Bank of Scotland Group PLC",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "UTG.L",
+   "name": "The Unite Group plc",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "TKA.DE",
+   "name": "ThyssenKrupp",
+   "region": "EU",
+   "sector": "Rohstoffe"
+  },
+  {
+   "ticker": "TIETO.HE",
+   "name": "TietoEVRY",
+   "region": "EU",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "TTE.PA",
+   "name": "TotalEnergies",
+   "region": "EU",
+   "sector": "Energie"
+  },
+  {
+   "ticker": "8TRA.DE",
+   "name": "Traton",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "TRI.PA",
+   "name": "Trigano",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "UBSG.SW",
+   "name": "UBS",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "UNC.F",
+   "name": "UCB S.A.",
+   "region": "EU",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "UMI.BR",
+   "name": "Umicore",
+   "region": "EU",
+   "sector": "Rohstoffe"
+  },
+  {
+   "ticker": "URW.PA",
+   "name": "Unibail-Rodamco-Westfield",
+   "region": "EU",
+   "sector": "Immobilien"
+  },
+  {
+   "ticker": "UCG.MI",
+   "name": "UniCredit",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "ULVR.L",
+   "name": "Unilever",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "UN0.DE",
+   "name": "Uniper SE",
+   "region": "EU",
+   "sector": "Versorger"
+  },
+  {
+   "ticker": "UTDI.DE",
+   "name": "United Internet",
+   "region": "EU",
+   "sector": "Kommunikation"
+  },
+  {
+   "ticker": "UU.L",
+   "name": "United Utilities Group PLC",
+   "region": "EU",
+   "sector": "Versorger"
+  },
+  {
+   "ticker": "UPM.HE",
+   "name": "UPM",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "VK.PA",
+   "name": "Vallourec",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "VALMT.HE",
+   "name": "Valmet",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "VLA.PA",
+   "name": "Valneva",
+   "region": "EU",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "VTWR.HM",
+   "name": "Vantage Towers AG",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "VIE.PA",
+   "name": "Veolia",
+   "region": "EU",
+   "sector": "Versorger"
+  },
+  {
+   "ticker": "VRLA.PA",
+   "name": "Verallia",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "VBK.F",
+   "name": "VERBIO Vereinigte BioEnergie AG",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "VER.VI",
+   "name": "Verbund",
+   "region": "EU",
+   "sector": "Versorger"
+  },
+  {
+   "ticker": "VGP.BR",
+   "name": "VGP NV",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "DG.PA",
+   "name": "Vinci SA",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "VIRP.PA",
+   "name": "Virbac",
+   "region": "EU",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "VIRI.PA",
+   "name": "Viridien",
+   "region": "EU",
+   "sector": "Energie"
+  },
+  {
+   "ticker": "VIV.PA",
+   "name": "Vivendi",
+   "region": "EU",
+   "sector": "Medien"
+  },
+  {
+   "ticker": "VOD.L",
+   "name": "Vodafone",
+   "region": "EU",
+   "sector": "Kommunikation"
+  },
+  {
+   "ticker": "VOW3.DE",
+   "name": "Volkswagen Group",
+   "region": "EU",
+   "sector": "Auto"
+  },
+  {
+   "ticker": "VOLV-B.ST",
+   "name": "Volvo",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "VNA.DE",
+   "name": "Vonovia",
+   "region": "EU",
+   "sector": "Immobilien"
+  },
+  {
+   "ticker": "WCH.DE",
+   "name": "Wacker Chemie",
+   "region": "EU",
+   "sector": "Chemie"
+  },
+  {
+   "ticker": "WAC.DE",
+   "name": "Wacker Neuson",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "WRT1V.HE",
+   "name": "Wärtsilä",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "WIS.F",
+   "name": "Wendel (Beteiligungsgesellschaft)",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "WTB.L",
+   "name": "Whitbread",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "WKL.AS",
+   "name": "Wolters Kluwer",
+   "region": "EU",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "WLN.PA",
+   "name": "Worldline SA",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "WPP.L",
+   "name": "WPP PLC",
+   "region": "EU",
+   "sector": "Medien"
+  },
+  {
+   "ticker": "ZAL.DE",
+   "name": "Zalando",
+   "region": "EU",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "TIMA.DE",
+   "name": "ZEAL Network SE",
+   "region": "EU",
+   "sector": "Sonstige"
+  },
+  {
+   "ticker": "ZURN.SW",
+   "name": "Zurich Insurance Group",
+   "region": "EU",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "4519.T",
+   "name": "Chugai Pharma",
+   "region": "JP",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "6367.T",
+   "name": "Daikin",
+   "region": "JP",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "9983.T",
+   "name": "Fast Retailing",
+   "region": "JP",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "6501.T",
+   "name": "Hitachi",
+   "region": "JP",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "9433.T",
+   "name": "KDDI",
+   "region": "JP",
+   "sector": "Kommunikation"
+  },
+  {
+   "ticker": "6861.T",
+   "name": "Keyence",
+   "region": "JP",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "285A.T",
+   "name": "Kioxia Holdings",
+   "region": "JP",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "8058.T",
+   "name": "Mitsubishi Corp",
+   "region": "JP",
+   "sector": "Handel"
+  },
+  {
+   "ticker": "7011.T",
+   "name": "Mitsubishi Heavy",
+   "region": "JP",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "8306.T",
+   "name": "Mitsubishi UFJ",
+   "region": "JP",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "6981.T",
+   "name": "Murata",
+   "region": "JP",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "6376.T",
+   "name": "Nikkiso",
+   "region": "JP",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "7974.T",
+   "name": "Nintendo",
+   "region": "JP",
+   "sector": "Medien"
+  },
+  {
+   "ticker": "6098.T",
+   "name": "Recruit Holdings",
+   "region": "JP",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "4063.T",
+   "name": "Shin-Etsu Chemical",
+   "region": "JP",
+   "sector": "Chemie"
+  },
+  {
+   "ticker": "9984.T",
+   "name": "SoftBank Group",
+   "region": "JP",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "6758.T",
+   "name": "Sony",
+   "region": "JP",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "8035.T",
+   "name": "Tokyo Electron",
+   "region": "JP",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "7203.T",
+   "name": "Toyota",
+   "region": "JP",
+   "sector": "Auto"
+  },
+  {
+   "ticker": "MMM",
+   "name": "3M",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "AOS",
+   "name": "A. O. Smith",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "ABT",
+   "name": "Abbott Laboratories",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "ABBV",
+   "name": "AbbVie",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "ACN",
+   "name": "Accenture",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "ADBE",
+   "name": "Adobe Inc.",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "AMD",
+   "name": "Advanced Micro Devices",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "AES",
+   "name": "AES Corporation",
+   "region": "US",
+   "sector": "Versorger"
+  },
+  {
+   "ticker": "AFL",
+   "name": "Aflac",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "A",
+   "name": "Agilent Technologies",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "APD",
+   "name": "Air Products",
+   "region": "US",
+   "sector": "Rohstoffe"
+  },
+  {
+   "ticker": "ABNB",
+   "name": "Airbnb",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "AKAM",
+   "name": "Akamai Technologies",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "ALB",
+   "name": "Albemarle Corporation",
+   "region": "US",
+   "sector": "Rohstoffe"
+  },
+  {
+   "ticker": "ARE",
+   "name": "Alexandria Real Estate Equities",
+   "region": "US",
+   "sector": "Immobilien"
+  },
+  {
+   "ticker": "ALGN",
+   "name": "Align Technology",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "ALLE",
+   "name": "Allegion",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "LNT",
+   "name": "Alliant Energy",
+   "region": "US",
+   "sector": "Versorger"
+  },
+  {
+   "ticker": "ALL",
+   "name": "Allstate",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "GOOGL",
+   "name": "Alphabet Inc. (Class A)",
+   "region": "US",
+   "sector": "Kommunikation"
+  },
+  {
+   "ticker": "MO",
+   "name": "Altria",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "AMZN",
+   "name": "Amazon",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "AMCR",
+   "name": "Amcor",
+   "region": "US",
+   "sector": "Rohstoffe"
+  },
+  {
+   "ticker": "AEE",
+   "name": "Ameren",
+   "region": "US",
+   "sector": "Versorger"
+  },
+  {
+   "ticker": "AEP",
+   "name": "American Electric Power",
+   "region": "US",
+   "sector": "Versorger"
+  },
+  {
+   "ticker": "AXP",
+   "name": "American Express",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "AIG",
+   "name": "American International Group",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "AMT",
+   "name": "American Tower",
+   "region": "US",
+   "sector": "Immobilien"
+  },
+  {
+   "ticker": "AWK",
+   "name": "American Water Works",
+   "region": "US",
+   "sector": "Versorger"
+  },
+  {
+   "ticker": "AMP",
+   "name": "Ameriprise Financial",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "AME",
+   "name": "Ametek",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "AMGN",
+   "name": "Amgen",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "APH",
+   "name": "Amphenol",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "ADI",
+   "name": "Analog Devices",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "AON",
+   "name": "Aon plc",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "APA",
+   "name": "APA Corporation",
+   "region": "US",
+   "sector": "Energie"
+  },
+  {
+   "ticker": "APO",
+   "name": "Apollo Global Management",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "AAPL",
+   "name": "Apple Inc.",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "AMAT",
+   "name": "Applied Materials",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "APP",
+   "name": "AppLovin",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "APTV",
+   "name": "Aptiv",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "ACGL",
+   "name": "Arch Capital Group",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "ADM",
+   "name": "Archer Daniels Midland",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "ARES",
+   "name": "Ares Management",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "ANET",
+   "name": "Arista Networks",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "AJG",
+   "name": "Arthur J. Gallagher & Co.",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "AIZ",
+   "name": "Assurant",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "T",
+   "name": "AT&T",
+   "region": "US",
+   "sector": "Kommunikation"
+  },
+  {
+   "ticker": "ATO",
+   "name": "Atmos Energy",
+   "region": "US",
+   "sector": "Versorger"
+  },
+  {
+   "ticker": "ADSK",
+   "name": "Autodesk",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "ADP",
+   "name": "Automatic Data Processing",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "AZO",
+   "name": "AutoZone",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "AVB",
+   "name": "AvalonBay Communities",
+   "region": "US",
+   "sector": "Immobilien"
+  },
+  {
+   "ticker": "AVY",
+   "name": "Avery Dennison",
+   "region": "US",
+   "sector": "Rohstoffe"
+  },
+  {
+   "ticker": "AXON",
+   "name": "Axon Enterprise",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "BKR",
+   "name": "Baker Hughes",
+   "region": "US",
+   "sector": "Energie"
+  },
+  {
+   "ticker": "BALL",
+   "name": "Ball Corporation",
+   "region": "US",
+   "sector": "Rohstoffe"
+  },
+  {
+   "ticker": "BAC",
+   "name": "Bank of America",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "BAX",
+   "name": "Baxter International",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "BDX",
+   "name": "Becton Dickinson",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "BRK-B",
+   "name": "Berkshire Hathaway",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "BBY",
+   "name": "Best Buy",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "TECH",
+   "name": "Bio-Techne",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "BIIB",
+   "name": "Biogen",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "BLK",
+   "name": "BlackRock",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "BX",
+   "name": "Blackstone Inc.",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "XYZ",
+   "name": "Block, Inc.",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "BNY",
+   "name": "BNY Mellon",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "BA",
+   "name": "Boeing",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "BKNG",
+   "name": "Booking Holdings",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "BSX",
+   "name": "Boston Scientific",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "BMY",
+   "name": "Bristol Myers Squibb",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "AVGO",
+   "name": "Broadcom",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "BR",
+   "name": "Broadridge Financial Solutions",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "BRO",
+   "name": "Brown & Brown",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "BF-B",
+   "name": "Brown–Forman",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "BLDR",
+   "name": "Builders FirstSource",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "BG",
+   "name": "Bunge Global",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "BXP",
+   "name": "BXP, Inc.",
+   "region": "US",
+   "sector": "Immobilien"
+  },
+  {
+   "ticker": "CHRW",
+   "name": "C.H. Robinson",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "CDNS",
+   "name": "Cadence Design Systems",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "CPT",
+   "name": "Camden Property Trust",
+   "region": "US",
+   "sector": "Immobilien"
+  },
+  {
+   "ticker": "COF",
+   "name": "Capital One",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "CAH",
+   "name": "Cardinal Health",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "CCL",
+   "name": "Carnival Corporation",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "CARR",
+   "name": "Carrier Global",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "CVNA",
+   "name": "Carvana",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "CASY",
+   "name": "Casey's",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "CAT",
+   "name": "Caterpillar Inc.",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "CBOE",
+   "name": "Cboe Global Markets",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "CBRE",
+   "name": "CBRE Group",
+   "region": "US",
+   "sector": "Immobilien"
+  },
+  {
+   "ticker": "CDW",
+   "name": "CDW Corporation",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "COR",
+   "name": "Cencora",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "CNC",
+   "name": "Centene Corporation",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "CNP",
+   "name": "CenterPoint Energy",
+   "region": "US",
+   "sector": "Versorger"
+  },
+  {
+   "ticker": "CF",
+   "name": "CF Industries",
+   "region": "US",
+   "sector": "Rohstoffe"
+  },
+  {
+   "ticker": "CRL",
+   "name": "Charles River Laboratories",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "SCHW",
+   "name": "Charles Schwab Corporation",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "CHTR",
+   "name": "Charter Communications",
+   "region": "US",
+   "sector": "Kommunikation"
+  },
+  {
+   "ticker": "CVX",
+   "name": "Chevron Corporation",
+   "region": "US",
+   "sector": "Energie"
+  },
+  {
+   "ticker": "CMG",
+   "name": "Chipotle Mexican Grill",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "CB",
+   "name": "Chubb Limited",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "CHD",
+   "name": "Church & Dwight",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "CIEN",
+   "name": "Ciena",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "CI",
+   "name": "Cigna",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "CINF",
+   "name": "Cincinnati Financial",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "CTAS",
+   "name": "Cintas",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "CSCO",
+   "name": "Cisco",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "C",
+   "name": "Citigroup",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "CFG",
+   "name": "Citizens Financial Group",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "CLX",
+   "name": "Clorox",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "CME",
+   "name": "CME Group",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "CMS",
+   "name": "CMS Energy",
+   "region": "US",
+   "sector": "Versorger"
+  },
+  {
+   "ticker": "KO",
+   "name": "Coca-Cola Company (The)",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "CTSH",
+   "name": "Cognizant",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "COHR",
+   "name": "Coherent Corp.",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "COIN",
+   "name": "Coinbase",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "CL",
+   "name": "Colgate-Palmolive",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "CMCSA",
+   "name": "Comcast",
+   "region": "US",
+   "sector": "Kommunikation"
+  },
+  {
+   "ticker": "FIX",
+   "name": "Comfort Systems USA",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "COP",
+   "name": "ConocoPhillips",
+   "region": "US",
+   "sector": "Energie"
+  },
+  {
+   "ticker": "ED",
+   "name": "Consolidated Edison",
+   "region": "US",
+   "sector": "Versorger"
+  },
+  {
+   "ticker": "STZ",
+   "name": "Constellation Brands",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "CEG",
+   "name": "Constellation Energy",
+   "region": "US",
+   "sector": "Versorger"
+  },
+  {
+   "ticker": "COO",
+   "name": "Cooper Companies (The)",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "CPRT",
+   "name": "Copart",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "GLW",
+   "name": "Corning Inc.",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "CPAY",
+   "name": "Corpay",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "CTVA",
+   "name": "Corteva",
+   "region": "US",
+   "sector": "Rohstoffe"
+  },
+  {
+   "ticker": "CSGP",
+   "name": "CoStar Group",
+   "region": "US",
+   "sector": "Immobilien"
+  },
+  {
+   "ticker": "COST",
+   "name": "Costco",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "CRH",
+   "name": "CRH plc",
+   "region": "US",
+   "sector": "Rohstoffe"
+  },
+  {
+   "ticker": "CRWD",
+   "name": "CrowdStrike",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "CCI",
+   "name": "Crown Castle",
+   "region": "US",
+   "sector": "Immobilien"
+  },
+  {
+   "ticker": "CSX",
+   "name": "CSX Corporation",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "CMI",
+   "name": "Cummins",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "CVS",
+   "name": "CVS Health",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "DHI",
+   "name": "D. R. Horton",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "DHR",
+   "name": "Danaher Corporation",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "DRI",
+   "name": "Darden Restaurants",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "DDOG",
+   "name": "Datadog",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "DVA",
+   "name": "DaVita",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "DECK",
+   "name": "Deckers Brands",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "DE",
+   "name": "Deere & Company",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "DELL",
+   "name": "Dell Technologies",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "DAL",
+   "name": "Delta Air Lines",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "DVN",
+   "name": "Devon Energy",
+   "region": "US",
+   "sector": "Energie"
+  },
+  {
+   "ticker": "DXCM",
+   "name": "Dexcom",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "FANG",
+   "name": "Diamondback Energy",
+   "region": "US",
+   "sector": "Energie"
+  },
+  {
+   "ticker": "DLR",
+   "name": "Digital Realty",
+   "region": "US",
+   "sector": "Immobilien"
+  },
+  {
+   "ticker": "DG",
+   "name": "Dollar General",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "DLTR",
+   "name": "Dollar Tree",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "D",
+   "name": "Dominion Energy",
+   "region": "US",
+   "sector": "Versorger"
+  },
+  {
+   "ticker": "DPZ",
+   "name": "Domino's",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "DASH",
+   "name": "DoorDash",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "DOV",
+   "name": "Dover Corporation",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "DOW",
+   "name": "Dow Inc.",
+   "region": "US",
+   "sector": "Rohstoffe"
+  },
+  {
+   "ticker": "DTE",
+   "name": "DTE Energy",
+   "region": "US",
+   "sector": "Versorger"
+  },
+  {
+   "ticker": "DUK",
+   "name": "Duke Energy",
+   "region": "US",
+   "sector": "Versorger"
+  },
+  {
+   "ticker": "DD",
+   "name": "DuPont",
+   "region": "US",
+   "sector": "Rohstoffe"
+  },
+  {
+   "ticker": "ETN",
+   "name": "Eaton Corporation",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "EBAY",
+   "name": "eBay Inc.",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "ECHO",
+   "name": "EchoStar",
+   "region": "US",
+   "sector": "Kommunikation"
+  },
+  {
+   "ticker": "ECL",
+   "name": "Ecolab",
+   "region": "US",
+   "sector": "Rohstoffe"
+  },
+  {
+   "ticker": "EIX",
+   "name": "Edison International",
+   "region": "US",
+   "sector": "Versorger"
+  },
+  {
+   "ticker": "EW",
+   "name": "Edwards Lifesciences",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "EA",
+   "name": "Electronic Arts",
+   "region": "US",
+   "sector": "Kommunikation"
+  },
+  {
+   "ticker": "ELV",
+   "name": "Elevance Health",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "EME",
+   "name": "Emcor",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "EMR",
+   "name": "Emerson Electric",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "ETR",
+   "name": "Entergy",
+   "region": "US",
+   "sector": "Versorger"
+  },
+  {
+   "ticker": "EOG",
+   "name": "EOG Resources",
+   "region": "US",
+   "sector": "Energie"
+  },
+  {
+   "ticker": "EQT",
+   "name": "EQT Corporation",
+   "region": "US",
+   "sector": "Energie"
+  },
+  {
+   "ticker": "EFX",
+   "name": "Equifax",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "EQIX",
+   "name": "Equinix",
+   "region": "US",
+   "sector": "Immobilien"
+  },
+  {
+   "ticker": "EQR",
+   "name": "Equity Residential",
+   "region": "US",
+   "sector": "Immobilien"
+  },
+  {
+   "ticker": "ERIE",
+   "name": "Erie Indemnity",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "ESS",
+   "name": "Essex Property Trust",
+   "region": "US",
+   "sector": "Immobilien"
+  },
+  {
+   "ticker": "EL",
+   "name": "Estée Lauder Companies (The)",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "EG",
+   "name": "Everest Group",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "EVRG",
+   "name": "Evergy",
+   "region": "US",
+   "sector": "Versorger"
+  },
+  {
+   "ticker": "ES",
+   "name": "Eversource Energy",
+   "region": "US",
+   "sector": "Versorger"
+  },
+  {
+   "ticker": "EXC",
+   "name": "Exelon",
+   "region": "US",
+   "sector": "Versorger"
+  },
+  {
+   "ticker": "EXE",
+   "name": "Expand Energy",
+   "region": "US",
+   "sector": "Energie"
+  },
+  {
+   "ticker": "EXPE",
+   "name": "Expedia Group",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "EXPD",
+   "name": "Expeditors International",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "EXR",
+   "name": "Extra Space Storage",
+   "region": "US",
+   "sector": "Immobilien"
+  },
+  {
+   "ticker": "XOM",
+   "name": "ExxonMobil",
+   "region": "US",
+   "sector": "Energie"
+  },
+  {
+   "ticker": "FFIV",
+   "name": "F5, Inc.",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "FDS",
+   "name": "FactSet",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "FICO",
+   "name": "Fair Isaac",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "FAST",
+   "name": "Fastenal",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "FRT",
+   "name": "Federal Realty Investment Trust",
+   "region": "US",
+   "sector": "Immobilien"
+  },
+  {
+   "ticker": "FDX",
+   "name": "FedEx",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "FDXF",
+   "name": "FedEx Freight",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "FIS",
+   "name": "Fidelity National Information Services",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "FITB",
+   "name": "Fifth Third Bancorp",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "FSLR",
+   "name": "First Solar",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "FE",
+   "name": "FirstEnergy",
+   "region": "US",
+   "sector": "Versorger"
+  },
+  {
+   "ticker": "FISV",
+   "name": "Fiserv",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "FLEX",
+   "name": "Flex Ltd.",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "F",
+   "name": "Ford Motor Company",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "FTNT",
+   "name": "Fortinet",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "FTV",
+   "name": "Fortive",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "FOXA",
+   "name": "Fox Corporation (Class A)",
+   "region": "US",
+   "sector": "Kommunikation"
+  },
+  {
+   "ticker": "BEN",
+   "name": "Franklin Resources",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "FCX",
+   "name": "Freeport-McMoRan",
+   "region": "US",
+   "sector": "Rohstoffe"
+  },
+  {
+   "ticker": "GRMN",
+   "name": "Garmin",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "IT",
+   "name": "Gartner",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "GE",
+   "name": "GE Aerospace",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "GEHC",
+   "name": "GE HealthCare",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "GEV",
+   "name": "GE Vernova",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "GEN",
+   "name": "Gen Digital",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "GNRC",
+   "name": "Generac",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "GD",
+   "name": "General Dynamics",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "GIS",
+   "name": "General Mills",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "GM",
+   "name": "General Motors",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "GPC",
+   "name": "Genuine Parts Company",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "GILD",
+   "name": "Gilead Sciences",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "GPN",
+   "name": "Global Payments",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "GL",
+   "name": "Globe Life",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "GDDY",
+   "name": "GoDaddy",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "GS",
+   "name": "Goldman Sachs",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "HAL",
+   "name": "Halliburton",
+   "region": "US",
+   "sector": "Energie"
+  },
+  {
+   "ticker": "HIG",
+   "name": "Hartford (The)",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "HAS",
+   "name": "Hasbro",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "HCA",
+   "name": "HCA Healthcare",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "DOC",
+   "name": "Healthpeak Properties",
+   "region": "US",
+   "sector": "Immobilien"
+  },
+  {
+   "ticker": "HSIC",
+   "name": "Henry Schein",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "HSY",
+   "name": "Hershey Company (The)",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "HPE",
+   "name": "Hewlett Packard Enterprise",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "HLT",
+   "name": "Hilton Worldwide",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "HD",
+   "name": "Home Depot (The)",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "HONA",
+   "name": "Honeywell Aerospace",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "HON",
+   "name": "Honeywell Technologies",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "HRL",
+   "name": "Hormel Foods",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "HST",
+   "name": "Host Hotels & Resorts",
+   "region": "US",
+   "sector": "Immobilien"
+  },
+  {
+   "ticker": "HWM",
+   "name": "Howmet Aerospace",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "HPQ",
+   "name": "HP Inc.",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "HUBB",
+   "name": "Hubbell Incorporated",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "HUM",
+   "name": "Humana",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "HBAN",
+   "name": "Huntington Bancshares",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "HII",
+   "name": "Huntington Ingalls Industries",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "IBM",
+   "name": "IBM",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "IEX",
+   "name": "IDEX Corporation",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "IDXX",
+   "name": "Idexx Laboratories",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "ITW",
+   "name": "Illinois Tool Works",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "INCY",
+   "name": "Incyte",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "IR",
+   "name": "Ingersoll Rand",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "PODD",
+   "name": "Insulet Corporation",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "INTC",
+   "name": "Intel",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "IBKR",
+   "name": "Interactive Brokers",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "ICE",
+   "name": "Intercontinental Exchange",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "IFF",
+   "name": "International Flavors & Fragrances",
+   "region": "US",
+   "sector": "Rohstoffe"
+  },
+  {
+   "ticker": "IP",
+   "name": "International Paper",
+   "region": "US",
+   "sector": "Rohstoffe"
+  },
+  {
+   "ticker": "INTU",
+   "name": "Intuit",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "ISRG",
+   "name": "Intuitive Surgical",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "IVZ",
+   "name": "Invesco",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "INVH",
+   "name": "Invitation Homes",
+   "region": "US",
+   "sector": "Immobilien"
+  },
+  {
+   "ticker": "IQV",
+   "name": "IQVIA",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "IRM",
+   "name": "Iron Mountain",
+   "region": "US",
+   "sector": "Immobilien"
+  },
+  {
+   "ticker": "JBHT",
+   "name": "J.B. Hunt",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "SJM",
+   "name": "J.M. Smucker Company (The)",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "JBL",
+   "name": "Jabil",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "JKHY",
+   "name": "Jack Henry & Associates",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "J",
+   "name": "Jacobs Solutions",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "JNJ",
+   "name": "Johnson & Johnson",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "JCI",
+   "name": "Johnson Controls",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "JPM",
+   "name": "JPMorgan Chase",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "KVUE",
+   "name": "Kenvue",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "KDP",
+   "name": "Keurig Dr Pepper",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "KEY",
+   "name": "KeyCorp",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "KEYS",
+   "name": "Keysight Technologies",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "KMB",
+   "name": "Kimberly-Clark",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "KIM",
+   "name": "Kimco Realty",
+   "region": "US",
+   "sector": "Immobilien"
+  },
+  {
+   "ticker": "KMI",
+   "name": "Kinder Morgan",
+   "region": "US",
+   "sector": "Energie"
+  },
+  {
+   "ticker": "KKR",
+   "name": "KKR & Co.",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "KLAC",
+   "name": "KLA Corporation",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "KHC",
+   "name": "Kraft Heinz",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "KR",
+   "name": "Kroger",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "LHX",
+   "name": "L3Harris",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "LH",
+   "name": "Labcorp",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "LRCX",
+   "name": "Lam Research",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "LVS",
+   "name": "Las Vegas Sands",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "LDOS",
+   "name": "Leidos",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "LEN",
+   "name": "Lennar",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "LII",
+   "name": "Lennox International",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "LLY",
+   "name": "Lilly (Eli)",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "LIN",
+   "name": "Linde plc",
+   "region": "US",
+   "sector": "Rohstoffe"
+  },
+  {
+   "ticker": "LYV",
+   "name": "Live Nation Entertainment",
+   "region": "US",
+   "sector": "Kommunikation"
+  },
+  {
+   "ticker": "LMT",
+   "name": "Lockheed Martin",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "L",
+   "name": "Loews Corporation",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "LOW",
+   "name": "Lowe's",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "LULU",
+   "name": "Lululemon Athletica",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "LITE",
+   "name": "Lumentum",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "LYB",
+   "name": "LyondellBasell",
+   "region": "US",
+   "sector": "Rohstoffe"
+  },
+  {
+   "ticker": "MTB",
+   "name": "M&T Bank",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "MPC",
+   "name": "Marathon Petroleum",
+   "region": "US",
+   "sector": "Energie"
+  },
+  {
+   "ticker": "MAR",
+   "name": "Marriott International",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "MRSH",
+   "name": "Marsh McLennan",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "MLM",
+   "name": "Martin Marietta Materials",
+   "region": "US",
+   "sector": "Rohstoffe"
+  },
+  {
+   "ticker": "MRVL",
+   "name": "Marvell Technology",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "MAS",
+   "name": "Masco",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "MA",
+   "name": "Mastercard",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "MKC",
+   "name": "McCormick & Company",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "MCD",
+   "name": "McDonald's",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "MCK",
+   "name": "McKesson Corporation",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "MDT",
+   "name": "Medtronic",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "MRK",
+   "name": "Merck & Co.",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "META",
+   "name": "Meta Platforms",
+   "region": "US",
+   "sector": "Kommunikation"
+  },
+  {
+   "ticker": "MET",
+   "name": "MetLife",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "MTD",
+   "name": "Mettler Toledo",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "MGM",
+   "name": "MGM Resorts",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "MCHP",
+   "name": "Microchip Technology",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "MU",
+   "name": "Micron Technology",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "MSFT",
+   "name": "Microsoft",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "MAA",
+   "name": "Mid-America Apartment Communities",
+   "region": "US",
+   "sector": "Immobilien"
+  },
+  {
+   "ticker": "MRNA",
+   "name": "Moderna",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "TAP",
+   "name": "Molson Coors Beverage Company",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "MDLZ",
+   "name": "Mondelez International",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "MPWR",
+   "name": "Monolithic Power Systems",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "MNST",
+   "name": "Monster Beverage",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "MCO",
+   "name": "Moody's Corporation",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "MS",
+   "name": "Morgan Stanley",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "MOS",
+   "name": "Mosaic Company (The)",
+   "region": "US",
+   "sector": "Rohstoffe"
+  },
+  {
+   "ticker": "MSI",
+   "name": "Motorola Solutions",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "MSCI",
+   "name": "MSCI Inc.",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "NDAQ",
+   "name": "Nasdaq, Inc.",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "NTAP",
+   "name": "NetApp",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "NFLX",
+   "name": "Netflix",
+   "region": "US",
+   "sector": "Kommunikation"
+  },
+  {
+   "ticker": "NEM",
+   "name": "Newmont",
+   "region": "US",
+   "sector": "Rohstoffe"
+  },
+  {
+   "ticker": "NWS",
+   "name": "News Corp (Class B)",
+   "region": "US",
+   "sector": "Kommunikation"
+  },
+  {
+   "ticker": "NEE",
+   "name": "NextEra Energy",
+   "region": "US",
+   "sector": "Versorger"
+  },
+  {
+   "ticker": "NKE",
+   "name": "Nike, Inc.",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "NI",
+   "name": "NiSource",
+   "region": "US",
+   "sector": "Versorger"
+  },
+  {
+   "ticker": "NDSN",
+   "name": "Nordson Corporation",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "NSC",
+   "name": "Norfolk Southern",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "NTRS",
+   "name": "Northern Trust",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "NOC",
+   "name": "Northrop Grumman",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "NCLH",
+   "name": "Norwegian Cruise Line Holdings",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "NRG",
+   "name": "NRG Energy",
+   "region": "US",
+   "sector": "Versorger"
+  },
+  {
+   "ticker": "NUE",
+   "name": "Nucor",
+   "region": "US",
+   "sector": "Rohstoffe"
+  },
+  {
+   "ticker": "NVDA",
+   "name": "Nvidia",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "NVR",
+   "name": "NVR, Inc.",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "NXPI",
+   "name": "NXP Semiconductors",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "ORLY",
+   "name": "O’Reilly Automotive",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "OXY",
+   "name": "Occidental Petroleum",
+   "region": "US",
+   "sector": "Energie"
+  },
+  {
+   "ticker": "ODFL",
+   "name": "Old Dominion",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "OMC",
+   "name": "Omnicom Group",
+   "region": "US",
+   "sector": "Kommunikation"
+  },
+  {
+   "ticker": "ON",
+   "name": "ON Semiconductor",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "OKE",
+   "name": "Oneok",
+   "region": "US",
+   "sector": "Energie"
+  },
+  {
+   "ticker": "ORCL",
+   "name": "Oracle Corporation",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "OTIS",
+   "name": "Otis Worldwide",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "PCAR",
+   "name": "Paccar",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "PKG",
+   "name": "Packaging Corporation of America",
+   "region": "US",
+   "sector": "Rohstoffe"
+  },
+  {
+   "ticker": "PLTR",
+   "name": "Palantir Technologies",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "PANW",
+   "name": "Palo Alto Networks",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "PSKY",
+   "name": "Paramount Skydance Corporation",
+   "region": "US",
+   "sector": "Kommunikation"
+  },
+  {
+   "ticker": "PH",
+   "name": "Parker Hannifin",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "PAYX",
+   "name": "Paychex",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "PYPL",
+   "name": "PayPal",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "PNR",
+   "name": "Pentair",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "PEP",
+   "name": "PepsiCo",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "PFE",
+   "name": "Pfizer",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "PCG",
+   "name": "PG&E Corporation",
+   "region": "US",
+   "sector": "Versorger"
+  },
+  {
+   "ticker": "PM",
+   "name": "Philip Morris International",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "PSX",
+   "name": "Phillips 66",
+   "region": "US",
+   "sector": "Energie"
+  },
+  {
+   "ticker": "PNW",
+   "name": "Pinnacle West Capital",
+   "region": "US",
+   "sector": "Versorger"
+  },
+  {
+   "ticker": "PNC",
+   "name": "PNC Financial Services",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "PPG",
+   "name": "PPG Industries",
+   "region": "US",
+   "sector": "Rohstoffe"
+  },
+  {
+   "ticker": "PPL",
+   "name": "PPL Corporation",
+   "region": "US",
+   "sector": "Versorger"
+  },
+  {
+   "ticker": "PFG",
+   "name": "Principal Financial Group",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "PG",
+   "name": "Procter & Gamble",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "PGR",
+   "name": "Progressive Corporation",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "PLD",
+   "name": "Prologis",
+   "region": "US",
+   "sector": "Immobilien"
+  },
+  {
+   "ticker": "PRU",
+   "name": "Prudential Financial",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "PTC",
+   "name": "PTC Inc.",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "PEG",
+   "name": "Public Service Enterprise Group",
+   "region": "US",
+   "sector": "Versorger"
+  },
+  {
+   "ticker": "PSA",
+   "name": "Public Storage",
+   "region": "US",
+   "sector": "Immobilien"
+  },
+  {
+   "ticker": "PHM",
+   "name": "PulteGroup",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "Q",
+   "name": "Qnity Electronics",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "QCOM",
+   "name": "Qualcomm",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "PWR",
+   "name": "Quanta Services",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "DGX",
+   "name": "Quest Diagnostics",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "RL",
+   "name": "Ralph Lauren Corporation",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "RJF",
+   "name": "Raymond James Financial",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "O",
+   "name": "Realty Income",
+   "region": "US",
+   "sector": "Immobilien"
+  },
+  {
+   "ticker": "REG",
+   "name": "Regency Centers",
+   "region": "US",
+   "sector": "Immobilien"
+  },
+  {
+   "ticker": "REGN",
+   "name": "Regeneron Pharmaceuticals",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "RF",
+   "name": "Regions Financial Corporation",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "RSG",
+   "name": "Republic Services",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "RMD",
+   "name": "ResMed",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "RVTY",
+   "name": "Revvity",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "HOOD",
+   "name": "Robinhood Markets",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "ROK",
+   "name": "Rockwell Automation",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "ROL",
+   "name": "Rollins, Inc.",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "ROP",
+   "name": "Roper Technologies",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "ROST",
+   "name": "Ross Stores",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "RCL",
+   "name": "Royal Caribbean Group",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "RTX",
+   "name": "RTX Corporation",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "SPGI",
+   "name": "S&P Global",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "CRM",
+   "name": "Salesforce",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "SNDK",
+   "name": "Sandisk",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "SBAC",
+   "name": "SBA Communications",
+   "region": "US",
+   "sector": "Immobilien"
+  },
+  {
+   "ticker": "SLB",
+   "name": "Schlumberger",
+   "region": "US",
+   "sector": "Energie"
+  },
+  {
+   "ticker": "STX",
+   "name": "Seagate Technology",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "SRE",
+   "name": "Sempra",
+   "region": "US",
+   "sector": "Versorger"
+  },
+  {
+   "ticker": "NOW",
+   "name": "ServiceNow",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "SHW",
+   "name": "Sherwin-Williams",
+   "region": "US",
+   "sector": "Rohstoffe"
+  },
+  {
+   "ticker": "SPG",
+   "name": "Simon Property Group",
+   "region": "US",
+   "sector": "Immobilien"
+  },
+  {
+   "ticker": "SWKS",
+   "name": "Skyworks Solutions",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "SW",
+   "name": "Smurfit Westrock",
+   "region": "US",
+   "sector": "Rohstoffe"
+  },
+  {
+   "ticker": "SNA",
+   "name": "Snap-on",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "SOLV",
+   "name": "Solventum",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "SO",
+   "name": "Southern Company",
+   "region": "US",
+   "sector": "Versorger"
+  },
+  {
+   "ticker": "LUV",
+   "name": "Southwest Airlines",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "SWK",
+   "name": "Stanley Black & Decker",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "SBUX",
+   "name": "Starbucks",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "STT",
+   "name": "State Street Corporation",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "STLD",
+   "name": "Steel Dynamics",
+   "region": "US",
+   "sector": "Rohstoffe"
+  },
+  {
+   "ticker": "STE",
+   "name": "Steris",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "SYK",
+   "name": "Stryker Corporation",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "SMCI",
+   "name": "Supermicro",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "SYF",
+   "name": "Synchrony Financial",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "SNPS",
+   "name": "Synopsys",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "SYY",
+   "name": "Sysco",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "TMUS",
+   "name": "T-Mobile US",
+   "region": "US",
+   "sector": "Kommunikation"
+  },
+  {
+   "ticker": "TROW",
+   "name": "T. Rowe Price",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "TTWO",
+   "name": "Take-Two Interactive",
+   "region": "US",
+   "sector": "Kommunikation"
+  },
+  {
+   "ticker": "TPR",
+   "name": "Tapestry, Inc.",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "TRGP",
+   "name": "Targa Resources",
+   "region": "US",
+   "sector": "Energie"
+  },
+  {
+   "ticker": "TGT",
+   "name": "Target Corporation",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "TEL",
+   "name": "TE Connectivity",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "TDY",
+   "name": "Teledyne Technologies",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "TER",
+   "name": "Teradyne",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "TSLA",
+   "name": "Tesla, Inc.",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "TXN",
+   "name": "Texas Instruments",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "TPL",
+   "name": "Texas Pacific Land Corporation",
+   "region": "US",
+   "sector": "Energie"
+  },
+  {
+   "ticker": "TXT",
+   "name": "Textron",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "TMO",
+   "name": "Thermo Fisher Scientific",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "TJX",
+   "name": "TJX Companies",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "TKO",
+   "name": "TKO Group Holdings",
+   "region": "US",
+   "sector": "Kommunikation"
+  },
+  {
+   "ticker": "TSCO",
+   "name": "Tractor Supply",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "TTD",
+   "name": "Trade Desk (The)",
+   "region": "US",
+   "sector": "Kommunikation"
+  },
+  {
+   "ticker": "TT",
+   "name": "Trane Technologies",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "TDG",
+   "name": "TransDigm Group",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "TRV",
+   "name": "Travelers Companies (The)",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "TRMB",
+   "name": "Trimble Inc.",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "TFC",
+   "name": "Truist Financial",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "TYL",
+   "name": "Tyler Technologies",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "TSN",
+   "name": "Tyson Foods",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "USB",
+   "name": "U.S. Bancorp",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "UBER",
+   "name": "Uber",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "UDR",
+   "name": "UDR, Inc.",
+   "region": "US",
+   "sector": "Immobilien"
+  },
+  {
+   "ticker": "ULTA",
+   "name": "Ulta Beauty",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "UNP",
+   "name": "Union Pacific Corporation",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "UAL",
+   "name": "United Airlines Holdings",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "UPS",
+   "name": "United Parcel Service",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "URI",
+   "name": "United Rentals",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "UNH",
+   "name": "UnitedHealth Group",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "UHS",
+   "name": "Universal Health Services",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "VLO",
+   "name": "Valero Energy",
+   "region": "US",
+   "sector": "Energie"
+  },
+  {
+   "ticker": "VEEV",
+   "name": "Veeva Systems",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "VTR",
+   "name": "Ventas",
+   "region": "US",
+   "sector": "Immobilien"
+  },
+  {
+   "ticker": "VLTO",
+   "name": "Veralto",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "VRSN",
+   "name": "Verisign",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "VRSK",
+   "name": "Verisk Analytics",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "VZ",
+   "name": "Verizon",
+   "region": "US",
+   "sector": "Kommunikation"
+  },
+  {
+   "ticker": "VRTX",
+   "name": "Vertex Pharmaceuticals",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "VRT",
+   "name": "Vertiv",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "VTRS",
+   "name": "Viatris",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "VICI",
+   "name": "Vici Properties",
+   "region": "US",
+   "sector": "Immobilien"
+  },
+  {
+   "ticker": "V",
+   "name": "Visa Inc.",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "VST",
+   "name": "Vistra Corp.",
+   "region": "US",
+   "sector": "Versorger"
+  },
+  {
+   "ticker": "VMC",
+   "name": "Vulcan Materials Company",
+   "region": "US",
+   "sector": "Rohstoffe"
+  },
+  {
+   "ticker": "WRB",
+   "name": "W. R. Berkley Corporation",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "GWW",
+   "name": "W. W. Grainger",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "WAB",
+   "name": "Wabtec",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "WMT",
+   "name": "Walmart",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "DIS",
+   "name": "Walt Disney Company (The)",
+   "region": "US",
+   "sector": "Kommunikation"
+  },
+  {
+   "ticker": "WBD",
+   "name": "Warner Bros. Discovery",
+   "region": "US",
+   "sector": "Kommunikation"
+  },
+  {
+   "ticker": "WM",
+   "name": "Waste Management",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "WAT",
+   "name": "Waters Corporation",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "WEC",
+   "name": "WEC Energy Group",
+   "region": "US",
+   "sector": "Versorger"
+  },
+  {
+   "ticker": "WFC",
+   "name": "Wells Fargo",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "WELL",
+   "name": "Welltower",
+   "region": "US",
+   "sector": "Immobilien"
+  },
+  {
+   "ticker": "WST",
+   "name": "West Pharmaceutical Services",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "WDC",
+   "name": "Western Digital",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "WY",
+   "name": "Weyerhaeuser",
+   "region": "US",
+   "sector": "Immobilien"
+  },
+  {
+   "ticker": "WMB",
+   "name": "Williams Companies",
+   "region": "US",
+   "sector": "Energie"
+  },
+  {
+   "ticker": "WSM",
+   "name": "Williams-Sonoma, Inc.",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "WTW",
+   "name": "Willis Towers Watson",
+   "region": "US",
+   "sector": "Finanzen"
+  },
+  {
+   "ticker": "WDAY",
+   "name": "Workday, Inc.",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "WYNN",
+   "name": "Wynn Resorts",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "XEL",
+   "name": "Xcel Energy",
+   "region": "US",
+   "sector": "Versorger"
+  },
+  {
+   "ticker": "XYL",
+   "name": "Xylem Inc.",
+   "region": "US",
+   "sector": "Industrie"
+  },
+  {
+   "ticker": "YUM",
+   "name": "Yum! Brands",
+   "region": "US",
+   "sector": "Konsum"
+  },
+  {
+   "ticker": "ZBRA",
+   "name": "Zebra Technologies",
+   "region": "US",
+   "sector": "Technologie"
+  },
+  {
+   "ticker": "ZBH",
+   "name": "Zimmer Biomet",
+   "region": "US",
+   "sector": "Gesundheit"
+  },
+  {
+   "ticker": "ZTS",
+   "name": "Zoetis",
+   "region": "US",
+   "sector": "Gesundheit"
+  }
+ ]
 }

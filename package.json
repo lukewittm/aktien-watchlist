@@ -8,10 +8,12 @@
     "fetch": "node scripts/fetch-prices.mjs",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "build:universe": "node scripts/build-universe.mjs"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.2",
+    "js-yaml": "^5.2.1",
     "lightweight-charts": "^5.2.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",

@@ -4,8 +4,8 @@ import StockDetail from './StockDetail'
 import { loadWatchlist, saveWatchlist, type WatchlistEntry } from './watchlist'
 import type { Benchmark, PricesFile, Region, Stock } from './types'
 
-type PerfKey = 'perf3m' | 'perf6m'
-type SortKey = 'name' | 'sector' | 'price' | 'marketCapEUR' | 'perf3m' | 'perf6m' | `o:${string}`
+type PerfKey = 'perf3m' | 'perf6m' | 'perf12m'
+type SortKey = 'name' | 'sector' | 'price' | 'marketCapEUR' | 'perf3m' | 'perf6m' | 'perf12m' | `o:${string}`
 type RegionFilter = Region | 'ALL'
 type View = 'top' | 'watch'
 
@@ -24,7 +24,9 @@ const REGION_BADGE: Record<Region, string> = {
   EM: 'bg-amber-500/15 text-amber-300',
 }
 
-// Kurz-Label pro Benchmark-Ticker für die Outperformance-Spalten
+const PERIOD_LABEL: Record<PerfKey, string> = { perf3m: '3 Monate', perf6m: '6 Monate', perf12m: '1 Jahr' }
+const PERIOD_MONTHS: Record<PerfKey, number> = { perf3m: 3, perf6m: 6, perf12m: 12 }
+
 const BENCH_SHORT: Record<string, string> = {
   'IWDA.L': 'vs World',
   'EIMI.L': 'vs EM',
@@ -48,6 +50,22 @@ function perfClass(v: number | null): string {
   return v >= 0 ? 'text-emerald-400' : 'text-red-400'
 }
 
+// Periodenperformance einer Benchmark direkt aus ihrer Historie (für jeden Zeitraum)
+function histPerf(history: [string, number][], months: number): number | null {
+  if (!history?.length) return null
+  const ref = new Date()
+  ref.setMonth(ref.getMonth() - months)
+  const refIso = ref.toISOString().slice(0, 10)
+  let start: number | null = null
+  for (const [date, close] of history) {
+    if (date <= refIso) start = close
+    else break
+  }
+  const end = history[history.length - 1][1]
+  if (!start || !end) return null
+  return (end / start - 1) * 100
+}
+
 export default function App() {
   const [data, setData] = useState<PricesFile | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -56,9 +74,16 @@ export default function App() {
   const [period, setPeriod] = useState<PerfKey>('perf3m')
   const [sortKey, setSortKey] = useState<SortKey | null>(null)
   const [sortAsc, setSortAsc] = useState(false)
-  const [minCapBn, setMinCapBn] = useState(2)
   const [selected, setSelected] = useState<Stock | null>(null)
   const [watchlist, setWatchlist] = useState<WatchlistEntry[]>(loadWatchlist)
+
+  // Filter
+  const [minCapBn, setMinCapBn] = useState(2)
+  const [sector, setSector] = useState('ALL')
+  const [minPerf, setMinPerf] = useState('')
+  const [maxPE, setMaxPE] = useState('')
+  const [minDiv, setMinDiv] = useState('')
+  const [above200, setAbove200] = useState(false)
 
   useEffect(() => {
     fetch('/data/prices.json')
@@ -74,13 +99,20 @@ export default function App() {
 
   const watchedTickers = useMemo(() => new Set(watchlist.map((e) => e.ticker)), [watchlist])
   const benchmarks: Benchmark[] = useMemo(() => data?.benchmarks ?? [], [data])
+  const months = PERIOD_MONTHS[period]
 
-  // Benchmark-Performance für den aktiven Zeitraum, nach Ticker
+  const sectors = useMemo(() => {
+    const set = new Set<string>()
+    for (const s of data?.stocks ?? []) set.add(s.sector)
+    return [...set].sort((a, b) => a.localeCompare(b, 'de'))
+  }, [data])
+
+  // Benchmark-Performance für den aktiven Zeitraum, aus der Historie
   const benchPerf = useMemo(() => {
     const m: Record<string, number | null> = {}
-    for (const b of benchmarks) m[b.ticker] = b[period]
+    for (const b of benchmarks) m[b.ticker] = histPerf(b.history, months)
     return m
-  }, [benchmarks, period])
+  }, [benchmarks, months])
 
   function outperf(stock: Stock, benchTicker: string): number | null {
     const sp = stock[period]
@@ -110,12 +142,20 @@ export default function App() {
 
   const rows = useMemo(() => {
     if (!data) return []
-    const filtered = data.stocks.filter((s) =>
-      view === 'watch'
-        ? watchedTickers.has(s.ticker)
-        : (region === 'ALL' || s.region === region) &&
-          (s.marketCapEUR == null || s.marketCapEUR >= minCapBn * 1e9)
-    )
+    const minPerfNum = minPerf === '' ? null : Number(minPerf)
+    const maxPENum = maxPE === '' ? null : Number(maxPE)
+    const minDivNum = minDiv === '' ? null : Number(minDiv)
+    const filtered = data.stocks.filter((s) => {
+      if (view === 'watch') return watchedTickers.has(s.ticker)
+      if (region !== 'ALL' && s.region !== region) return false
+      if (s.marketCapEUR != null && s.marketCapEUR < minCapBn * 1e9) return false
+      if (sector !== 'ALL' && s.sector !== sector) return false
+      if (minPerfNum != null && (s[period] == null || (s[period] as number) < minPerfNum)) return false
+      if (maxPENum != null && (s.peTrailing == null || s.peTrailing > maxPENum)) return false
+      if (minDivNum != null && (s.divYieldPct == null || s.divYieldPct < minDivNum)) return false
+      if (above200 && !(s.pctVs200d != null && s.pctVs200d > 0)) return false
+      return true
+    })
     const dir = sortAsc ? 1 : -1
     return [...filtered].sort((a, b) => {
       const va = sortValue(a, effectiveSortKey)
@@ -126,7 +166,7 @@ export default function App() {
       return dir * (na - nb)
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, view, watchedTickers, region, minCapBn, effectiveSortKey, sortAsc, period, benchPerf])
+  }, [data, view, watchedTickers, region, minCapBn, sector, minPerf, maxPE, minDiv, above200, effectiveSortKey, sortAsc, period, benchPerf])
 
   const missingWatched = useMemo(() => {
     if (!data) return []
@@ -189,23 +229,23 @@ export default function App() {
               ? `${rows.length} ${view === 'watch' ? 'Aktien auf der Watchlist' : `von ${data.stockCount} Aktien`} · Stand ${new Date(data.fetchedAt).toLocaleString('de-DE', { dateStyle: 'medium', timeStyle: 'short' })}`
               : 'Lade Kursdaten …'}
             {data && data.failedTickers.length > 0 && (
-              <span className="text-amber-400"> · {data.failedTickers.length} Ticker ohne Daten ({data.failedTickers.join(', ')})</span>
+              <span className="text-amber-400"> · {data.failedTickers.length} Ticker ohne Daten</span>
             )}
           </p>
           {benchmarks.length > 0 && (
             <p className="text-xs text-zinc-500 mt-1">
-              Benchmarks ({period === 'perf3m' ? '3M' : '6M'}):{' '}
+              Benchmarks ({PERIOD_LABEL[period]}):{' '}
               {benchmarks.map((b, i) => (
                 <span key={b.ticker}>
                   {i > 0 && ' · '}
-                  {b.name} <span className={perfClass(b[period])}>{formatPerf(b[period])}</span>
+                  {b.name} <span className={perfClass(benchPerf[b.ticker])}>{formatPerf(benchPerf[b.ticker])}</span>
                 </span>
               ))}
             </p>
           )}
         </header>
 
-        <div className="flex flex-wrap items-center gap-3 mb-4">
+        <div className="flex flex-wrap items-center gap-3 mb-3">
           {view === 'top' && (
             <div className="flex rounded-lg bg-zinc-900 p-1 ring-1 ring-zinc-800">
               {(Object.keys(REGION_LABELS) as RegionFilter[]).map((r) => (
@@ -223,36 +263,99 @@ export default function App() {
           )}
 
           <div className="flex rounded-lg bg-zinc-900 p-1 ring-1 ring-zinc-800">
-            {(['perf3m', 'perf6m'] as const).map((p) => (
+            {(['perf3m', 'perf6m', 'perf12m'] as const).map((p) => (
               <button
                 key={p}
                 onClick={() => {
                   setPeriod(p)
-                  if (sortKey === 'perf3m' || sortKey === 'perf6m') setSortKey(null)
+                  if (sortKey === 'perf3m' || sortKey === 'perf6m' || sortKey === 'perf12m') setSortKey(null)
                 }}
                 className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
                   period === p ? 'bg-zinc-700 text-white' : 'text-zinc-400 hover:text-zinc-200'
                 }`}
               >
-                {p === 'perf3m' ? '3 Monate' : '6 Monate'}
+                {p === 'perf3m' ? '3M' : p === 'perf6m' ? '6M' : '1J'}
               </button>
             ))}
           </div>
+        </div>
 
-          {view === 'top' && (
-            <label className="flex items-center gap-2 text-sm text-zinc-400">
-              Min. Marktkap
+        {view === 'top' && (
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mb-4 text-sm text-zinc-400">
+            <label className="flex items-center gap-1.5">
+              Sektor
+              <select
+                value={sector}
+                onChange={(e) => setSector(e.target.value)}
+                className="rounded-md bg-zinc-900 ring-1 ring-zinc-800 px-2 py-1.5 text-zinc-100"
+              >
+                <option value="ALL">Alle</option>
+                {sectors.map((s) => (
+                  <option key={s} value={s}>
+                    {s}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="flex items-center gap-1.5">
+              Marktkap ≥
               <input
                 type="number"
                 min={0}
                 value={minCapBn}
                 onChange={(e) => setMinCapBn(Number(e.target.value))}
-                className="w-20 rounded-md bg-zinc-900 ring-1 ring-zinc-800 px-2 py-1.5 text-zinc-100 text-right"
+                className="w-16 rounded-md bg-zinc-900 ring-1 ring-zinc-800 px-2 py-1.5 text-zinc-100 text-right"
               />
               Mrd €
             </label>
-          )}
-        </div>
+            <label className="flex items-center gap-1.5">
+              Perf. {period === 'perf3m' ? '3M' : period === 'perf6m' ? '6M' : '1J'} ≥
+              <input
+                type="number"
+                value={minPerf}
+                onChange={(e) => setMinPerf(e.target.value)}
+                placeholder="–"
+                className="w-16 rounded-md bg-zinc-900 ring-1 ring-zinc-800 px-2 py-1.5 text-zinc-100 text-right"
+              />
+              %
+            </label>
+            <label className="flex items-center gap-1.5">
+              KGV ≤
+              <input
+                type="number"
+                value={maxPE}
+                onChange={(e) => setMaxPE(e.target.value)}
+                placeholder="–"
+                className="w-16 rounded-md bg-zinc-900 ring-1 ring-zinc-800 px-2 py-1.5 text-zinc-100 text-right"
+              />
+            </label>
+            <label className="flex items-center gap-1.5">
+              Div. ≥
+              <input
+                type="number"
+                value={minDiv}
+                onChange={(e) => setMinDiv(e.target.value)}
+                placeholder="–"
+                className="w-16 rounded-md bg-zinc-900 ring-1 ring-zinc-800 px-2 py-1.5 text-zinc-100 text-right"
+              />
+              %
+            </label>
+            <label className="flex items-center gap-1.5 cursor-pointer">
+              <input type="checkbox" checked={above200} onChange={(e) => setAbove200(e.target.checked)} className="accent-emerald-500" />
+              über 200-Tage-Linie
+            </label>
+            {(sector !== 'ALL' || minPerf || maxPE || minDiv || above200 || minCapBn !== 2) && (
+              <button
+                onClick={() => {
+                  setSector('ALL'); setMinPerf(''); setMaxPE(''); setMinDiv(''); setAbove200(false); setMinCapBn(2)
+                }}
+                className="text-zinc-500 hover:text-zinc-300 underline"
+              >
+                zurücksetzen
+              </button>
+            )}
+          </div>
+        )}
 
         {view === 'watch' && rows.length === 0 && missingWatched.length === 0 ? (
           <div className="rounded-xl ring-1 ring-zinc-800 bg-zinc-900/40 p-10 text-center text-zinc-400">
@@ -273,9 +376,10 @@ export default function App() {
                   <Th label="Sektor" k="sector" sortKey={effectiveSortKey} asc={sortAsc} onSort={toggleSort} />
                   <Th label="Kurs" k="price" sortKey={effectiveSortKey} asc={sortAsc} onSort={toggleSort} right />
                   <Th label="Marktkap" k="marketCapEUR" sortKey={effectiveSortKey} asc={sortAsc} onSort={toggleSort} right />
-                  <th className="px-3 py-2.5">{period === 'perf3m' ? 'Verlauf 3M' : 'Verlauf 6M'}</th>
+                  <th className="px-3 py-2.5">Verlauf {period === 'perf3m' ? '3M' : period === 'perf6m' ? '6M' : '1J'}</th>
                   <Th label="3M" k="perf3m" sortKey={effectiveSortKey} asc={sortAsc} onSort={toggleSort} right emphasize={period === 'perf3m'} />
                   <Th label="6M" k="perf6m" sortKey={effectiveSortKey} asc={sortAsc} onSort={toggleSort} right emphasize={period === 'perf6m'} />
+                  <Th label="1J" k="perf12m" sortKey={effectiveSortKey} asc={sortAsc} onSort={toggleSort} right emphasize={period === 'perf12m'} />
                   {benchmarks.map((b) => (
                     <Th
                       key={b.ticker}
@@ -296,7 +400,7 @@ export default function App() {
                     key={s.ticker}
                     stock={s}
                     rank={i + 1}
-                    months={period === 'perf3m' ? 3 : 6}
+                    months={months}
                     onSelect={setSelected}
                     watched={watchedTickers.has(s.ticker)}
                     onToggleWatch={toggleWatch}
@@ -431,6 +535,9 @@ function Row({
       </td>
       <td className={`px-3 py-2 text-right tabular-nums font-medium ${perfClass(stock.perf6m)}`}>
         {formatPerf(stock.perf6m)}
+      </td>
+      <td className={`px-3 py-2 text-right tabular-nums font-medium ${perfClass(stock.perf12m)}`}>
+        {formatPerf(stock.perf12m)}
       </td>
       {benchmarks.map((b) => {
         const o = outperf(stock, b.ticker)

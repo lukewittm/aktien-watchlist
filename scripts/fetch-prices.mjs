@@ -13,7 +13,7 @@ const yahooFinance = new YahooFinance({ suppressNotices: ['yahooSurvey', 'ripHis
 
 // 13 Monate, damit die 1J-Chart-Ansicht volle Abdeckung hat
 const MONTHS_BACK = 13
-const CONCURRENCY = 4
+const CONCURRENCY = 6
 const RETRIES = 3
 
 // FX-Paare für Marktkap-Umrechnung nach EUR (Yahoo-Symbole EUR<CCY>=X → Wert: wie viel CCY pro EUR)
@@ -163,12 +163,22 @@ const stocks = (
       marketCapEUR: marketCapEUR(quote, fxRates),
       perf3m: performance(history, 3),
       perf6m: performance(history, 6),
+      perf12m: performance(history, 12),
       high52w: penceAdj(quote?.fiftyTwoWeekHigh ?? null),
       low52w: penceAdj(quote?.fiftyTwoWeekLow ?? null),
       peTrailing: quote?.trailingPE ?? null,
       peForward: quote?.forwardPE ?? null,
       divYieldPct: quote?.trailingAnnualDividendYield != null ? quote.trailingAnnualDividendYield * 100 : null,
       avgVolume3m: quote?.averageDailyVolume3Month ?? null,
+      // Abstand zur 200-/50-Tage-Linie in % (währungsneutral, aus dem Quote)
+      pctVs200d:
+        quote?.twoHundredDayAverage && quote?.regularMarketPrice
+          ? (quote.regularMarketPrice / quote.twoHundredDayAverage - 1) * 100
+          : null,
+      pctVs50d:
+        quote?.fiftyDayAverage && quote?.regularMarketPrice
+          ? (quote.regularMarketPrice / quote.fiftyDayAverage - 1) * 100
+          : null,
       history,
     }
   })

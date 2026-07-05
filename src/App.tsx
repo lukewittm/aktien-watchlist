@@ -2,9 +2,10 @@ import { useEffect, useMemo, useState } from 'react'
 import Sparkline from './Sparkline'
 import StockDetail from './StockDetail'
 import { loadWatchlist, saveWatchlist, type WatchlistEntry } from './watchlist'
-import type { PricesFile, Region, Stock } from './types'
+import type { Benchmark, PricesFile, Region, Stock } from './types'
 
-type SortKey = 'name' | 'sector' | 'price' | 'marketCapEUR' | 'perf3m' | 'perf6m'
+type PerfKey = 'perf3m' | 'perf6m'
+type SortKey = 'name' | 'sector' | 'price' | 'marketCapEUR' | 'perf3m' | 'perf6m' | `o:${string}`
 type RegionFilter = Region | 'ALL'
 type View = 'top' | 'watch'
 
@@ -21,6 +22,13 @@ const REGION_BADGE: Record<Region, string> = {
   US: 'bg-emerald-500/15 text-emerald-300',
   JP: 'bg-rose-500/15 text-rose-300',
   EM: 'bg-amber-500/15 text-amber-300',
+}
+
+// Kurz-Label pro Benchmark-Ticker für die Outperformance-Spalten
+const BENCH_SHORT: Record<string, string> = {
+  'IWDA.L': 'vs World',
+  'EIMI.L': 'vs EM',
+  '^GSPC': 'vs S&P',
 }
 
 function formatMarketCap(v: number | null): string {
@@ -45,7 +53,7 @@ export default function App() {
   const [error, setError] = useState<string | null>(null)
   const [view, setView] = useState<View>('top')
   const [region, setRegion] = useState<RegionFilter>('ALL')
-  const [period, setPeriod] = useState<'perf3m' | 'perf6m'>('perf3m')
+  const [period, setPeriod] = useState<PerfKey>('perf3m')
   const [sortKey, setSortKey] = useState<SortKey | null>(null)
   const [sortAsc, setSortAsc] = useState(false)
   const [minCapBn, setMinCapBn] = useState(2)
@@ -65,6 +73,21 @@ export default function App() {
   useEffect(() => saveWatchlist(watchlist), [watchlist])
 
   const watchedTickers = useMemo(() => new Set(watchlist.map((e) => e.ticker)), [watchlist])
+  const benchmarks: Benchmark[] = useMemo(() => data?.benchmarks ?? [], [data])
+
+  // Benchmark-Performance für den aktiven Zeitraum, nach Ticker
+  const benchPerf = useMemo(() => {
+    const m: Record<string, number | null> = {}
+    for (const b of benchmarks) m[b.ticker] = b[period]
+    return m
+  }, [benchmarks, period])
+
+  function outperf(stock: Stock, benchTicker: string): number | null {
+    const sp = stock[period]
+    const bp = benchPerf[benchTicker]
+    if (sp == null || bp == null) return null
+    return sp - bp
+  }
 
   function toggleWatch(ticker: string) {
     setWatchlist((prev) =>
@@ -80,6 +103,11 @@ export default function App() {
 
   const effectiveSortKey: SortKey = sortKey ?? period
 
+  function sortValue(stock: Stock, key: SortKey): string | number | null {
+    if (key.startsWith('o:')) return outperf(stock, key.slice(2))
+    return stock[key as Exclude<SortKey, `o:${string}`>]
+  }
+
   const rows = useMemo(() => {
     if (!data) return []
     const filtered = data.stocks.filter((s) =>
@@ -90,14 +118,15 @@ export default function App() {
     )
     const dir = sortAsc ? 1 : -1
     return [...filtered].sort((a, b) => {
-      const va = a[effectiveSortKey]
-      const vb = b[effectiveSortKey]
+      const va = sortValue(a, effectiveSortKey)
+      const vb = sortValue(b, effectiveSortKey)
       if (typeof va === 'string' && typeof vb === 'string') return dir * va.localeCompare(vb, 'de')
       const na = (va as number | null) ?? -Infinity
       const nb = (vb as number | null) ?? -Infinity
       return dir * (na - nb)
     })
-  }, [data, view, watchedTickers, region, minCapBn, effectiveSortKey, sortAsc])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data, view, watchedTickers, region, minCapBn, effectiveSortKey, sortAsc, period, benchPerf])
 
   const missingWatched = useMemo(() => {
     if (!data) return []
@@ -130,7 +159,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100">
-      <div className="mx-auto max-w-6xl px-4 py-8">
+      <div className="mx-auto max-w-7xl px-4 py-8">
         <header className="mb-6">
           <div className="flex items-center justify-between gap-4 flex-wrap">
             <h1 className="text-2xl font-bold tracking-tight">
@@ -163,6 +192,17 @@ export default function App() {
               <span className="text-amber-400"> · {data.failedTickers.length} Ticker ohne Daten ({data.failedTickers.join(', ')})</span>
             )}
           </p>
+          {benchmarks.length > 0 && (
+            <p className="text-xs text-zinc-500 mt-1">
+              Benchmarks ({period === 'perf3m' ? '3M' : '6M'}):{' '}
+              {benchmarks.map((b, i) => (
+                <span key={b.ticker}>
+                  {i > 0 && ' · '}
+                  {b.name} <span className={perfClass(b[period])}>{formatPerf(b[period])}</span>
+                </span>
+              ))}
+            </p>
+          )}
         </header>
 
         <div className="flex flex-wrap items-center gap-3 mb-4">
@@ -236,6 +276,17 @@ export default function App() {
                   <th className="px-3 py-2.5">{period === 'perf3m' ? 'Verlauf 3M' : 'Verlauf 6M'}</th>
                   <Th label="3M" k="perf3m" sortKey={effectiveSortKey} asc={sortAsc} onSort={toggleSort} right emphasize={period === 'perf3m'} />
                   <Th label="6M" k="perf6m" sortKey={effectiveSortKey} asc={sortAsc} onSort={toggleSort} right emphasize={period === 'perf6m'} />
+                  {benchmarks.map((b) => (
+                    <Th
+                      key={b.ticker}
+                      label={BENCH_SHORT[b.ticker] ?? b.name}
+                      k={`o:${b.ticker}`}
+                      sortKey={effectiveSortKey}
+                      asc={sortAsc}
+                      onSort={toggleSort}
+                      right
+                    />
+                  ))}
                   {view === 'watch' && <th className="px-3 py-2.5">Notiz</th>}
                 </tr>
               </thead>
@@ -251,6 +302,8 @@ export default function App() {
                     onToggleWatch={toggleWatch}
                     entry={view === 'watch' ? watchlist.find((e) => e.ticker === s.ticker) : undefined}
                     onNote={setNote}
+                    benchmarks={benchmarks}
+                    outperf={outperf}
                   />
                 ))}
               </tbody>
@@ -268,6 +321,7 @@ export default function App() {
       {selected && (
         <StockDetail
           stock={selected}
+          benchmarks={benchmarks}
           onClose={() => setSelected(null)}
           watched={watchedTickers.has(selected.ticker)}
           onToggleWatch={() => toggleWatch(selected.ticker)}
@@ -297,7 +351,7 @@ function Th({
   const active = sortKey === k
   return (
     <th
-      className={`px-3 py-2.5 cursor-pointer select-none hover:text-zinc-200 ${right ? 'text-right' : ''} ${
+      className={`px-3 py-2.5 cursor-pointer select-none hover:text-zinc-200 whitespace-nowrap ${right ? 'text-right' : ''} ${
         emphasize ? 'text-zinc-100' : ''
       }`}
       onClick={() => onSort(k)}
@@ -317,6 +371,8 @@ function Row({
   onToggleWatch,
   entry,
   onNote,
+  benchmarks,
+  outperf,
 }: {
   stock: Stock
   rank: number
@@ -326,6 +382,8 @@ function Row({
   onToggleWatch: (ticker: string) => void
   entry?: WatchlistEntry
   onNote: (ticker: string, note: string) => void
+  benchmarks: Benchmark[]
+  outperf: (stock: Stock, benchTicker: string) => number | null
 }) {
   return (
     <tr className="hover:bg-zinc-900/60 cursor-pointer" onClick={() => onSelect(stock)}>
@@ -374,6 +432,14 @@ function Row({
       <td className={`px-3 py-2 text-right tabular-nums font-medium ${perfClass(stock.perf6m)}`}>
         {formatPerf(stock.perf6m)}
       </td>
+      {benchmarks.map((b) => {
+        const o = outperf(stock, b.ticker)
+        return (
+          <td key={b.ticker} className={`px-3 py-2 text-right tabular-nums ${perfClass(o)}`}>
+            {formatPerf(o)}
+          </td>
+        )
+      })}
       {entry && (
         <td className="px-3 py-2" onClick={(e) => e.stopPropagation()}>
           <input

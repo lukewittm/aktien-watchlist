@@ -24,7 +24,7 @@ npm run build   # Produktions-Build nach dist/
 
 - [x] **Phase 0/1** — Projekt-Setup, Universum, Yahoo-Anbindung, Performance-Berechnung, Top-Performer-Tabelle
 - [x] **Phase 2** — Watchlist (Stern-Toggle, Notizen, localStorage statt D1 bis zum Deployment) + Detail-Ansicht mit Chart (lightweight-charts, 1M/3M/6M/1J) und Kennzahlen; Sparklines in der Tabelle
-- [ ] **Phase 3** — Benchmark-Vergleich (MSCI World / MSCI EM / S&P 500)
+- [x] **Phase 3** — Benchmark-Vergleich: MSCI World (`IWDA.L`), MSCI EM (`EIMI.L`), S&P 500 (`^GSPC`); drei sortierbare Outperformance-Spalten in der Tabelle + Vergleichsmodus im Detail-Chart (Aktie + Benchmarks auf 100 indexiert, per Legende ein-/ausblendbar)
 - [ ] **Phase 4** — Konsistenz-Score (R², positive Wochen, Max Drawdown)
 - [ ] **Phase 5** — Robustheit (Stooq-Backup, Scheduler statt manuellem Fetch)
 

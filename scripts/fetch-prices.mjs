@@ -19,6 +19,13 @@ const RETRIES = 3
 // FX-Paare für Marktkap-Umrechnung nach EUR (Yahoo-Symbole EUR<CCY>=X → Wert: wie viel CCY pro EUR)
 const FX_CURRENCIES = ['USD', 'GBP', 'CHF', 'DKK', 'SEK', 'NOK', 'JPY', 'KRW', 'TWD', 'HKD', 'INR', 'BRL']
 
+// Markt-Benchmarks für den Outperformance-Vergleich (siehe Produktbrief 3.6)
+const BENCHMARKS = [
+  { ticker: 'IWDA.L', name: 'MSCI World' },
+  { ticker: 'EIMI.L', name: 'MSCI EM' },
+  { ticker: '^GSPC', name: 'S&P 500' },
+]
+
 function periodStart() {
   const d = new Date()
   d.setMonth(d.getMonth() - MONTHS_BACK)
@@ -167,6 +174,14 @@ const stocks = (
   })
 )
 
+console.log('Hole Benchmarks ...')
+const benchmarks = []
+for (const b of BENCHMARKS) {
+  const history = await fetchHistory(b.ticker)
+  if (!history) continue
+  benchmarks.push({ ...b, perf3m: performance(history, 3), perf6m: performance(history, 6), history })
+}
+
 const failed = stocks.filter((s) => s.failed)
 const ok = stocks.filter((s) => !s.failed)
 
@@ -174,6 +189,7 @@ const out = {
   fetchedAt: new Date().toISOString(),
   stockCount: ok.length,
   failedTickers: failed.map((s) => s.ticker),
+  benchmarks,
   stocks: ok,
 }
 
@@ -181,7 +197,8 @@ const outDir = path.join(root, 'public/data')
 await mkdir(outDir, { recursive: true })
 await writeFile(path.join(outDir, 'prices.json'), JSON.stringify(out))
 
-console.log(`\nFertig: ${ok.length}/${universe.length} Ticker OK.`)
+console.log(`\nFertig: ${ok.length}/${universe.length} Ticker OK, ${benchmarks.length}/${BENCHMARKS.length} Benchmarks.`)
+for (const b of benchmarks) console.log(`  ${b.name}: 3M ${b.perf3m?.toFixed(1)}% | 6M ${b.perf6m?.toFixed(1)}%`)
 if (failed.length) console.log(`Fehlgeschlagen: ${failed.map((s) => s.ticker).join(', ')}`)
 
 // Plausibilitäts-Stichprobe für Marktkap-Umrechnung

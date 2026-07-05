@@ -20,9 +20,18 @@ export interface Stock {
   history: [string, number][]
 }
 
+export interface Benchmark {
+  ticker: string
+  name: string
+  perf3m: number | null
+  perf6m: number | null
+  history: [string, number][]
+}
+
 export interface PricesFile {
   fetchedAt: string
   stockCount: number
   failedTickers: string[]
+  benchmarks: Benchmark[]
   stocks: Stock[]
 }

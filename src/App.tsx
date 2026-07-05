@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import Sparkline from './Sparkline'
 import StockDetail from './StockDetail'
 import { loadWatchlist, saveWatchlist, type WatchlistEntry } from './watchlist'
+import { getFmpKey, setFmpKey } from './isin'
 import type { Benchmark, PricesFile, Region, Stock } from './types'
 
 type PerfKey = 'perf3m' | 'perf6m' | 'perf12m'
@@ -76,6 +77,15 @@ export default function App() {
   const [sortAsc, setSortAsc] = useState(false)
   const [selected, setSelected] = useState<Stock | null>(null)
   const [watchlist, setWatchlist] = useState<WatchlistEntry[]>(loadWatchlist)
+  const [fmpKey, setFmpKeyState] = useState(getFmpKey)
+  const [showKeyInput, setShowKeyInput] = useState(false)
+  const [keyDraft, setKeyDraft] = useState('')
+
+  function saveKey() {
+    setFmpKey(keyDraft)
+    setFmpKeyState(keyDraft.trim())
+    setShowKeyInput(false)
+  }
 
   // Filter
   const [minCapBn, setMinCapBn] = useState(2)
@@ -243,6 +253,39 @@ export default function App() {
               ))}
             </p>
           )}
+          <div className="text-xs mt-1">
+            <button
+              onClick={() => {
+                setKeyDraft(fmpKey)
+                setShowKeyInput((v) => !v)
+              }}
+              className="text-zinc-500 underline hover:text-zinc-300"
+            >
+              {fmpKey ? 'ISIN-Abruf aktiv · Key ändern' : 'ISIN als Kauf-Identifier aktivieren (kostenloser FMP-Key)'}
+            </button>
+            {showKeyInput && (
+              <div className="mt-1.5 flex flex-wrap items-center gap-2">
+                <input
+                  type="password"
+                  value={keyDraft}
+                  onChange={(e) => setKeyDraft(e.target.value)}
+                  placeholder="FMP API-Key"
+                  className="w-56 rounded-md bg-zinc-900 ring-1 ring-zinc-800 px-2 py-1 text-zinc-100"
+                />
+                <button onClick={saveKey} className="rounded-md bg-zinc-700 px-2.5 py-1 text-zinc-100 hover:bg-zinc-600">
+                  Speichern
+                </button>
+                <a
+                  href="https://site.financialmodelingprep.com/developer/docs/pricing"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-zinc-500 underline hover:text-zinc-300"
+                >
+                  kostenlosen Key holen ↗
+                </a>
+              </div>
+            )}
+          </div>
         </header>
 
         <div className="flex flex-wrap items-center gap-3 mb-3">
@@ -426,6 +469,7 @@ export default function App() {
         <StockDetail
           stock={selected}
           benchmarks={benchmarks}
+          fmpKey={fmpKey}
           onClose={() => setSelected(null)}
           watched={watchedTickers.has(selected.ticker)}
           onToggleWatch={() => toggleWatch(selected.ticker)}

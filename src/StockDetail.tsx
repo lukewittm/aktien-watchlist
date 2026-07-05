@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { AreaSeries, ColorType, createChart, LineSeries, type ISeriesApi } from 'lightweight-charts'
+import { fetchIsin, getCachedIsin } from './isin'
 import type { Benchmark, Stock } from './types'
 
 type ChartPeriod = '1M' | '3M' | '6M' | '1J'
@@ -43,12 +44,14 @@ function formatVolume(v: number | null): string {
 export default function StockDetail({
   stock,
   benchmarks,
+  fmpKey,
   onClose,
   watched,
   onToggleWatch,
 }: {
   stock: Stock
   benchmarks: Benchmark[]
+  fmpKey: string
   onClose: () => void
   watched: boolean
   onToggleWatch: () => void
@@ -56,6 +59,24 @@ export default function StockDetail({
   const [period, setPeriod] = useState<ChartPeriod>('6M')
   const [mode, setMode] = useState<ChartMode>('price')
   const [hidden, setHidden] = useState<Set<string>>(new Set())
+  const [isin, setIsin] = useState<string | null>(() => getCachedIsin(stock.ticker))
+  const [isinError, setIsinError] = useState<string | null>(null)
+  const [copied, setCopied] = useState(false)
+
+  useEffect(() => {
+    setIsin(getCachedIsin(stock.ticker))
+    setIsinError(null)
+    if (!fmpKey) return
+    let cancelled = false
+    fetchIsin(stock.ticker, fmpKey).then((r) => {
+      if (cancelled) return
+      if ('isin' in r) setIsin(r.isin)
+      else setIsinError(r.error)
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [stock.ticker, fmpKey])
   const chartRef = useRef<HTMLDivElement>(null)
   const seriesRef = useRef<Record<string, ISeriesApi<'Line'>>>({})
 
@@ -209,6 +230,29 @@ export default function StockDetail({
                 🇩🇪 In Deutschland handelbar als <span className="font-medium text-zinc-200">{stock.deTicker}</span>
               </p>
             )}
+            <p className="text-xs mt-0.5 flex items-center gap-2">
+              {isin ? (
+                <>
+                  <span className="text-zinc-400">
+                    ISIN <span className="font-medium text-zinc-200 tabular-nums">{isin}</span>
+                  </span>
+                  <button
+                    onClick={() => {
+                      navigator.clipboard?.writeText(isin)
+                      setCopied(true)
+                      setTimeout(() => setCopied(false), 1200)
+                    }}
+                    className="text-zinc-500 underline hover:text-zinc-300"
+                  >
+                    {copied ? 'kopiert ✓' : 'kopieren'}
+                  </button>
+                </>
+              ) : fmpKey ? (
+                <span className="text-zinc-600">{isinError ? `ISIN: ${isinError}` : 'ISIN wird geladen …'}</span>
+              ) : (
+                <span className="text-zinc-600">ISIN: FMP-Key in der Kopfzeile hinterlegen</span>
+              )}
+            </p>
           </div>
           <div className="flex items-center gap-4">
             <div className="text-right">

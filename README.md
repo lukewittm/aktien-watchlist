@@ -45,6 +45,13 @@ Statt einer handgetippten Liste wird das Universum aus **echten Indexbeständen*
 
 Cloudflare Pages + Worker mit Cron-Trigger laut Brief. Bis dahin: lokal `npm run fetch && npm run dev`. Alternative: GitHub Actions committet täglich `prices.json`, GitHub/Cloudflare Pages served den Build.
 
+## Deutschland-Zuschnitt
+
+Da in Deutschland (EUR) gekauft wird:
+- **Alle Kurse/Performance in EUR** – `fetch-prices.mjs` rechnet mit historischen Wechselkursen um (EUR-Rendite inkl. Devisenbewegung); `localPrice`/`localCcy` bleiben als Heimatbörsen-Referenz erhalten.
+- **Nur in DE handelbare Werte** – US/EU/JP bleiben komplett (über Tradegate/gettex/LS handelbar); bei EM sind exotische Lokaltitel (Korea/Taiwan/Indien ohne dt. Notiz) weggelassen, die ~20 handelbaren stehen mit geprüftem deutschen Handelsplatz-Ticker (`deTicker`, 🇩🇪) in `curated.mjs`.
+- **ISIN als Kauf-Identifier** – WKN ist gratis nicht beschaffbar (nur kostenpflichtig). Stattdessen ISIN via Financial Modeling Prep: kostenlosen API-Key in der App-Kopfzeile hinterlegen, ISIN wird beim Öffnen einer Aktie on-demand geholt + gecacht (`src/isin.ts`). Funktioniert im Broker wie eine WKN. *Offen: ob FMP-Free-Tier ISIN auch für Nicht-US-Werte liefert.*
+
 ## Bekannte Datenpunkte
 
 - Yahoo Finance ist inoffiziell/ohne SLA. Letzter Fetch (05.07.2026): 1016/1017 Ticker OK.

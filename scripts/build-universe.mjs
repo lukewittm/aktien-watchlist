@@ -230,6 +230,7 @@ async function main() {
       expectCcy: c.ccy ?? null,
       expectSuffix: suffixOf(c.ticker),
       fixedTicker: c.ticker,
+      de: c.de ?? null, // geprüfter deutscher Handelsplatz-Ticker (Kauf-Hinweis)
     })
   }
 
@@ -282,12 +283,15 @@ async function main() {
     if (!bestByName.has(nk) || r.score > bestByName.get(nk).score) bestByName.set(nk, r)
   }
 
+  // EM stammen ausschließlich aus der kuratierten, in DE handelbaren Liste (curated.mjs);
+  // exotische Titel sind dort bereits weggelassen. deTicker = geprüfter dt. Kauf-Ticker.
   const stocks = [...bestByName.values()]
     .map(({ c, q }) => ({
       ticker: q.symbol,
       name: c.name,
       region: c.region,
       sector: c.sector,
+      ...(c.de ? { deTicker: c.de } : {}),
     }))
     .sort((a, b) => (a.region + a.name).localeCompare(b.region + b.name, 'de'))
 

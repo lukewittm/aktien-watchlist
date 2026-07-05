@@ -18,7 +18,8 @@ function ccy(ticker) {
   if (m && CCY_BY_SUFFIX[m[0]]) return CCY_BY_SUFFIX[m[0]]
   return 'USD' // US-Ticker ohne Suffix
 }
-const mk = (ticker, name, region, sector) => ({ ticker, name, region, sector, ccy: ccy(ticker) })
+// de = geprüfter deutscher Handelsplatz-Ticker (Xetra/Frankfurt/regional), optional
+const mk = (ticker, name, region, sector, de) => ({ ticker, name, region, sector, ccy: ccy(ticker), ...(de ? { de } : {}) })
 
 // GICS-Sektor (S&P-500-CSV) -> deutsches Label
 export const SECTOR_MAP = {
@@ -149,43 +150,35 @@ const JP = [
   mk('4519.T', 'Chugai Pharma', 'JP', 'Gesundheit'),
 ]
 
-// MSCI-EM-Kernländer: Südkorea, Taiwan, China/Hongkong, Indien, Brasilien
+// MSCI-EM-Kernländer, aber NUR in Deutschland handelbare Werte (geprüfter dt. Ticker).
+// Exotische (Korea/Taiwan/Indien-Lokaltitel ohne liquide dt. Notiz) bewusst weggelassen:
+// Hyundai, LG Chem, NAVER, Hon Hai, MediaTek, Bharti Airtel, TCS, China Mobile, WEG, Delta(TW).
 const EM = [
   // Südkorea
-  mk('005930.KS', 'Samsung Electronics', 'EM', 'Technologie'),
-  mk('000660.KS', 'SK Hynix', 'EM', 'Technologie'),
-  mk('005380.KS', 'Hyundai Motor', 'EM', 'Auto'),
-  mk('051910.KS', 'LG Chem', 'EM', 'Chemie'),
-  mk('035420.KS', 'NAVER', 'EM', 'Technologie'),
+  mk('005930.KS', 'Samsung Electronics', 'EM', 'Technologie', 'SSUN.F'),
+  mk('000660.KS', 'SK Hynix', 'EM', 'Technologie', 'HY9H.F'),
   // Taiwan
-  mk('2330.TW', 'TSMC', 'EM', 'Technologie'),
-  mk('2317.TW', 'Hon Hai (Foxconn)', 'EM', 'Technologie'),
-  mk('2454.TW', 'MediaTek', 'EM', 'Technologie'),
-  mk('2308.TW', 'Delta Electronics', 'EM', 'Technologie'),
-  mk('2412.TW', 'Chunghwa Telecom', 'EM', 'Kommunikation'),
+  mk('2330.TW', 'TSMC', 'EM', 'Technologie', 'TSFA.F'),
+  mk('2412.TW', 'Chunghwa Telecom', 'EM', 'Kommunikation', 'CHWD.F'),
   // China / Hongkong
-  mk('0700.HK', 'Tencent', 'EM', 'Technologie'),
-  mk('9988.HK', 'Alibaba', 'EM', 'Konsum'),
-  mk('3690.HK', 'Meituan', 'EM', 'Konsum'),
-  mk('1810.HK', 'Xiaomi', 'EM', 'Technologie'),
-  mk('9618.HK', 'JD.com', 'EM', 'Konsum'),
-  mk('1211.HK', 'BYD', 'EM', 'Auto'),
-  mk('2318.HK', 'Ping An', 'EM', 'Finanzen'),
-  mk('0941.HK', 'China Mobile', 'EM', 'Kommunikation'),
+  mk('0700.HK', 'Tencent', 'EM', 'Technologie', 'NNN1.F'),
+  mk('9988.HK', 'Alibaba', 'EM', 'Konsum', 'AHL1.F'),
+  mk('3690.HK', 'Meituan', 'EM', 'Konsum', '9MD2.F'),
+  mk('1810.HK', 'Xiaomi', 'EM', 'Technologie', '3CP2.F'),
+  mk('9618.HK', 'JD.com', 'EM', 'Konsum', '013A.F'),
+  mk('1211.HK', 'BYD', 'EM', 'Auto', '4BY1.F'),
+  mk('2318.HK', 'Ping An', 'EM', 'Finanzen', 'PZX.F'),
   // Indien
-  mk('RELIANCE.NS', 'Reliance Industries', 'EM', 'Energie'),
-  mk('TCS.NS', 'Tata Consultancy', 'EM', 'Technologie'),
-  mk('HDFCBANK.NS', 'HDFC Bank', 'EM', 'Finanzen'),
-  mk('INFY.NS', 'Infosys', 'EM', 'Technologie'),
-  mk('ICICIBANK.NS', 'ICICI Bank', 'EM', 'Finanzen'),
-  mk('BHARTIARTL.NS', 'Bharti Airtel', 'EM', 'Kommunikation'),
-  mk('LT.NS', 'Larsen & Toubro', 'EM', 'Industrie'),
+  mk('RELIANCE.NS', 'Reliance Industries', 'EM', 'Energie', 'RLI.F'),
+  mk('HDFCBANK.NS', 'HDFC Bank', 'EM', 'Finanzen', 'HDFA.F'),
+  mk('INFY.NS', 'Infosys', 'EM', 'Technologie', 'IOY.F'),
+  mk('ICICIBANK.NS', 'ICICI Bank', 'EM', 'Finanzen', 'ICBA.F'),
+  mk('LT.NS', 'Larsen & Toubro', 'EM', 'Industrie', 'LTO.F'),
   // Brasilien
-  mk('VALE3.SA', 'Vale', 'EM', 'Rohstoffe'),
-  mk('PETR4.SA', 'Petrobras', 'EM', 'Energie'),
-  mk('ITUB4.SA', 'Itaú Unibanco', 'EM', 'Finanzen'),
-  mk('WEGE3.SA', 'WEG', 'EM', 'Industrie'),
-  mk('BBAS3.SA', 'Banco do Brasil', 'EM', 'Finanzen'),
+  mk('VALE3.SA', 'Vale', 'EM', 'Rohstoffe', 'CVLC.SG'),
+  mk('PETR4.SA', 'Petrobras', 'EM', 'Energie', 'PJXB.F'),
+  mk('ITUB4.SA', 'Itaú Unibanco', 'EM', 'Finanzen', 'BVXB.SG'),
+  mk('BBAS3.SA', 'Banco do Brasil', 'EM', 'Finanzen', 'BZLA.MU'),
 ]
 
 export const CURATED = [...EU, ...JP, ...EM]

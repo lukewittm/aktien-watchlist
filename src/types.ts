@@ -5,7 +5,14 @@ export interface Stock {
   name: string
   region: Region
   sector: string
+  /** geprüfter deutscher Handelsplatz-Ticker (Kauf-Hinweis), wo vorhanden */
+  deTicker?: string
+  /** immer 'EUR' – alle Kurse/Performance sind nach EUR umgerechnet */
   currency: string | null
+  /** Notierungswährung der Heimatbörse (Referenz) */
+  localCcy: string
+  /** Kurs in Heimatwährung (Referenz) */
+  localPrice: number
   price: number
   marketCapEUR: number | null
   perf3m: number | null

@@ -204,13 +204,23 @@ export default function StockDetail({
               {stock.ticker} · {stock.sector} ·{' '}
               {{ EU: 'Europa', US: 'USA', JP: 'Japan', EM: 'Emerging Markets' }[stock.region]}
             </p>
+            {stock.deTicker && (
+              <p className="text-xs text-zinc-400 mt-0.5">
+                🇩🇪 In Deutschland handelbar als <span className="font-medium text-zinc-200">{stock.deTicker}</span>
+              </p>
+            )}
           </div>
           <div className="flex items-center gap-4">
             <div className="text-right">
               <div className="text-xl font-semibold tabular-nums">
                 {stock.price.toLocaleString('de-DE', { maximumFractionDigits: 2 })}
-                <span className="text-sm text-zinc-400 ml-1">{stock.currency}</span>
+                <span className="text-sm text-zinc-400 ml-1">€</span>
               </div>
+              {stock.localCcy && stock.localCcy !== 'EUR' && (
+                <div className="text-xs text-zinc-500 tabular-nums">
+                  {stock.localPrice.toLocaleString('de-DE', { maximumFractionDigits: 2 })} {stock.localCcy} Heimatbörse
+                </div>
+              )}
               {periodPerf != null && (
                 <div className={`text-sm font-medium tabular-nums ${rising ? 'text-emerald-400' : 'text-red-400'}`}>
                   {periodPerf > 0 ? '+' : ''}

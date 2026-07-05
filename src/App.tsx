@@ -226,7 +226,7 @@ export default function App() {
           </div>
           <p className="text-sm text-zinc-400 mt-1">
             {data
-              ? `${rows.length} ${view === 'watch' ? 'Aktien auf der Watchlist' : `von ${data.stockCount} Aktien`} · Stand ${new Date(data.fetchedAt).toLocaleString('de-DE', { dateStyle: 'medium', timeStyle: 'short' })}`
+              ? `${rows.length} ${view === 'watch' ? 'Aktien auf der Watchlist' : `von ${data.stockCount} Aktien`} · Stand ${new Date(data.fetchedAt).toLocaleString('de-DE', { dateStyle: 'medium', timeStyle: 'short' })} · Kurse & Performance in EUR`
               : 'Lade Kursdaten …'}
             {data && data.failedTickers.length > 0 && (
               <span className="text-amber-400"> · {data.failedTickers.length} Ticker ohne Daten</span>
@@ -509,6 +509,9 @@ function Row({
         <div className="font-medium text-zinc-100">{stock.name}</div>
         <div className="text-xs text-zinc-500">
           {stock.ticker}
+          {stock.deTicker && (
+            <span className="ml-2 text-zinc-400" title="Deutscher Handelsplatz (Kauf)">🇩🇪 {stock.deTicker}</span>
+          )}
           {entry && (
             <span className="ml-2 text-zinc-600">
               seit {new Date(entry.addedAt).toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: '2-digit' })}
@@ -524,7 +527,7 @@ function Row({
       <td className="px-3 py-2 text-zinc-400">{stock.sector}</td>
       <td className="px-3 py-2 text-right tabular-nums text-zinc-300">
         {stock.price.toLocaleString('de-DE', { maximumFractionDigits: 2 })}
-        <span className="text-zinc-500 text-xs ml-1">{stock.currency}</span>
+        <span className="text-zinc-500 text-xs ml-1">€</span>
       </td>
       <td className="px-3 py-2 text-right tabular-nums text-zinc-300">{formatMarketCap(stock.marketCapEUR)}</td>
       <td className="px-3 py-2">

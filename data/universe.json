@@ -1,12 +1,13 @@
 {
  "comment": "Regelbasiert aus S&P 500 (datahub) + europäischen Indizes (pytickersymbols) + kuratierten JP/EM/Must-haves. Jeder Ticker gegen Yahoo validiert. Neu erzeugen: npm run build:universe",
- "builtAt": "2026-07-05T09:30:21.306Z",
+ "builtAt": "2026-07-05T10:24:22.759Z",
  "stocks": [
   {
    "ticker": "9988.HK",
    "name": "Alibaba",
    "region": "EM",
-   "sector": "Konsum"
+   "sector": "Konsum",
+   "deTicker": "AHL1.F"
   },
   {
    "ticker": "3711.TW",
@@ -18,175 +19,134 @@
    "ticker": "BBAS3.SA",
    "name": "Banco do Brasil",
    "region": "EM",
-   "sector": "Finanzen"
-  },
-  {
-   "ticker": "BHARTIARTL.NS",
-   "name": "Bharti Airtel",
-   "region": "EM",
-   "sector": "Kommunikation"
+   "sector": "Finanzen",
+   "deTicker": "BZLA.MU"
   },
   {
    "ticker": "1211.HK",
    "name": "BYD",
    "region": "EM",
-   "sector": "Auto"
-  },
-  {
-   "ticker": "0941.HK",
-   "name": "China Mobile",
-   "region": "EM",
-   "sector": "Kommunikation"
+   "sector": "Auto",
+   "deTicker": "4BY1.F"
   },
   {
    "ticker": "2412.TW",
    "name": "Chunghwa Telecom",
    "region": "EM",
-   "sector": "Kommunikation"
-  },
-  {
-   "ticker": "2308.TW",
-   "name": "Delta Electronics",
-   "region": "EM",
-   "sector": "Technologie"
+   "sector": "Kommunikation",
+   "deTicker": "CHWD.F"
   },
   {
    "ticker": "HDFCBANK.NS",
    "name": "HDFC Bank",
    "region": "EM",
-   "sector": "Finanzen"
-  },
-  {
-   "ticker": "2317.TW",
-   "name": "Hon Hai (Foxconn)",
-   "region": "EM",
-   "sector": "Technologie"
-  },
-  {
-   "ticker": "005380.KS",
-   "name": "Hyundai Motor",
-   "region": "EM",
-   "sector": "Auto"
+   "sector": "Finanzen",
+   "deTicker": "HDFA.F"
   },
   {
    "ticker": "ICICIBANK.NS",
    "name": "ICICI Bank",
    "region": "EM",
-   "sector": "Finanzen"
+   "sector": "Finanzen",
+   "deTicker": "ICBA.F"
   },
   {
    "ticker": "INFY.NS",
    "name": "Infosys",
    "region": "EM",
-   "sector": "Technologie"
+   "sector": "Technologie",
+   "deTicker": "IOY.F"
   },
   {
    "ticker": "ITUB4.SA",
    "name": "Itaú Unibanco",
    "region": "EM",
-   "sector": "Finanzen"
+   "sector": "Finanzen",
+   "deTicker": "BVXB.SG"
   },
   {
    "ticker": "9618.HK",
    "name": "JD.com",
    "region": "EM",
-   "sector": "Konsum"
+   "sector": "Konsum",
+   "deTicker": "013A.F"
   },
   {
    "ticker": "LT.NS",
    "name": "Larsen & Toubro",
    "region": "EM",
-   "sector": "Industrie"
-  },
-  {
-   "ticker": "051910.KS",
-   "name": "LG Chem",
-   "region": "EM",
-   "sector": "Chemie"
-  },
-  {
-   "ticker": "2454.TW",
-   "name": "MediaTek",
-   "region": "EM",
-   "sector": "Technologie"
+   "sector": "Industrie",
+   "deTicker": "LTO.F"
   },
   {
    "ticker": "3690.HK",
    "name": "Meituan",
    "region": "EM",
-   "sector": "Konsum"
-  },
-  {
-   "ticker": "035420.KS",
-   "name": "NAVER",
-   "region": "EM",
-   "sector": "Technologie"
+   "sector": "Konsum",
+   "deTicker": "9MD2.F"
   },
   {
    "ticker": "PETR4.SA",
    "name": "Petrobras",
    "region": "EM",
-   "sector": "Energie"
+   "sector": "Energie",
+   "deTicker": "PJXB.F"
   },
   {
    "ticker": "2318.HK",
    "name": "Ping An",
    "region": "EM",
-   "sector": "Finanzen"
+   "sector": "Finanzen",
+   "deTicker": "PZX.F"
   },
   {
    "ticker": "RELIANCE.NS",
    "name": "Reliance Industries",
    "region": "EM",
-   "sector": "Energie"
+   "sector": "Energie",
+   "deTicker": "RLI.F"
   },
   {
    "ticker": "005930.KS",
    "name": "Samsung Electronics",
    "region": "EM",
-   "sector": "Technologie"
+   "sector": "Technologie",
+   "deTicker": "SSUN.F"
   },
   {
    "ticker": "000660.KS",
    "name": "SK Hynix",
    "region": "EM",
-   "sector": "Technologie"
-  },
-  {
-   "ticker": "TCS.NS",
-   "name": "Tata Consultancy",
-   "region": "EM",
-   "sector": "Technologie"
+   "sector": "Technologie",
+   "deTicker": "HY9H.F"
   },
   {
    "ticker": "0700.HK",
    "name": "Tencent",
    "region": "EM",
-   "sector": "Technologie"
+   "sector": "Technologie",
+   "deTicker": "NNN1.F"
   },
   {
    "ticker": "2330.TW",
    "name": "TSMC",
    "region": "EM",
-   "sector": "Technologie"
+   "sector": "Technologie",
+   "deTicker": "TSFA.F"
   },
   {
    "ticker": "VALE3.SA",
    "name": "Vale",
    "region": "EM",
-   "sector": "Rohstoffe"
-  },
-  {
-   "ticker": "WEGE3.SA",
-   "name": "WEG",
-   "region": "EM",
-   "sector": "Industrie"
+   "sector": "Rohstoffe",
+   "deTicker": "CVLC.SG"
   },
   {
    "ticker": "1810.HK",
    "name": "Xiaomi",
    "region": "EM",
-   "sector": "Technologie"
+   "sector": "Technologie",
+   "deTicker": "3CP2.F"
   },
   {
    "ticker": "1U1.DE",
@@ -225,7 +185,7 @@
    "sector": "Rohstoffe"
   },
   {
-   "ticker": "B3K.F",
+   "ticker": "ACKB.BR",
    "name": "Ackermans & van Haaren",
    "region": "EU",
    "sector": "Industrie"
@@ -1329,7 +1289,7 @@
    "sector": "Industrie"
   },
   {
-   "ticker": "HABA.DE",
+   "ticker": "HAB2.VI",
    "name": "Hamborner",
    "region": "EU",
    "sector": "Immobilien"
@@ -2883,7 +2843,7 @@
    "sector": "Industrie"
   },
   {
-   "ticker": "VIRP.PA",
+   "ticker": "V16.F",
    "name": "Virbac",
    "region": "EU",
    "sector": "Gesundheit"

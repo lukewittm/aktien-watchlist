@@ -1,6 +1,6 @@
 {
  "comment": "Regelbasiert aus S&P 500 (datahub) + europäischen Indizes (pytickersymbols) + kuratierten JP/EM/Must-haves. Jeder Ticker gegen Yahoo validiert. Neu erzeugen: npm run build:universe",
- "builtAt": "2026-07-05T10:24:22.759Z",
+ "builtAt": "2026-07-05T21:02:56.142Z",
  "stocks": [
   {
    "ticker": "9988.HK",
@@ -72,6 +72,13 @@
    "deTicker": "013A.F"
   },
   {
+   "ticker": "105560.KS",
+   "name": "KB Financial",
+   "region": "EM",
+   "sector": "Finanzen",
+   "deTicker": "KBIA.F"
+  },
+  {
    "ticker": "LT.NS",
    "name": "Larsen & Toubro",
    "region": "EM",
@@ -100,6 +107,13 @@
    "deTicker": "PZX.F"
   },
   {
+   "ticker": "005490.KS",
+   "name": "POSCO Holdings",
+   "region": "EM",
+   "sector": "Rohstoffe",
+   "deTicker": "PKX.F"
+  },
+  {
    "ticker": "RELIANCE.NS",
    "name": "Reliance Industries",
    "region": "EM",
@@ -112,6 +126,20 @@
    "region": "EM",
    "sector": "Technologie",
    "deTicker": "SSUN.F"
+  },
+  {
+   "ticker": "006400.KS",
+   "name": "Samsung SDI",
+   "region": "EM",
+   "sector": "Technologie",
+   "deTicker": "XSDG.MU"
+  },
+  {
+   "ticker": "055550.KS",
+   "name": "Shinhan Financial",
+   "region": "EM",
+   "sector": "Finanzen",
+   "deTicker": "KSF1.F"
   },
   {
    "ticker": "000660.KS",
@@ -185,7 +213,7 @@
    "sector": "Rohstoffe"
   },
   {
-   "ticker": "ACKB.BR",
+   "ticker": "B3K.F",
    "name": "Ackermans & van Haaren",
    "region": "EU",
    "sector": "Industrie"
@@ -365,7 +393,7 @@
    "sector": "Technologie"
   },
   {
-   "ticker": "ALZC.F",
+   "ticker": "ASSA-B.ST",
    "name": "Assa Abloy",
    "region": "EU",
    "sector": "Konsum"
@@ -389,7 +417,7 @@
    "sector": "Technologie"
   },
   {
-   "ticker": "ACO4.F",
+   "ticker": "ATCO-A.ST",
    "name": "Atlas Copco",
    "region": "EU",
    "sector": "Industrie"
@@ -563,7 +591,7 @@
    "sector": "Rohstoffe"
   },
   {
-   "ticker": "BOL.PA",
+   "ticker": "BOL.VI",
    "name": "Bolloré",
    "region": "EU",
    "sector": "Logistik"
@@ -719,7 +747,7 @@
    "sector": "Immobilien"
   },
   {
-   "ticker": "COLR.BR",
+   "ticker": "COLR.VI",
    "name": "Colruyt Group",
    "region": "EU",
    "sector": "Konsum"
@@ -1289,7 +1317,7 @@
    "sector": "Industrie"
   },
   {
-   "ticker": "HAB2.VI",
+   "ticker": "HABA.DE",
    "name": "Hamborner",
    "region": "EU",
    "sector": "Immobilien"
@@ -2153,7 +2181,7 @@
    "sector": "Konsum"
   },
   {
-   "ticker": "RDC.DE",
+   "ticker": "SHOP.VI",
    "name": "Redcare Pharmacy",
    "region": "EU",
    "sector": "Konsum"
@@ -2441,7 +2469,7 @@
    "sector": "Industrie"
   },
   {
-   "ticker": "SKF-A.ST",
+   "ticker": "1SKFB.MI",
    "name": "SKF",
    "region": "EU",
    "sector": "Sonstige"
@@ -2571,6 +2599,12 @@
    "name": "Südzucker",
    "region": "EU",
    "sector": "Konsum"
+  },
+  {
+   "ticker": "SVHG.F",
+   "name": "Svenska Handelsbanken AB",
+   "region": "EU",
+   "sector": "Finanzen"
   },
   {
    "ticker": "SWED-A.ST",
@@ -2735,12 +2769,6 @@
    "sector": "Gesundheit"
   },
   {
-   "ticker": "UMI.BR",
-   "name": "Umicore",
-   "region": "EU",
-   "sector": "Rohstoffe"
-  },
-  {
    "ticker": "URW.PA",
    "name": "Unibail-Rodamco-Westfield",
    "region": "EU",
@@ -2843,7 +2871,7 @@
    "sector": "Industrie"
   },
   {
-   "ticker": "V16.F",
+   "ticker": "VIRP.PA",
    "name": "Virbac",
    "region": "EU",
    "sector": "Gesundheit"

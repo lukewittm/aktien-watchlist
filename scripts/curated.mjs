@@ -154,9 +154,13 @@ const JP = [
 // Exotische (Korea/Taiwan/Indien-Lokaltitel ohne liquide dt. Notiz) bewusst weggelassen:
 // Hyundai, LG Chem, NAVER, Hon Hai, MediaTek, Bharti Airtel, TCS, China Mobile, WEG, Delta(TW).
 const EM = [
-  // Südkorea
+  // Südkorea (nur Werte mit deutscher Notiz; Hyundai/Kia/LG/NAVER/Kakao ohne dt. Handel)
   mk('005930.KS', 'Samsung Electronics', 'EM', 'Technologie', 'SSUN.F'),
   mk('000660.KS', 'SK Hynix', 'EM', 'Technologie', 'HY9H.F'),
+  mk('006400.KS', 'Samsung SDI', 'EM', 'Technologie', 'XSDG.MU'),
+  mk('005490.KS', 'POSCO Holdings', 'EM', 'Rohstoffe', 'PKX.F'),
+  mk('105560.KS', 'KB Financial', 'EM', 'Finanzen', 'KBIA.F'),
+  mk('055550.KS', 'Shinhan Financial', 'EM', 'Finanzen', 'KSF1.F'),
   // Taiwan
   mk('2330.TW', 'TSMC', 'EM', 'Technologie', 'TSFA.F'),
   mk('2412.TW', 'Chunghwa Telecom', 'EM', 'Kommunikation', 'CHWD.F'),

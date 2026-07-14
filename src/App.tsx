@@ -146,7 +146,9 @@ export default function App() {
     setRefreshDoneAt(null)
     try {
       const res = await fetch('/api/refresh', { method: 'POST' })
-      if (res.status === 404) {
+      // Statischer Host ohne Dev-Server antwortet je nach Anbieter unterschiedlich
+      // (GitHub Pages: 405, andere ggf. 404) – beides heißt "Endpoint gibt es hier nicht".
+      if (res.status === 404 || res.status === 405) {
         setRefreshError('Nur im lokalen Dev-Server verfügbar (npm run dev). Die deployte Seite aktualisiert sich automatisch per täglichem Cron.')
         return
       }

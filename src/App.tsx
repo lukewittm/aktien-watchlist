@@ -51,6 +51,27 @@ function perfClass(v: number | null): string {
   return v >= 0 ? 'text-emerald-400' : 'text-red-400'
 }
 
+interface RefreshStatus {
+  running: boolean
+  log: string
+  exitCode: number | null
+  startedAt: number | null
+  finishedAt: number | null
+}
+
+// Größten "NNN/MMM"-Treffer im Log finden (Ticker-Fortschritt, nicht die kleinere Benchmark-Zählung)
+function parseProgress(log: string): string | null {
+  const matches = [...log.matchAll(/(\d+)\/(\d+)/g)]
+  if (!matches.length) return null
+  const best = matches.reduce((a, b) => (Number(b[2]) > Number(a[2]) ? b : a))
+  return `${best[1]}/${best[2]} Ticker`
+}
+
+function lastLogLine(log: string): string {
+  const lines = log.trim().split('\n').filter(Boolean)
+  return lines[lines.length - 1] ?? ''
+}
+
 // Periodenperformance einer Benchmark direkt aus ihrer Historie (für jeden Zeitraum)
 function histPerf(history: [string, number][], months: number): number | null {
   if (!history?.length) return null
@@ -81,6 +102,11 @@ export default function App() {
   const [showKeyInput, setShowKeyInput] = useState(false)
   const [keyDraft, setKeyDraft] = useState('')
 
+  const [refreshing, setRefreshing] = useState(false)
+  const [refreshLog, setRefreshLog] = useState('')
+  const [refreshError, setRefreshError] = useState<string | null>(null)
+  const [refreshDoneAt, setRefreshDoneAt] = useState<number | null>(null)
+
   function saveKey() {
     setFmpKey(keyDraft)
     setFmpKeyState(keyDraft.trim())
@@ -96,7 +122,7 @@ export default function App() {
   const [above200, setAbove200] = useState(false)
 
   useEffect(() => {
-    fetch('/data/prices.json')
+    fetch(`${import.meta.env.BASE_URL}data/prices.json`)
       .then((r) => {
         if (!r.ok) throw new Error(`HTTP ${r.status}`)
         return r.json()
@@ -104,6 +130,69 @@ export default function App() {
       .then(setData)
       .catch((e) => setError(String(e)))
   }, [])
+
+  // Falls die Seite mitten in einem laufenden Fetch neu geladen wurde: Polling wieder aufnehmen
+  useEffect(() => {
+    fetch('/api/refresh')
+      .then((r) => (r.ok ? (r.json() as Promise<RefreshStatus>) : null))
+      .then((status) => {
+        if (status?.running) setRefreshing(true)
+      })
+      .catch(() => {})
+  }, [])
+
+  async function startRefresh() {
+    setRefreshError(null)
+    setRefreshDoneAt(null)
+    try {
+      const res = await fetch('/api/refresh', { method: 'POST' })
+      if (res.status === 404) {
+        setRefreshError('Nur im lokalen Dev-Server verfügbar (npm run dev). Die deployte Seite aktualisiert sich automatisch per täglichem Cron.')
+        return
+      }
+      if (!res.ok && res.status !== 409) {
+        setRefreshError(`Start fehlgeschlagen (HTTP ${res.status})`)
+        return
+      }
+      setRefreshing(true)
+    } catch (e) {
+      setRefreshError(`Start fehlgeschlagen: ${String(e)}`)
+    }
+  }
+
+  useEffect(() => {
+    if (!refreshing) return
+    let cancelled = false
+    async function poll() {
+      try {
+        const res = await fetch('/api/refresh')
+        if (!res.ok || cancelled) return
+        const status: RefreshStatus = await res.json()
+        if (cancelled) return
+        setRefreshLog(status.log)
+        if (!status.running) {
+          setRefreshing(false)
+          if (status.exitCode === 0) {
+            setRefreshDoneAt(Date.now())
+            fetch(`${import.meta.env.BASE_URL}data/prices.json?t=${Date.now()}`, { cache: 'no-store' })
+              .then((r) => r.json())
+              .then(setData)
+              .catch((e) => setError(String(e)))
+          } else if (status.exitCode !== null) {
+            setRefreshError(status.log.trim().split('\n').slice(-6).join('\n') || `Exit-Code ${status.exitCode}`)
+          }
+        }
+      } catch {
+        // Netzwerk-Hänger beim Pollen ignorieren, nächster Tick versucht es erneut
+      }
+    }
+    poll()
+    const id = setInterval(poll, 1500)
+    return () => {
+      cancelled = true
+      clearInterval(id)
+    }
+  }, [refreshing])
 
   useEffect(() => saveWatchlist(watchlist), [watchlist])
 
@@ -242,6 +331,29 @@ export default function App() {
               <span className="text-amber-400"> · {data.failedTickers.length} Ticker ohne Daten</span>
             )}
           </p>
+
+          <div className="flex items-center gap-2 mt-1.5">
+            <button
+              onClick={startRefresh}
+              disabled={refreshing}
+              className="text-xs rounded-md px-2.5 py-1 ring-1 ring-zinc-700 text-zinc-300 hover:bg-zinc-800 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+            >
+              {refreshing ? '⏳ Aktualisiert …' : '🔄 Kurse aktualisieren'}
+            </button>
+            {refreshing && (
+              <span className="text-xs text-zinc-500">
+                {parseProgress(refreshLog) ? `${parseProgress(refreshLog)} …` : lastLogLine(refreshLog) || 'Startet …'}
+              </span>
+            )}
+            {!refreshing && refreshDoneAt && !refreshError && (
+              <span className="text-xs text-emerald-400">aktualisiert ✓</span>
+            )}
+          </div>
+          {refreshError && (
+            <pre className="text-xs text-red-400 mt-1 whitespace-pre-wrap font-sans">
+              Fehler beim Aktualisieren: {refreshError}
+            </pre>
+          )}
           {benchmarks.length > 0 && (
             <p className="text-xs text-zinc-500 mt-1">
               Benchmarks ({PERIOD_LABEL[period]}):{' '}

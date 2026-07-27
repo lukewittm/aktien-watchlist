@@ -18,7 +18,7 @@ import YahooFinance from 'yahoo-finance2'
 
 const require = createRequire(import.meta.url)
 const yaml = require('js-yaml')
-import { CURATED, MUST_HAVE, SECTOR_MAP, INDUSTRY_TO_SECTOR } from './curated.mjs'
+import { CURATED, MUST_HAVE, DELISTED, SECTOR_MAP, INDUSTRY_TO_SECTOR } from './curated.mjs'
 
 const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)))
 const yf = new YahooFinance({ suppressNotices: ['yahooSurvey', 'ripHistorical'] })
@@ -285,7 +285,9 @@ async function main() {
 
   // EM stammen ausschließlich aus der kuratierten, in DE handelbaren Liste (curated.mjs);
   // exotische Titel sind dort bereits weggelassen. deTicker = geprüfter dt. Kauf-Ticker.
+  const delistedTickers = new Set(DELISTED.map((d) => d.ticker))
   const stocks = [...bestByName.values()]
+    .filter((r) => !delistedTickers.has(r.q.symbol))
     .map(({ c, q }) => ({
       ticker: q.symbol,
       name: c.name,

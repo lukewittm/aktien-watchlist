@@ -1,6 +1,6 @@
 {
  "comment": "Regelbasiert aus S&P 500 (datahub) + europäischen Indizes (pytickersymbols) + kuratierten JP/EM/Must-haves. Jeder Ticker gegen Yahoo validiert. Neu erzeugen: npm run build:universe",
- "builtAt": "2026-07-05T21:02:56.142Z",
+ "builtAt": "2026-07-27T09:52:59.882Z",
  "stocks": [
   {
    "ticker": "9988.HK",
@@ -279,7 +279,7 @@
    "sector": "Chemie"
   },
   {
-   "ticker": "AIR.MC",
+   "ticker": "AIR.PA",
    "name": "Airbus",
    "region": "EU",
    "sector": "Industrie"
@@ -301,12 +301,6 @@
    "name": "AkzoNobel",
    "region": "EU",
    "sector": "Chemie"
-  },
-  {
-   "ticker": "ALD.DE",
-   "name": "ALD Automotive",
-   "region": "EU",
-   "sector": "Sonstige"
   },
   {
    "ticker": "ALFA.ST",
@@ -417,7 +411,7 @@
    "sector": "Technologie"
   },
   {
-   "ticker": "ATCO-A.ST",
+   "ticker": "ACO4.F",
    "name": "Atlas Copco",
    "region": "EU",
    "sector": "Industrie"
@@ -591,7 +585,7 @@
    "sector": "Rohstoffe"
   },
   {
-   "ticker": "BOL.VI",
+   "ticker": "BOL.PA",
    "name": "Bolloré",
    "region": "EU",
    "sector": "Logistik"
@@ -741,13 +735,7 @@
    "sector": "Finanzen"
   },
   {
-   "ticker": "COFB.BR",
-   "name": "Cofinimmo",
-   "region": "EU",
-   "sector": "Immobilien"
-  },
-  {
-   "ticker": "COLR.VI",
+   "ticker": "COLR.BR",
    "name": "Colruyt Group",
    "region": "EU",
    "sector": "Konsum"
@@ -1017,7 +1005,7 @@
    "sector": "Versorger"
   },
   {
-   "ticker": "EKT.DE",
+   "ticker": "EKT.F",
    "name": "Energiekontor",
    "region": "EU",
    "sector": "Sonstige"
@@ -1065,7 +1053,7 @@
    "sector": "Gesundheit"
   },
   {
-   "ticker": "ESSITY-B.ST",
+   "ticker": "ESSITY-A.ST",
    "name": "Essity AB",
    "region": "EU",
    "sector": "Konsum"
@@ -1203,7 +1191,7 @@
    "sector": "Chemie"
   },
   {
-   "ticker": "GXE.F",
+   "ticker": "GXEA.F",
    "name": "Galapagos NV",
    "region": "EU",
    "sector": "Technologie"
@@ -1293,7 +1281,7 @@
    "sector": "Gesundheit"
   },
   {
-   "ticker": "HMSA.F",
+   "ticker": "HMSB.F",
    "name": "H&M",
    "region": "EU",
    "sector": "Konsum"
@@ -1317,7 +1305,7 @@
    "sector": "Industrie"
   },
   {
-   "ticker": "HABA.DE",
+   "ticker": "HAB2.VI",
    "name": "Hamborner",
    "region": "EU",
    "sector": "Immobilien"
@@ -1623,7 +1611,7 @@
    "sector": "Konsum"
   },
   {
-   "ticker": "KEK1.F",
+   "ticker": "KEK.F",
    "name": "Kesko",
    "region": "EU",
    "sector": "Konsum"
@@ -1905,12 +1893,6 @@
    "sector": "Technologie"
   },
   {
-   "ticker": "N1N.F",
-   "name": "Neoen",
-   "region": "EU",
-   "sector": "Energie"
-  },
-  {
    "ticker": "NESTE.HE",
    "name": "Neste",
    "region": "EU",
@@ -2151,7 +2133,7 @@
    "sector": "Sonstige"
   },
   {
-   "ticker": "1QGEN.MI",
+   "ticker": "QIA.F",
    "name": "Qiagen",
    "region": "EU",
    "sector": "Technologie"
@@ -2181,7 +2163,7 @@
    "sector": "Konsum"
   },
   {
-   "ticker": "SHOP.VI",
+   "ticker": "RDC.DE",
    "name": "Redcare Pharmacy",
    "region": "EU",
    "sector": "Konsum"
@@ -2236,7 +2218,7 @@
   },
   {
    "ticker": "RO.SW",
-   "name": "Roche (Inhaber)",
+   "name": "Roche Holding AG",
    "region": "EU",
    "sector": "Gesundheit"
   },
@@ -2463,13 +2445,13 @@
    "sector": "Finanzen"
   },
   {
-   "ticker": "SKA-B.ST",
+   "ticker": "SKNB.F",
    "name": "Skanska",
    "region": "EU",
    "sector": "Industrie"
   },
   {
-   "ticker": "1SKFB.MI",
+   "ticker": "SKF-A.ST",
    "name": "SKF",
    "region": "EU",
    "sector": "Sonstige"
@@ -2493,16 +2475,10 @@
    "sector": "Finanzen"
   },
   {
-   "ticker": "SOF.VI",
+   "ticker": "SOF.BR",
    "name": "Sofina",
    "region": "EU",
    "sector": "Finanzen"
-  },
-  {
-   "ticker": "INW.DE",
-   "name": "Software AG",
-   "region": "EU",
-   "sector": "Technologie"
   },
   {
    "ticker": "SOI.PA",
@@ -2565,7 +2541,7 @@
    "sector": "Finanzen"
   },
   {
-   "ticker": "SDLF.L",
+   "ticker": "1BF.F",
    "name": "Standard Life plc",
    "region": "EU",
    "sector": "Finanzen"
@@ -2599,12 +2575,6 @@
    "name": "Südzucker",
    "region": "EU",
    "sector": "Konsum"
-  },
-  {
-   "ticker": "SVHG.F",
-   "name": "Svenska Handelsbanken AB",
-   "region": "EU",
-   "sector": "Finanzen"
   },
   {
    "ticker": "SWED-A.ST",
@@ -2769,6 +2739,12 @@
    "sector": "Gesundheit"
   },
   {
+   "ticker": "UMI.BR",
+   "name": "Umicore",
+   "region": "EU",
+   "sector": "Rohstoffe"
+  },
+  {
    "ticker": "URW.PA",
    "name": "Unibail-Rodamco-Westfield",
    "region": "EU",
@@ -2805,7 +2781,7 @@
    "sector": "Versorger"
   },
   {
-   "ticker": "UPM.HE",
+   "ticker": "RPL.F",
    "name": "UPM",
    "region": "EU",
    "sector": "Sonstige"

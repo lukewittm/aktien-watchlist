@@ -208,3 +208,12 @@ export const MUST_HAVE = [
   mk('CAT', 'Caterpillar', 'US', 'Industrie'),
   mk('ASML.AS', 'ASML', 'EU', 'Technologie'),
 ]
+
+// Ticker, die trotz gültiger Kandidatenauflösung nicht ins Universum sollen – meist
+// echte Delistings, bei denen Yahoo den Quote-Endpunkt noch (mit veraltetem Preis)
+// bedient, der Chart-Endpunkt aber keine Historie mehr liefert. Mit Datum + Grund,
+// damit spätere Rebuilds nachvollziehen können, warum der Ticker fehlt.
+export const DELISTED = [
+  { ticker: 'N1N.F', name: 'Neoen', reason: 'Übernahme durch TotalEnergies, Squeeze-out abgeschlossen (2026-07)' },
+  { ticker: 'SOW.F', name: 'Software AG', reason: 'Take-private durch Silver Lake (2023/2024), Delisting abgeschlossen' },
+]

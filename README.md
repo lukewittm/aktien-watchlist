@@ -37,13 +37,20 @@ Statt einer handgetippten Liste wird das Universum aus **echten Indexbeständen*
 - [x] **Phase 0/1** — Projekt-Setup, Universum, Yahoo-Anbindung, Performance-Berechnung, Top-Performer-Tabelle
 - [x] **Phase 2** — Watchlist (Stern-Toggle, Notizen, localStorage bis zum Deployment) + Detail-Chart (1M/3M/6M/1J) + Sparklines
 - [x] **Phase 3** — Benchmark-Vergleich (MSCI World / MSCI EM / S&P 500): Outperformance-Spalten + indexierter Vergleichs-Chart
-- [x] **Universum-Ausbau** — regelbasiertes ~1000-Ticker-Universum + erweiterte Filter (Sektor, Perf-Schwelle, KGV, Dividende, 200-Tage-Linie)
-- [ ] **Phase 4** — Konsistenz-Score (R², positive Wochen, Max Drawdown) + kombinierte Standard-Sortierung
-- [ ] **Phase 5** — Robustheit (Stooq-Backup, Scheduler), Deployment, `prices.json` verschlanken (Snapshot vs. Historie trennen)
+- [x] **Universum-Ausbau** — regelbasiertes ~1000-Ticker-Universum + erweiterte Filter (Sektor, Perf-Schwelle, KGV, Dividende, 200-Tage-Linie), Suche
+- [x] **Phase 4** — Konsistenz-Score (R², positive Wochen, Max Drawdown), kombinierte „Performance × Konsistenz"-Sortierung, „Neu in den Top-Performern"
+- [x] **Deployment** — GitHub Pages via GitHub Actions (s. u.)
+- [x] **Payload/Robustheit** — `prices.json` verschlankt (gemeinsame Datums-Achse statt History pro Ticker), Qualitäts-Gate vor jedem Deploy, mobile-responsive Tabelle
+- [ ] **Phase 5 (Rest)** — Stooq-Backup als Fallback, falls Yahoo mal ausfällt
 
-## Deployment (offen)
+## Deployment
 
-Cloudflare Pages + Worker mit Cron-Trigger laut Brief. Bis dahin: lokal `npm run fetch && npm run dev`. Alternative: GitHub Actions committet täglich `prices.json`, GitHub/Cloudflare Pages served den Build.
+**Live:** GitHub Pages, deployt via GitHub Actions (`.github/workflows/deploy.yml`).
+
+- Trigger: bei jedem Push auf `main`, täglich werktags **19:00 UTC**, oder manuell (`workflow_dispatch`).
+- **Warum die Uhrzeit wichtig ist:** Ein Fetch, bevor jede Börse im Universum für den Tag gehandelt hat, füllt nicht gehandelte Regionen in der gemeinsamen Datums-Achse künstlich mit dem Vortageskurs auf (sichtbar als „–" bei „Diff. 1T" statt einer echten Tagesbewegung). 19:00 UTC ist ein **bewusster Kompromiss**: Asien/Europa/Indien sind sicher geschlossen, USA (~20/21 UTC) und Brasilien (~20:30 UTC) aber noch nicht — deren Diff. 1T zeigt meist „–". Für volle Abdeckung inkl. USA/Brasilien müsste der Cron auf 21:00–23:00 UTC (dafür später am Tag fertig).
+- Jeder Lauf holt frische Kurse (`npm run fetch`), prüft sie (`npm run validate` – bricht bei degradierten Daten ab, ohne zu deployen), baut und deployt als Pages-Artefakt. Kein Daten-Branch, keine wachsende Git-Historie.
+- Lokal weiterhin: `npm run fetch && npm run dev`.
 
 ## Deutschland-Zuschnitt
 

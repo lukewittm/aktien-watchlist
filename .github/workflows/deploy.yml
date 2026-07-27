@@ -4,8 +4,14 @@ on:
   push:
     branches: [main]
   schedule:
-    # 05:00 UTC, Mo–Fr = 06:00/07:00 MEZ/MESZ, nach US-Schluss / vor EU-Handelsstart
-    - cron: '0 5 * * 1-5'
+    # 19:00 UTC, Mo–Fr = 20:00/21:00 MEZ/MESZ – bewusster Kompromiss, kein Vollständigkeits-
+    # Optimum: Asien/Europa/Indien sind zu diesem Zeitpunkt sicher geschlossen, USA (~20:00
+    # UTC Sommer- / 21:00 UTC Winterzeit) und Brasilien (~20:30 UTC) aber noch NICHT – deren
+    # "Diff. 1T" zeigt bei diesem Zeitpunkt meist "–" statt einer echten Tagesbewegung (siehe
+    # dailyDiff() in App.tsx), weil die gemeinsame Datums-Achse nicht gehandelte Regionen
+    # künstlich mit dem Vortageskurs auffüllt. Für vollständige Abdeckung inkl. USA/Brasilien
+    # müsste der Cron auf 21:00–23:00 UTC verschoben werden (dafür später am Tag fertig).
+    - cron: '0 19 * * 1-5'
   workflow_dispatch: {}
 
 permissions:

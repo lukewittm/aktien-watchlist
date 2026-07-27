@@ -1,5 +1,5 @@
-const WIDTH = 96
-const HEIGHT = 28
+const WIDTH = 48
+const HEIGHT = 64
 
 /** Mini-Kursverlauf für Tabellenzeilen. Erwartet [ISO-Datum, Schlusskurs]-Paare. */
 export default function Sparkline({ history, months }: { history: [string, number][]; months: number }) {

@@ -215,10 +215,10 @@ export default function StockDetail({
       onClick={onClose}
     >
       <div
-        className="w-full max-w-3xl rounded-2xl bg-zinc-900 ring-1 ring-zinc-700/60 shadow-2xl p-6 max-h-[90vh] overflow-y-auto"
+        className="w-full max-w-3xl rounded-2xl bg-zinc-900 ring-1 ring-zinc-700/60 shadow-2xl p-4 sm:p-6 max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-start justify-between gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
           <div>
             <h2 className="text-xl font-bold">{stock.name}</h2>
             <p className="text-sm text-zinc-400">
@@ -249,8 +249,8 @@ export default function StockDetail({
               )}
             </p>
           </div>
-          <div className="flex items-center gap-4">
-            <div className="text-right">
+          <div className="flex items-center gap-3 sm:gap-4 self-stretch sm:self-auto justify-between sm:justify-normal">
+            <div className="text-left sm:text-right">
               <div className="text-xl font-semibold tabular-nums">
                 {stock.price.toLocaleString('de-DE', { maximumFractionDigits: 2 })}
                 <span className="text-sm text-zinc-400 ml-1">€</span>
@@ -316,7 +316,7 @@ export default function StockDetail({
           </div>
         </div>
 
-        <div ref={chartRef} className="mt-3 h-72 w-full" />
+        <div ref={chartRef} className="mt-3 h-56 sm:h-72 w-full" />
 
         {mode === 'compare' && (
           <div className="mt-2 flex flex-wrap items-center gap-2">

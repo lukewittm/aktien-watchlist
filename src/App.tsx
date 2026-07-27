@@ -6,7 +6,7 @@ import { getFmpKey, setFmpKey } from './isin'
 import type { Benchmark, PricesFile, Region, Stock } from './types'
 
 type PerfKey = 'perf3m' | 'perf6m' | 'perf12m'
-type SortKey = 'name' | 'sector' | 'price' | 'marketCapEUR' | 'perf3m' | 'perf6m' | 'perf12m' | `o:${string}`
+type SortKey = 'name' | 'sector' | 'price' | 'marketCapEUR' | 'perf3m' | 'perf6m' | 'perf12m' | 'diff1d' | `o:${string}`
 type RegionFilter = Region | 'ALL'
 type View = 'top' | 'watch'
 
@@ -49,6 +49,15 @@ function formatPerf(v: number | null): string {
 function perfClass(v: number | null): string {
   if (v == null) return 'text-zinc-500'
   return v >= 0 ? 'text-emerald-400' : 'text-red-400'
+}
+
+// Tagesveränderung aus den letzten beiden Historien-Punkten (bereits EUR-normiert)
+function dailyDiff(history: [string, number][]): { abs: number; pct: number } | null {
+  if (!history || history.length < 2) return null
+  const last = history[history.length - 1][1]
+  const prev = history[history.length - 2][1]
+  if (!prev) return null
+  return { abs: last - prev, pct: (last / prev - 1) * 100 }
 }
 
 interface RefreshStatus {
@@ -238,7 +247,8 @@ export default function App() {
 
   function sortValue(stock: Stock, key: SortKey): string | number | null {
     if (key.startsWith('o:')) return outperf(stock, key.slice(2))
-    return stock[key as Exclude<SortKey, `o:${string}`>]
+    if (key === 'diff1d') return dailyDiff(stock.history)?.pct ?? null
+    return stock[key as Exclude<SortKey, `o:${string}` | 'diff1d'>]
   }
 
   const rows = useMemo(() => {
@@ -522,18 +532,15 @@ export default function App() {
             </p>
           </div>
         ) : (
-          <div className="overflow-x-auto rounded-xl ring-1 ring-zinc-800">
+          <div className="overflow-x-auto rounded-xl ring-1 ring-zinc-800 [overflow-anchor:none]">
             <table className="w-full text-sm">
               <thead>
                 <tr className="bg-zinc-900 text-zinc-400 text-left">
-                  <th className="px-2 py-2.5 w-8"></th>
-                  <th className="px-3 py-2.5 w-10 text-right">#</th>
-                  <Th label="Aktie" k="name" sortKey={effectiveSortKey} asc={sortAsc} onSort={toggleSort} />
-                  <th className="px-3 py-2.5">Region</th>
-                  <Th label="Sektor" k="sector" sortKey={effectiveSortKey} asc={sortAsc} onSort={toggleSort} />
+                  <th className="sticky left-0 z-20 bg-zinc-900 px-2 py-2.5 w-8"></th>
+                  <Th label="Aktie" k="name" sortKey={effectiveSortKey} asc={sortAsc} onSort={toggleSort} sticky />
+                  <th className="px-2 py-2.5">Verlauf {period === 'perf3m' ? '3M' : period === 'perf6m' ? '6M' : '1J'}</th>
+                  <Th label="Diff. 1T" k="diff1d" sortKey={effectiveSortKey} asc={sortAsc} onSort={toggleSort} right />
                   <Th label="Kurs" k="price" sortKey={effectiveSortKey} asc={sortAsc} onSort={toggleSort} right />
-                  <Th label="Marktkap" k="marketCapEUR" sortKey={effectiveSortKey} asc={sortAsc} onSort={toggleSort} right />
-                  <th className="px-3 py-2.5">Verlauf {period === 'perf3m' ? '3M' : period === 'perf6m' ? '6M' : '1J'}</th>
                   <Th label="3M" k="perf3m" sortKey={effectiveSortKey} asc={sortAsc} onSort={toggleSort} right emphasize={period === 'perf3m'} />
                   <Th label="6M" k="perf6m" sortKey={effectiveSortKey} asc={sortAsc} onSort={toggleSort} right emphasize={period === 'perf6m'} />
                   <Th label="1J" k="perf12m" sortKey={effectiveSortKey} asc={sortAsc} onSort={toggleSort} right emphasize={period === 'perf12m'} />
@@ -548,7 +555,10 @@ export default function App() {
                       right
                     />
                   ))}
-                  {view === 'watch' && <th className="px-3 py-2.5">Notiz</th>}
+                  <th className="px-2 py-2.5">Region</th>
+                  <Th label="Sektor" k="sector" sortKey={effectiveSortKey} asc={sortAsc} onSort={toggleSort} />
+                  <Th label="Marktkap" k="marketCapEUR" sortKey={effectiveSortKey} asc={sortAsc} onSort={toggleSort} right />
+                  {view === 'watch' && <th className="px-2 py-2.5">Notiz</th>}
                 </tr>
               </thead>
               <tbody className="divide-y divide-zinc-800/70">
@@ -601,6 +611,7 @@ function Th({
   onSort,
   right = false,
   emphasize = false,
+  sticky = false,
 }: {
   label: string
   k: SortKey
@@ -609,13 +620,14 @@ function Th({
   onSort: (k: SortKey) => void
   right?: boolean
   emphasize?: boolean
+  sticky?: boolean
 }) {
   const active = sortKey === k
   return (
     <th
-      className={`px-3 py-2.5 cursor-pointer select-none hover:text-zinc-200 whitespace-nowrap ${right ? 'text-right' : ''} ${
+      className={`px-2 py-2.5 cursor-pointer select-none hover:text-zinc-200 whitespace-nowrap ${right ? 'text-right' : ''} ${
         emphasize ? 'text-zinc-100' : ''
-      }`}
+      } ${sticky ? 'sticky left-8 z-20 bg-zinc-900' : ''}`}
       onClick={() => onSort(k)}
     >
       {label}
@@ -647,9 +659,10 @@ function Row({
   benchmarks: Benchmark[]
   outperf: (stock: Stock, benchTicker: string) => number | null
 }) {
+  const diff = dailyDiff(stock.history)
   return (
-    <tr className="hover:bg-zinc-900/60 cursor-pointer" onClick={() => onSelect(stock)}>
-      <td className="px-2 py-2">
+    <tr className="group hover:bg-zinc-900/60 cursor-pointer" onClick={() => onSelect(stock)}>
+      <td className="sticky left-0 z-10 w-8 bg-zinc-950 px-2 py-2 group-hover:bg-zinc-900">
         <button
           onClick={(e) => {
             e.stopPropagation()
@@ -662,10 +675,12 @@ function Row({
           {watched ? '★' : '☆'}
         </button>
       </td>
-      <td className="px-3 py-2 text-right text-zinc-500 tabular-nums">{rank}</td>
-      <td className="px-3 py-2">
-        <div className="font-medium text-zinc-100">{stock.name}</div>
-        <div className="text-xs text-zinc-500">
+      <td className="sticky left-8 z-10 max-w-[150px] border-r border-zinc-800/70 bg-zinc-950 px-2 py-2 group-hover:bg-zinc-900">
+        <div className="truncate font-medium text-zinc-100">
+          <span className="mr-1 font-normal text-zinc-600">{rank}.</span>
+          {stock.name}
+        </div>
+        <div className="truncate text-xs text-zinc-500">
           {stock.ticker}
           {entry && (
             <span className="ml-2 text-zinc-600">
@@ -674,39 +689,53 @@ function Row({
           )}
         </div>
       </td>
-      <td className="px-3 py-2">
-        <span className={`inline-block rounded px-1.5 py-0.5 text-xs font-medium ${REGION_BADGE[stock.region]}`}>
-          {stock.region}
-        </span>
+      <td className="px-2 py-2">
+        <Sparkline history={stock.history} months={months} />
       </td>
-      <td className="px-3 py-2 text-zinc-400">{stock.sector}</td>
-      <td className="px-3 py-2 text-right tabular-nums text-zinc-300">
+      <td className="px-2 py-2 text-right tabular-nums">
+        {diff ? (
+          <>
+            <div className={`font-medium ${perfClass(diff.pct)}`}>
+              {diff.abs >= 0 ? '↑' : '↓'} {Math.abs(diff.abs).toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            </div>
+            <div className={`text-xs ${perfClass(diff.pct)}`}>{formatPerf(diff.pct)}</div>
+          </>
+        ) : (
+          <span className="text-zinc-600">–</span>
+        )}
+      </td>
+      <td className="px-2 py-2 text-right tabular-nums text-zinc-300">
         {stock.price.toLocaleString('de-DE', { maximumFractionDigits: 2 })}
         <span className="text-zinc-500 text-xs ml-1">€</span>
       </td>
-      <td className="px-3 py-2 text-right tabular-nums text-zinc-300">{formatMarketCap(stock.marketCapEUR)}</td>
-      <td className="px-3 py-2">
-        <Sparkline history={stock.history} months={months} />
-      </td>
-      <td className={`px-3 py-2 text-right tabular-nums font-medium ${perfClass(stock.perf3m)}`}>
+      <td className={`px-2 py-2 text-right tabular-nums font-medium ${perfClass(stock.perf3m)}`}>
         {formatPerf(stock.perf3m)}
       </td>
-      <td className={`px-3 py-2 text-right tabular-nums font-medium ${perfClass(stock.perf6m)}`}>
+      <td className={`px-2 py-2 text-right tabular-nums font-medium ${perfClass(stock.perf6m)}`}>
         {formatPerf(stock.perf6m)}
       </td>
-      <td className={`px-3 py-2 text-right tabular-nums font-medium ${perfClass(stock.perf12m)}`}>
+      <td className={`px-2 py-2 text-right tabular-nums font-medium ${perfClass(stock.perf12m)}`}>
         {formatPerf(stock.perf12m)}
       </td>
       {benchmarks.map((b) => {
         const o = outperf(stock, b.ticker)
         return (
-          <td key={b.ticker} className={`px-3 py-2 text-right tabular-nums ${perfClass(o)}`}>
+          <td key={b.ticker} className={`px-2 py-2 text-right tabular-nums ${perfClass(o)}`}>
             {formatPerf(o)}
           </td>
         )
       })}
+      <td className="px-2 py-2">
+        <span className={`inline-block rounded px-1.5 py-0.5 text-xs font-medium ${REGION_BADGE[stock.region]}`}>
+          {stock.region}
+        </span>
+      </td>
+      <td className="max-w-[70px] truncate px-2 py-2 text-xs text-zinc-400" title={stock.sector}>
+        {stock.sector}
+      </td>
+      <td className="px-2 py-2 text-right tabular-nums text-zinc-300">{formatMarketCap(stock.marketCapEUR)}</td>
       {entry && (
-        <td className="px-3 py-2" onClick={(e) => e.stopPropagation()}>
+        <td className="px-2 py-2" onClick={(e) => e.stopPropagation()}>
           <input
             type="text"
             value={entry.note}

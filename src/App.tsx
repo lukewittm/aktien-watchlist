@@ -4,10 +4,24 @@ import StockDetail from './StockDetail'
 import { loadWatchlist, saveWatchlist, type WatchlistEntry } from './watchlist'
 import { getFmpKey, setFmpKey } from './isin'
 import { hydrate, type RawPricesFile } from './hydrate'
+import { computeConsistency, percentileRank, type Consistency } from './consistency'
+import { getNewcomers, rememberTop } from './newInTop'
 import type { Benchmark, PricesFile, Region, Stock } from './types'
 
 type PerfKey = 'perf3m' | 'perf6m' | 'perf12m'
-type SortKey = 'name' | 'sector' | 'price' | 'marketCapEUR' | 'perf3m' | 'perf6m' | 'perf12m' | 'diff1d' | `o:${string}`
+type SortKey =
+  | 'name'
+  | 'sector'
+  | 'price'
+  | 'marketCapEUR'
+  | 'perf3m'
+  | 'perf6m'
+  | 'perf12m'
+  | 'diff1d'
+  | 'consistency'
+  | 'combined'
+  | `o:${string}`
+type RankMode = 'perf' | 'combined'
 type RegionFilter = Region | 'ALL'
 type View = 'top' | 'watch'
 
@@ -58,6 +72,11 @@ function dailyDiff(history: [string, number][]): { abs: number; pct: number } | 
   const last = history[history.length - 1][1]
   const prev = history[history.length - 2][1]
   if (!prev) return null
+  // Identischer Kurs an zwei aufeinanderfolgenden Tagen ist bei aktiv gehandelten Aktien
+  // praktisch nie echt – das ist fast immer der Forward-Fill der gemeinsamen Datums-Achse
+  // (Heimatbörse an diesem Datum noch geschlossen/ungehandelt). Lieber "keine frischen
+  // Daten" (–) zeigen als eine falsche "0,0 %"-Bewegung vortäuschen.
+  if (last === prev) return null
   return { abs: last - prev, pct: (last / prev - 1) * 100 }
 }
 
@@ -104,12 +123,15 @@ export default function App() {
   const [view, setView] = useState<View>('top')
   const [region, setRegion] = useState<RegionFilter>('ALL')
   const [period, setPeriod] = useState<PerfKey>('perf3m')
+  const [rankMode, setRankMode] = useState<RankMode>('perf')
   const [sortKey, setSortKey] = useState<SortKey | null>(null)
   const [sortAsc, setSortAsc] = useState(false)
   const [selected, setSelected] = useState<Stock | null>(null)
   const [watchlist, setWatchlist] = useState<WatchlistEntry[]>(loadWatchlist)
   const [fmpKey, setFmpKeyState] = useState(getFmpKey)
   const [showKeyInput, setShowKeyInput] = useState(false)
+  const [showSettings, setShowSettings] = useState(false)
+  const [showFilters, setShowFilters] = useState(false)
   const [keyDraft, setKeyDraft] = useState('')
 
   const [refreshing, setRefreshing] = useState(false)
@@ -245,21 +267,16 @@ export default function App() {
     setWatchlist((prev) => prev.map((e) => (e.ticker === ticker ? { ...e, note } : e)))
   }
 
-  const effectiveSortKey: SortKey = sortKey ?? period
+  const effectiveSortKey: SortKey = sortKey ?? (rankMode === 'combined' ? 'combined' : period)
 
-  function sortValue(stock: Stock, key: SortKey): string | number | null {
-    if (key.startsWith('o:')) return outperf(stock, key.slice(2))
-    if (key === 'diff1d') return dailyDiff(stock.history)?.pct ?? null
-    return stock[key as Exclude<SortKey, `o:${string}` | 'diff1d'>]
-  }
-
-  const rows = useMemo(() => {
+  // Stufe 1: nur filtern (noch nicht sortieren) – Basis für Konsistenz-Perzentile weiter unten
+  const filteredStocks = useMemo(() => {
     if (!data) return []
     const minPerfNum = minPerf === '' ? null : Number(minPerf)
     const maxPENum = maxPE === '' ? null : Number(maxPE)
     const minDivNum = minDiv === '' ? null : Number(minDiv)
     const searchLower = search.trim().toLowerCase()
-    const filtered = data.stocks.filter((s) => {
+    return data.stocks.filter((s) => {
       if (searchLower && !s.name.toLowerCase().includes(searchLower) && !s.ticker.toLowerCase().includes(searchLower)) {
         return false
       }
@@ -273,8 +290,37 @@ export default function App() {
       if (above200 && !(s.pctVs200d != null && s.pctVs200d > 0)) return false
       return true
     })
+  }, [data, view, watchedTickers, region, search, minCapBn, sector, minPerf, maxPE, minDiv, above200, period])
+
+  // Stufe 2: Konsistenz-Score (R², pos. Wochen, Max Drawdown) + kombinierter
+  // "Performance × Konsistenz"-Score als Perzentil-Produkt – relativ zur gefilterten
+  // Menge, nicht zum ganzen Universum, damit "Top" innerhalb deiner Auswahl gilt.
+  const { consistencyByTicker, combinedByTicker } = useMemo(() => {
+    const consistencyByTicker = new Map<string, Consistency>()
+    for (const s of filteredStocks) consistencyByTicker.set(s.ticker, computeConsistency(s.history, months))
+    const perfValues = filteredStocks.map((s) => s[period])
+    const scoreValues = filteredStocks.map((s) => consistencyByTicker.get(s.ticker)?.score ?? null)
+    const combinedByTicker = new Map<string, number | null>()
+    for (const s of filteredStocks) {
+      const perfP = percentileRank(s[period], perfValues)
+      const scoreP = percentileRank(consistencyByTicker.get(s.ticker)?.score ?? null, scoreValues)
+      combinedByTicker.set(s.ticker, perfP * scoreP * 100)
+    }
+    return { consistencyByTicker, combinedByTicker }
+  }, [filteredStocks, period, months])
+
+  function sortValue(stock: Stock, key: SortKey): string | number | null {
+    if (key.startsWith('o:')) return outperf(stock, key.slice(2))
+    if (key === 'diff1d') return dailyDiff(stock.history)?.pct ?? null
+    if (key === 'consistency') return consistencyByTicker.get(stock.ticker)?.score ?? null
+    if (key === 'combined') return combinedByTicker.get(stock.ticker) ?? null
+    return stock[key as Exclude<SortKey, `o:${string}` | 'diff1d' | 'consistency' | 'combined'>]
+  }
+
+  // Stufe 3: sortieren
+  const rows = useMemo(() => {
     const dir = sortAsc ? 1 : -1
-    return [...filtered].sort((a, b) => {
+    return [...filteredStocks].sort((a, b) => {
       const va = sortValue(a, effectiveSortKey)
       const vb = sortValue(b, effectiveSortKey)
       if (typeof va === 'string' && typeof vb === 'string') return dir * va.localeCompare(vb, 'de')
@@ -283,7 +329,24 @@ export default function App() {
       return dir * (na - nb)
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, view, watchedTickers, region, search, minCapBn, sector, minPerf, maxPE, minDiv, above200, effectiveSortKey, sortAsc, period, benchPerf])
+  }, [filteredStocks, consistencyByTicker, combinedByTicker, effectiveSortKey, sortAsc, benchPerf])
+
+  // "Neu in den Top-Performern": nur in der unveränderten Standardansicht sinnvoll
+  // (sonst würde ein Filterwechsel fälschlich als Marktbewegung erscheinen).
+  const isDefaultFilters =
+    region === 'ALL' && sector === 'ALL' && minCapBn === 2 && !minPerf && !maxPE && !minDiv && !above200 && !search
+  // data != null verhindert, dass der Effekt vor dem ersten Laden mit einer leeren
+  // Top-20-Liste feuert und dadurch den echten Vergleichs-Snapshot überschreibt.
+  const showNewBadge = view === 'top' && sortKey === null && isDefaultFilters && data != null
+  const newBadgeKey = `${period}-${rankMode}`
+  const currentTop20 = useMemo(() => rows.slice(0, 20).map((s) => s.ticker), [rows])
+  const newcomers = useMemo(
+    () => (showNewBadge ? getNewcomers(newBadgeKey, currentTop20) : new Set<string>()),
+    [showNewBadge, newBadgeKey, currentTop20]
+  )
+  useEffect(() => {
+    if (showNewBadge) rememberTop(newBadgeKey, currentTop20)
+  }, [showNewBadge, newBadgeKey, currentTop20])
 
   const missingWatched = useMemo(() => {
     if (!data) return []
@@ -317,237 +380,276 @@ export default function App() {
   return (
     <div className="min-h-screen bg-zinc-950 text-zinc-100">
       <div className="mx-auto max-w-7xl px-4 py-8">
-        <header className="mb-6">
-          <div className="flex items-center justify-between gap-4 flex-wrap">
-            <h1 className="text-2xl font-bold tracking-tight">
-              {view === 'top' ? 'Aktien-Watchlist · Top-Performer' : 'Aktien-Watchlist · Meine Watchlist'}
+        <header className="mb-4">
+          <div className="flex items-center justify-between gap-3 flex-wrap">
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight">
+              {view === 'top' ? 'Top-Performer' : 'Meine Watchlist'}
             </h1>
-            <div className="flex rounded-lg bg-zinc-900 p-1 ring-1 ring-zinc-800">
+            <div className="flex items-center gap-2">
+              <div className="flex rounded-lg bg-zinc-900 p-1 ring-1 ring-zinc-800">
+                <button
+                  onClick={() => setView('top')}
+                  className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
+                    view === 'top' ? 'bg-zinc-700 text-white' : 'text-zinc-400 hover:text-zinc-200'
+                  }`}
+                >
+                  Top-Performer
+                </button>
+                <button
+                  onClick={() => setView('watch')}
+                  className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
+                    view === 'watch' ? 'bg-zinc-700 text-white' : 'text-zinc-400 hover:text-zinc-200'
+                  }`}
+                >
+                  ★ Watchlist ({watchlist.length})
+                </button>
+              </div>
               <button
-                onClick={() => setView('top')}
-                className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
-                  view === 'top' ? 'bg-zinc-700 text-white' : 'text-zinc-400 hover:text-zinc-200'
-                }`}
+                onClick={() => setShowSettings((v) => !v)}
+                className={`rounded-lg p-2 ring-1 ring-zinc-800 hover:bg-zinc-800 ${showSettings ? 'bg-zinc-800 text-zinc-100' : 'bg-zinc-900 text-zinc-400'}`}
+                aria-label="Weitere Optionen (Kurse aktualisieren, ISIN, Benchmarks)"
+                title="Weitere Optionen"
               >
-                Top-Performer
-              </button>
-              <button
-                onClick={() => setView('watch')}
-                className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
-                  view === 'watch' ? 'bg-zinc-700 text-white' : 'text-zinc-400 hover:text-zinc-200'
-                }`}
-              >
-                ★ Watchlist ({watchlist.length})
+                ⋯
               </button>
             </div>
           </div>
           <p className="text-sm text-zinc-400 mt-1">
             {data
-              ? `${rows.length} ${view === 'watch' ? 'Aktien auf der Watchlist' : `von ${data.stockCount} Aktien`} · Stand ${new Date(data.fetchedAt).toLocaleString('de-DE', { dateStyle: 'medium', timeStyle: 'short' })} · Kurse & Performance in EUR`
+              ? `${rows.length} ${view === 'watch' ? 'Aktien auf der Watchlist' : `von ${data.stockCount} Aktien`} · Stand ${new Date(data.fetchedAt).toLocaleString('de-DE', { dateStyle: 'medium', timeStyle: 'short' })}`
               : 'Lade Kursdaten …'}
             {data && data.failedTickers.length > 0 && (
               <span className="text-amber-400"> · {data.failedTickers.length} Ticker ohne Daten</span>
             )}
           </p>
 
-          <div className="flex items-center gap-2 mt-1.5">
-            <button
-              onClick={startRefresh}
-              disabled={refreshing}
-              className="text-xs rounded-md px-2.5 py-1 ring-1 ring-zinc-700 text-zinc-300 hover:bg-zinc-800 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
-            >
-              {refreshing ? '⏳ Aktualisiert …' : '🔄 Kurse aktualisieren'}
-            </button>
-            {refreshing && (
-              <span className="text-xs text-zinc-500">
-                {parseProgress(refreshLog) ? `${parseProgress(refreshLog)} …` : lastLogLine(refreshLog) || 'Startet …'}
-              </span>
-            )}
-            {!refreshing && refreshDoneAt && !refreshError && (
-              <span className="text-xs text-emerald-400">aktualisiert ✓</span>
-            )}
-          </div>
-          {refreshError && (
-            <pre className="text-xs text-red-400 mt-1 whitespace-pre-wrap font-sans">
-              Fehler beim Aktualisieren: {refreshError}
-            </pre>
-          )}
-          {benchmarks.length > 0 && (
-            <p className="text-xs text-zinc-500 mt-1">
-              Benchmarks ({PERIOD_LABEL[period]}):{' '}
-              {benchmarks.map((b, i) => (
-                <span key={b.ticker}>
-                  {i > 0 && ' · '}
-                  {b.name} <span className={perfClass(benchPerf[b.ticker])}>{formatPerf(benchPerf[b.ticker])}</span>
-                </span>
-              ))}
-            </p>
-          )}
-          <div className="text-xs mt-1">
-            <button
-              onClick={() => {
-                setKeyDraft(fmpKey)
-                setShowKeyInput((v) => !v)
-              }}
-              className="text-zinc-500 underline hover:text-zinc-300"
-            >
-              {fmpKey ? 'ISIN-Abruf aktiv · Key ändern' : 'ISIN als Kauf-Identifier aktivieren (kostenloser FMP-Key)'}
-            </button>
-            {showKeyInput && (
-              <div className="mt-1.5 flex flex-wrap items-center gap-2">
-                <input
-                  type="password"
-                  value={keyDraft}
-                  onChange={(e) => setKeyDraft(e.target.value)}
-                  placeholder="FMP API-Key"
-                  className="w-56 rounded-md bg-zinc-900 ring-1 ring-zinc-800 px-2 py-1 text-zinc-100"
-                />
-                <button onClick={saveKey} className="rounded-md bg-zinc-700 px-2.5 py-1 text-zinc-100 hover:bg-zinc-600">
-                  Speichern
-                </button>
-                <a
-                  href="https://site.financialmodelingprep.com/developer/docs/pricing"
-                  target="_blank"
-                  rel="noreferrer"
+          {showSettings && (
+            <div className="mt-2 rounded-lg ring-1 ring-zinc-800 bg-zinc-900/60 p-3 space-y-2.5 text-xs">
+              <div>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={startRefresh}
+                    disabled={refreshing}
+                    className="rounded-md px-2.5 py-1 ring-1 ring-zinc-700 text-zinc-300 hover:bg-zinc-800 disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+                  >
+                    {refreshing ? '⏳ Aktualisiert …' : '🔄 Kurse aktualisieren'}
+                  </button>
+                  {refreshing && (
+                    <span className="text-zinc-500">
+                      {parseProgress(refreshLog) ? `${parseProgress(refreshLog)} …` : lastLogLine(refreshLog) || 'Startet …'}
+                    </span>
+                  )}
+                  {!refreshing && refreshDoneAt && !refreshError && <span className="text-emerald-400">aktualisiert ✓</span>}
+                </div>
+                {refreshError && <pre className="text-red-400 mt-1 whitespace-pre-wrap font-sans">Fehler: {refreshError}</pre>}
+              </div>
+
+              {benchmarks.length > 0 && (
+                <p className="text-zinc-500">
+                  Benchmarks ({PERIOD_LABEL[period]}):{' '}
+                  {benchmarks.map((b, i) => (
+                    <span key={b.ticker}>
+                      {i > 0 && ' · '}
+                      {b.name} <span className={perfClass(benchPerf[b.ticker])}>{formatPerf(benchPerf[b.ticker])}</span>
+                    </span>
+                  ))}
+                </p>
+              )}
+
+              <div>
+                <button
+                  onClick={() => {
+                    setKeyDraft(fmpKey)
+                    setShowKeyInput((v) => !v)
+                  }}
                   className="text-zinc-500 underline hover:text-zinc-300"
                 >
-                  kostenlosen Key holen ↗
-                </a>
+                  {fmpKey ? 'ISIN-Abruf aktiv · Key ändern' : 'ISIN als Kauf-Identifier aktivieren (kostenloser FMP-Key)'}
+                </button>
+                {showKeyInput && (
+                  <div className="mt-1.5 flex flex-wrap items-center gap-2">
+                    <input
+                      type="password"
+                      value={keyDraft}
+                      onChange={(e) => setKeyDraft(e.target.value)}
+                      placeholder="FMP API-Key"
+                      className="w-56 rounded-md bg-zinc-900 ring-1 ring-zinc-800 px-2 py-1 text-zinc-100"
+                    />
+                    <button onClick={saveKey} className="rounded-md bg-zinc-700 px-2.5 py-1 text-zinc-100 hover:bg-zinc-600">
+                      Speichern
+                    </button>
+                    <a
+                      href="https://site.financialmodelingprep.com/developer/docs/pricing"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-zinc-500 underline hover:text-zinc-300"
+                    >
+                      kostenlosen Key holen ↗
+                    </a>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </header>
 
-        <div className="flex flex-wrap items-center gap-3 mb-3">
-          <div className="relative">
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Suche (Name, Ticker) …"
-              className="w-48 rounded-md bg-zinc-900 ring-1 ring-zinc-800 px-2 py-1.5 pr-7 text-sm text-zinc-100 placeholder:text-zinc-600 focus:ring-zinc-600 focus:outline-none"
-            />
-            {search && (
+        <div className="rounded-xl ring-1 ring-zinc-800 bg-zinc-900/40 p-3 mb-4">
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="relative w-full sm:w-48">
+              <input
+                type="text"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Suche (Name, Ticker) …"
+                className="w-full rounded-md bg-zinc-900 ring-1 ring-zinc-800 px-2 py-1.5 pr-7 text-sm text-zinc-100 placeholder:text-zinc-600 focus:ring-zinc-600 focus:outline-none"
+              />
+              {search && (
+                <button
+                  onClick={() => setSearch('')}
+                  className="absolute right-1.5 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300"
+                  aria-label="Suche löschen"
+                >
+                  ×
+                </button>
+              )}
+            </div>
+
+            {view === 'top' && (
+              <div className="flex flex-wrap rounded-lg bg-zinc-900 p-1 ring-1 ring-zinc-800">
+                {(Object.keys(REGION_LABELS) as RegionFilter[]).map((r) => (
+                  <button
+                    key={r}
+                    onClick={() => setRegion(r)}
+                    className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
+                      region === r ? 'bg-zinc-700 text-white' : 'text-zinc-400 hover:text-zinc-200'
+                    }`}
+                  >
+                    {REGION_LABELS[r]}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            <div className="flex rounded-lg bg-zinc-900 p-1 ring-1 ring-zinc-800">
+              {(['perf3m', 'perf6m', 'perf12m'] as const).map((p) => (
+                <button
+                  key={p}
+                  onClick={() => {
+                    setPeriod(p)
+                    if (sortKey === 'perf3m' || sortKey === 'perf6m' || sortKey === 'perf12m') setSortKey(null)
+                  }}
+                  className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
+                    period === p ? 'bg-zinc-700 text-white' : 'text-zinc-400 hover:text-zinc-200'
+                  }`}
+                >
+                  {p === 'perf3m' ? '3M' : p === 'perf6m' ? '6M' : '1J'}
+                </button>
+              ))}
+            </div>
+
+            {view === 'top' && (
               <button
-                onClick={() => setSearch('')}
-                className="absolute right-1.5 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300"
-                aria-label="Suche löschen"
+                onClick={() => setShowFilters((v) => !v)}
+                className="sm:hidden ml-auto text-sm text-zinc-400 hover:text-zinc-200 underline"
               >
-                ×
+                {showFilters ? 'Weniger Filter ▴' : 'Weitere Filter ▾'}
               </button>
             )}
           </div>
 
           {view === 'top' && (
-            <div className="flex rounded-lg bg-zinc-900 p-1 ring-1 ring-zinc-800">
-              {(Object.keys(REGION_LABELS) as RegionFilter[]).map((r) => (
-                <button
-                  key={r}
-                  onClick={() => setRegion(r)}
-                  className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
-                    region === r ? 'bg-zinc-700 text-white' : 'text-zinc-400 hover:text-zinc-200'
-                  }`}
+            <div className={`${showFilters ? 'flex' : 'hidden'} sm:flex flex-wrap items-center gap-x-4 gap-y-2 mt-3 pt-3 border-t border-zinc-800/70 text-sm text-zinc-400`}>
+              <div className="flex rounded-lg bg-zinc-900 p-1 ring-1 ring-zinc-800" title="Standard-Sortierung, wenn keine Spalte manuell angeklickt ist">
+                {(['perf', 'combined'] as const).map((m) => (
+                  <button
+                    key={m}
+                    onClick={() => {
+                      setRankMode(m)
+                      if (sortKey === 'perf3m' || sortKey === 'perf6m' || sortKey === 'perf12m' || sortKey === 'combined') setSortKey(null)
+                    }}
+                    className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
+                      rankMode === m ? 'bg-zinc-700 text-white' : 'text-zinc-400 hover:text-zinc-200'
+                    }`}
+                  >
+                    {m === 'perf' ? 'Performance' : 'Perf. × Konsistenz'}
+                  </button>
+                ))}
+              </div>
+              <label className="flex items-center gap-1.5">
+                Sektor
+                <select
+                  value={sector}
+                  onChange={(e) => setSector(e.target.value)}
+                  className="rounded-md bg-zinc-900 ring-1 ring-zinc-800 px-2 py-1.5 text-zinc-100"
                 >
-                  {REGION_LABELS[r]}
+                  <option value="ALL">Alle</option>
+                  {sectors.map((s) => (
+                    <option key={s} value={s}>
+                      {s}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className="flex items-center gap-1.5">
+                Marktkap ≥
+                <input
+                  type="number"
+                  min={0}
+                  value={minCapBn}
+                  onChange={(e) => setMinCapBn(Number(e.target.value))}
+                  className="w-16 rounded-md bg-zinc-900 ring-1 ring-zinc-800 px-2 py-1.5 text-zinc-100 text-right"
+                />
+                Mrd €
+              </label>
+              <label className="flex items-center gap-1.5">
+                Perf. {period === 'perf3m' ? '3M' : period === 'perf6m' ? '6M' : '1J'} ≥
+                <input
+                  type="number"
+                  value={minPerf}
+                  onChange={(e) => setMinPerf(e.target.value)}
+                  placeholder="–"
+                  className="w-16 rounded-md bg-zinc-900 ring-1 ring-zinc-800 px-2 py-1.5 text-zinc-100 text-right"
+                />
+                %
+              </label>
+              <label className="flex items-center gap-1.5">
+                KGV ≤
+                <input
+                  type="number"
+                  value={maxPE}
+                  onChange={(e) => setMaxPE(e.target.value)}
+                  placeholder="–"
+                  className="w-16 rounded-md bg-zinc-900 ring-1 ring-zinc-800 px-2 py-1.5 text-zinc-100 text-right"
+                />
+              </label>
+              <label className="flex items-center gap-1.5">
+                Div. ≥
+                <input
+                  type="number"
+                  value={minDiv}
+                  onChange={(e) => setMinDiv(e.target.value)}
+                  placeholder="–"
+                  className="w-16 rounded-md bg-zinc-900 ring-1 ring-zinc-800 px-2 py-1.5 text-zinc-100 text-right"
+                />
+                %
+              </label>
+              <label className="flex items-center gap-1.5 cursor-pointer">
+                <input type="checkbox" checked={above200} onChange={(e) => setAbove200(e.target.checked)} className="accent-emerald-500" />
+                über 200-Tage-Linie
+              </label>
+              {(sector !== 'ALL' || minPerf || maxPE || minDiv || above200 || minCapBn !== 2 || search) && (
+                <button
+                  onClick={() => {
+                    setSector('ALL'); setMinPerf(''); setMaxPE(''); setMinDiv(''); setAbove200(false); setMinCapBn(2); setSearch('')
+                  }}
+                  className="text-zinc-500 hover:text-zinc-300 underline"
+                >
+                  zurücksetzen
                 </button>
-              ))}
+              )}
             </div>
           )}
-
-          <div className="flex rounded-lg bg-zinc-900 p-1 ring-1 ring-zinc-800">
-            {(['perf3m', 'perf6m', 'perf12m'] as const).map((p) => (
-              <button
-                key={p}
-                onClick={() => {
-                  setPeriod(p)
-                  if (sortKey === 'perf3m' || sortKey === 'perf6m' || sortKey === 'perf12m') setSortKey(null)
-                }}
-                className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
-                  period === p ? 'bg-zinc-700 text-white' : 'text-zinc-400 hover:text-zinc-200'
-                }`}
-              >
-                {p === 'perf3m' ? '3M' : p === 'perf6m' ? '6M' : '1J'}
-              </button>
-            ))}
-          </div>
         </div>
-
-        {view === 'top' && (
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mb-4 text-sm text-zinc-400">
-            <label className="flex items-center gap-1.5">
-              Sektor
-              <select
-                value={sector}
-                onChange={(e) => setSector(e.target.value)}
-                className="rounded-md bg-zinc-900 ring-1 ring-zinc-800 px-2 py-1.5 text-zinc-100"
-              >
-                <option value="ALL">Alle</option>
-                {sectors.map((s) => (
-                  <option key={s} value={s}>
-                    {s}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label className="flex items-center gap-1.5">
-              Marktkap ≥
-              <input
-                type="number"
-                min={0}
-                value={minCapBn}
-                onChange={(e) => setMinCapBn(Number(e.target.value))}
-                className="w-16 rounded-md bg-zinc-900 ring-1 ring-zinc-800 px-2 py-1.5 text-zinc-100 text-right"
-              />
-              Mrd €
-            </label>
-            <label className="flex items-center gap-1.5">
-              Perf. {period === 'perf3m' ? '3M' : period === 'perf6m' ? '6M' : '1J'} ≥
-              <input
-                type="number"
-                value={minPerf}
-                onChange={(e) => setMinPerf(e.target.value)}
-                placeholder="–"
-                className="w-16 rounded-md bg-zinc-900 ring-1 ring-zinc-800 px-2 py-1.5 text-zinc-100 text-right"
-              />
-              %
-            </label>
-            <label className="flex items-center gap-1.5">
-              KGV ≤
-              <input
-                type="number"
-                value={maxPE}
-                onChange={(e) => setMaxPE(e.target.value)}
-                placeholder="–"
-                className="w-16 rounded-md bg-zinc-900 ring-1 ring-zinc-800 px-2 py-1.5 text-zinc-100 text-right"
-              />
-            </label>
-            <label className="flex items-center gap-1.5">
-              Div. ≥
-              <input
-                type="number"
-                value={minDiv}
-                onChange={(e) => setMinDiv(e.target.value)}
-                placeholder="–"
-                className="w-16 rounded-md bg-zinc-900 ring-1 ring-zinc-800 px-2 py-1.5 text-zinc-100 text-right"
-              />
-              %
-            </label>
-            <label className="flex items-center gap-1.5 cursor-pointer">
-              <input type="checkbox" checked={above200} onChange={(e) => setAbove200(e.target.checked)} className="accent-emerald-500" />
-              über 200-Tage-Linie
-            </label>
-            {(sector !== 'ALL' || minPerf || maxPE || minDiv || above200 || minCapBn !== 2 || search) && (
-              <button
-                onClick={() => {
-                  setSector('ALL'); setMinPerf(''); setMaxPE(''); setMinDiv(''); setAbove200(false); setMinCapBn(2); setSearch('')
-                }}
-                className="text-zinc-500 hover:text-zinc-300 underline"
-              >
-                zurücksetzen
-              </button>
-            )}
-          </div>
-        )}
 
         {view === 'watch' && rows.length === 0 && missingWatched.length === 0 ? (
           <div className="rounded-xl ring-1 ring-zinc-800 bg-zinc-900/40 p-10 text-center text-zinc-400">
@@ -574,6 +676,15 @@ export default function App() {
                   <Th label="3M" k="perf3m" sortKey={effectiveSortKey} asc={sortAsc} onSort={toggleSort} right emphasize={period === 'perf3m'} />
                   <Th label="6M" k="perf6m" sortKey={effectiveSortKey} asc={sortAsc} onSort={toggleSort} right emphasize={period === 'perf6m'} />
                   <Th label="1J" k="perf12m" sortKey={effectiveSortKey} asc={sortAsc} onSort={toggleSort} right emphasize={period === 'perf12m'} />
+                  <Th
+                    label={`Konsistenz (${period === 'perf3m' ? '3M' : period === 'perf6m' ? '6M' : '1J'})`}
+                    k="consistency"
+                    sortKey={effectiveSortKey}
+                    asc={sortAsc}
+                    onSort={toggleSort}
+                    right
+                    emphasize={rankMode === 'combined'}
+                  />
                   {benchmarks.map((b) => (
                     <Th
                       key={b.ticker}
@@ -605,6 +716,8 @@ export default function App() {
                     onNote={setNote}
                     benchmarks={benchmarks}
                     outperf={outperf}
+                    consistency={consistencyByTicker.get(s.ticker) ?? null}
+                    isNew={newcomers.has(s.ticker)}
                   />
                 ))}
               </tbody>
@@ -666,6 +779,13 @@ function Th({
   )
 }
 
+function consistencyClass(score: number | null): string {
+  if (score == null) return 'text-zinc-500'
+  if (score >= 66) return 'text-emerald-400'
+  if (score >= 33) return 'text-amber-400'
+  return 'text-red-400'
+}
+
 function Row({
   stock,
   rank,
@@ -677,6 +797,8 @@ function Row({
   onNote,
   benchmarks,
   outperf,
+  consistency,
+  isNew,
 }: {
   stock: Stock
   rank: number
@@ -688,6 +810,8 @@ function Row({
   onNote: (ticker: string, note: string) => void
   benchmarks: Benchmark[]
   outperf: (stock: Stock, benchTicker: string) => number | null
+  consistency: Consistency | null
+  isNew: boolean
 }) {
   const diff = dailyDiff(stock.history)
   return (
@@ -709,6 +833,11 @@ function Row({
         <div className="truncate font-medium text-zinc-100">
           <span className="mr-1 font-normal text-zinc-600">{rank}.</span>
           {stock.name}
+          {isNew && (
+            <span className="ml-1.5 rounded bg-emerald-500/15 px-1 py-0.5 text-[10px] font-semibold text-emerald-300 align-middle" title="Neu in den Top 20 seit deinem letzten Besuch">
+              NEU
+            </span>
+          )}
         </div>
         <div className="truncate text-xs text-zinc-500">
           {stock.ticker}
@@ -746,6 +875,20 @@ function Row({
       </td>
       <td className={`px-2 py-2 text-right tabular-nums font-medium ${perfClass(stock.perf12m)}`}>
         {formatPerf(stock.perf12m)}
+      </td>
+      <td
+        className="px-2 py-2 text-right tabular-nums"
+        title={
+          consistency
+            ? `R² ${consistency.r2?.toFixed(2) ?? '–'} · Positive Wochen ${consistency.positiveWeeksPct?.toFixed(0) ?? '–'}% · Max Drawdown ${consistency.maxDrawdownPct?.toFixed(1) ?? '–'}%`
+            : undefined
+        }
+      >
+        {consistency?.score != null ? (
+          <span className={`font-medium ${consistencyClass(consistency.score)}`}>{Math.round(consistency.score)}</span>
+        ) : (
+          <span className="text-zinc-600">–</span>
+        )}
       </td>
       {benchmarks.map((b) => {
         const o = outperf(stock, b.ticker)

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { AreaSeries, ColorType, createChart, LineSeries, type ISeriesApi } from 'lightweight-charts'
 import { fetchIsin, getCachedIsin } from './isin'
+import { computeConsistency } from './consistency'
 import type { Benchmark, Stock } from './types'
 
 type ChartPeriod = '1M' | '3M' | '6M' | '1J'
@@ -167,7 +168,15 @@ export default function StockDetail({
     })
   }
 
+  const consistency = useMemo(() => computeConsistency(stock.history, months), [stock, months])
+
   const stats: [string, string][] = [
+    [
+      `Konsistenz (${period})`,
+      consistency.score != null
+        ? `${Math.round(consistency.score)} / 100`
+        : '–',
+    ],
     ['52W-Hoch', `${formatNumber(stock.high52w, 2)} ${stock.currency ?? ''}`],
     ['52W-Tief', `${formatNumber(stock.low52w, 2)} ${stock.currency ?? ''}`],
     [

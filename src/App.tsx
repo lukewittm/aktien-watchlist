@@ -3,6 +3,7 @@ import Sparkline from './Sparkline'
 import StockDetail from './StockDetail'
 import { loadWatchlist, saveWatchlist, type WatchlistEntry } from './watchlist'
 import { getFmpKey, setFmpKey } from './isin'
+import { hydrate, type RawPricesFile } from './hydrate'
 import type { Benchmark, PricesFile, Region, Stock } from './types'
 
 type PerfKey = 'perf3m' | 'perf6m' | 'perf12m'
@@ -134,9 +135,9 @@ export default function App() {
     fetch(`${import.meta.env.BASE_URL}data/prices.json`)
       .then((r) => {
         if (!r.ok) throw new Error(`HTTP ${r.status}`)
-        return r.json()
+        return r.json() as Promise<RawPricesFile>
       })
-      .then(setData)
+      .then((raw) => setData(hydrate(raw)))
       .catch((e) => setError(String(e)))
   }, [])
 
@@ -186,8 +187,8 @@ export default function App() {
           if (status.exitCode === 0) {
             setRefreshDoneAt(Date.now())
             fetch(`${import.meta.env.BASE_URL}data/prices.json?t=${Date.now()}`, { cache: 'no-store' })
-              .then((r) => r.json())
-              .then(setData)
+              .then((r) => r.json() as Promise<RawPricesFile>)
+              .then((raw) => setData(hydrate(raw)))
               .catch((e) => setError(String(e)))
           } else if (status.exitCode !== null) {
             setRefreshError(status.log.trim().split('\n').slice(-6).join('\n') || `Exit-Code ${status.exitCode}`)

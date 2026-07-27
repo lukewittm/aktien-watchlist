@@ -30,6 +30,10 @@ jobs:
       # Holt frische Kurse für den Build. Läuft nur in diesem Job – wird NIE committet,
       # dadurch wächst das Repo nicht (kein Daten-Branch, keine täglichen Commits nötig).
       - run: npm run fetch
+      # Qualitäts-Gate: bricht ab, wenn der Fetch zwar durchlief, aber sichtbar
+      # degradierte Daten lieferte (z.B. Yahoo-Ausfall). Bei Abbruch deployt der
+      # Workflow nicht neu – die zuletzt erfolgreiche Version bleibt live.
+      - run: npm run validate
       - run: npm run build
       - uses: actions/upload-pages-artifact@v3
         with:

@@ -124,6 +124,7 @@ export default function App() {
   }
 
   // Filter
+  const [search, setSearch] = useState('')
   const [minCapBn, setMinCapBn] = useState(2)
   const [sector, setSector] = useState('ALL')
   const [minPerf, setMinPerf] = useState('')
@@ -257,7 +258,11 @@ export default function App() {
     const minPerfNum = minPerf === '' ? null : Number(minPerf)
     const maxPENum = maxPE === '' ? null : Number(maxPE)
     const minDivNum = minDiv === '' ? null : Number(minDiv)
+    const searchLower = search.trim().toLowerCase()
     const filtered = data.stocks.filter((s) => {
+      if (searchLower && !s.name.toLowerCase().includes(searchLower) && !s.ticker.toLowerCase().includes(searchLower)) {
+        return false
+      }
       if (view === 'watch') return watchedTickers.has(s.ticker)
       if (region !== 'ALL' && s.region !== region) return false
       if (s.marketCapEUR != null && s.marketCapEUR < minCapBn * 1e9) return false
@@ -278,7 +283,7 @@ export default function App() {
       return dir * (na - nb)
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, view, watchedTickers, region, minCapBn, sector, minPerf, maxPE, minDiv, above200, effectiveSortKey, sortAsc, period, benchPerf])
+  }, [data, view, watchedTickers, region, search, minCapBn, sector, minPerf, maxPE, minDiv, above200, effectiveSortKey, sortAsc, period, benchPerf])
 
   const missingWatched = useMemo(() => {
     if (!data) return []
@@ -414,6 +419,25 @@ export default function App() {
         </header>
 
         <div className="flex flex-wrap items-center gap-3 mb-3">
+          <div className="relative">
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Suche (Name, Ticker) …"
+              className="w-48 rounded-md bg-zinc-900 ring-1 ring-zinc-800 px-2 py-1.5 pr-7 text-sm text-zinc-100 placeholder:text-zinc-600 focus:ring-zinc-600 focus:outline-none"
+            />
+            {search && (
+              <button
+                onClick={() => setSearch('')}
+                className="absolute right-1.5 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300"
+                aria-label="Suche löschen"
+              >
+                ×
+              </button>
+            )}
+          </div>
+
           {view === 'top' && (
             <div className="flex rounded-lg bg-zinc-900 p-1 ring-1 ring-zinc-800">
               {(Object.keys(REGION_LABELS) as RegionFilter[]).map((r) => (
@@ -512,10 +536,10 @@ export default function App() {
               <input type="checkbox" checked={above200} onChange={(e) => setAbove200(e.target.checked)} className="accent-emerald-500" />
               über 200-Tage-Linie
             </label>
-            {(sector !== 'ALL' || minPerf || maxPE || minDiv || above200 || minCapBn !== 2) && (
+            {(sector !== 'ALL' || minPerf || maxPE || minDiv || above200 || minCapBn !== 2 || search) && (
               <button
                 onClick={() => {
-                  setSector('ALL'); setMinPerf(''); setMaxPE(''); setMinDiv(''); setAbove200(false); setMinCapBn(2)
+                  setSector('ALL'); setMinPerf(''); setMaxPE(''); setMinDiv(''); setAbove200(false); setMinCapBn(2); setSearch('')
                 }}
                 className="text-zinc-500 hover:text-zinc-300 underline"
               >
@@ -531,6 +555,11 @@ export default function App() {
             <p className="text-sm mt-2">
               In der Top-Performer-Liste auf den Stern (☆) klicken, um Kaufkandidaten zu sammeln.
             </p>
+          </div>
+        ) : view === 'top' && rows.length === 0 ? (
+          <div className="rounded-xl ring-1 ring-zinc-800 bg-zinc-900/40 p-10 text-center text-zinc-400">
+            <p className="text-lg">Keine Treffer.</p>
+            <p className="text-sm mt-2">Suche oder Filter anpassen.</p>
           </div>
         ) : (
           <div className="overflow-x-auto rounded-xl ring-1 ring-zinc-800 [overflow-anchor:none]">
